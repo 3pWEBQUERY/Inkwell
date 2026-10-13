@@ -45,7 +45,7 @@ export function createPushSender(env: Env, logger: Logger): PushSender {
         return 'sent';
       } catch (error) {
         if (
-          error instanceof WebPushError &&
+          error instanceof webPush.WebPushError &&
           (error.statusCode === 404 || error.statusCode === 410)
         ) {
           return 'gone';
