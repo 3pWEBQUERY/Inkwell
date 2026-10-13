@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+.next/
+out/
+dist/
+.turbo/
+*.tsbuildinfo
+apps/web/public/sw.js
+apps/web/public/sw.js.map
+
+# tests
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# env
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+pnpm-debug.log*

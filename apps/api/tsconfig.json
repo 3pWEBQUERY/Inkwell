@@ -1,0 +1,10 @@
+{
+  "extends": "@inkwell/config/tsconfig/node.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": true,
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["src", "test", "drizzle.config.ts", "vitest.config.ts", "eslint.config.js"]
+}

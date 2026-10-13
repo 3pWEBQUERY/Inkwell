@@ -1,0 +1,37 @@
+{
+  "name": "inkwell",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A quiet place to write. Thoughts, journal, short stories. Private first, shared on purpose.",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "pnpm --filter @inkwell/web test:e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @inkwell/api db:generate",
+    "db:migrate": "pnpm --filter @inkwell/api db:migrate",
+    "db:seed": "pnpm --filter @inkwell/api db:seed",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "@inkwell/config": "workspace:*",
+    "lefthook": "^2.2.2",
+    "prettier": "^3.9.10",
+    "turbo": "^2.11.8",
+    "typescript": "~5.9.3",
+    "eslint": "^9.39.0",
+    "typescript-eslint": "^8.50.0"
+  }
+}

@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      glob: "*.{ts,tsx,js,mjs,json,css,md,yml,yaml}"
+      run: pnpm prettier --check {staged_files}
+    eslint:
+      glob: "*.{ts,tsx,js,mjs}"
+      run: pnpm eslint --max-warnings 0 --no-warn-ignored {staged_files}
+
+commit-msg:
+  commands:
+    conventional:
+      run: |
+        head -1 {1} | grep -Eq '^(feat|fix|refactor|chore|docs|test|perf|ci|build|style|revert)(\([a-z0-9-]+\))?!?: [a-z].+' \
+          || { echo 'Commit message must follow Conventional Commits (e.g. "feat(web): add journal search")'; exit 1; }
