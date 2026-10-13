@@ -1,0 +1,268 @@
+/*
+ * Every duration and curve of the product. Motion explains space and direction,
+ * never attention: no pulses, no confetti, no shimmer.
+ */
+:root {
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-enter: 160ms;
+  --motion-exit: 120ms;
+  --motion-overlay-open: 260ms;
+  --motion-overlay-close: 160ms;
+  --motion-shared: 260ms;
+  --motion-tab: 220ms;
+  --motion-tint: 600ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --translate-enter: 8px;
+}
+
+:root[data-motion='reduce'] {
+  --motion-fast: 80ms;
+  --motion-base: 80ms;
+  --motion-enter: 80ms;
+  --motion-exit: 80ms;
+  --motion-overlay-open: 80ms;
+  --motion-overlay-close: 80ms;
+  --motion-shared: 80ms;
+  --motion-tab: 80ms;
+  --motion-tint: 80ms;
+  --ease-out: linear;
+  --ease-in: linear;
+  --translate-enter: 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) {
+    --motion-fast: 80ms;
+    --motion-base: 80ms;
+    --motion-enter: 80ms;
+    --motion-exit: 80ms;
+    --motion-overlay-open: 80ms;
+    --motion-overlay-close: 80ms;
+    --motion-shared: 80ms;
+    --motion-tab: 80ms;
+    --motion-tint: 80ms;
+    --ease-out: linear;
+    --ease-in: linear;
+    --translate-enter: 0px;
+  }
+}
+
+/* --- Page transitions (View Transitions API) ------------------------------------- */
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--translate-enter));
+  }
+}
+
+@keyframes tab-out-left {
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+@keyframes tab-out-right {
+  to {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+@keyframes tab-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+@keyframes tab-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(page) {
+  animation: page-out var(--motion-exit) var(--ease-in) both;
+}
+
+::view-transition-new(page) {
+  animation: page-in var(--motion-enter) var(--ease-out) both;
+  animation-delay: var(--motion-exit);
+}
+
+/* Mobile tab changes slide horizontally; direction is set on <html> by the shell. */
+html[data-tab-direction='forward'] ::view-transition-old(page) {
+  animation: tab-out-left var(--motion-tab) var(--ease-out) both;
+}
+html[data-tab-direction='forward'] ::view-transition-new(page) {
+  animation: tab-in-right var(--motion-tab) var(--ease-out) both;
+  animation-delay: 0ms;
+}
+html[data-tab-direction='back'] ::view-transition-old(page) {
+  animation: tab-out-right var(--motion-tab) var(--ease-out) both;
+}
+html[data-tab-direction='back'] ::view-transition-new(page) {
+  animation: tab-in-left var(--motion-tab) var(--ease-out) both;
+  animation-delay: 0ms;
+}
+
+/* Shared element: the first line travels from the card to the reading view. */
+::view-transition-group(*) {
+  animation-duration: var(--motion-shared);
+  animation-timing-function: var(--ease-out);
+}
+
+/* Theme switch cross-fades the whole page. */
+html[data-theme-switching] ::view-transition-old(root) {
+  animation: page-out var(--motion-base) linear both;
+}
+html[data-theme-switching] ::view-transition-new(root) {
+  animation: page-in var(--motion-base) linear both;
+  --translate-enter: 0px;
+}
+
+/* --- Fallback enter animation for browsers without the View Transitions API ----- */
+
+@keyframes enter-fallback {
+  from {
+    opacity: 0;
+    transform: translateY(var(--translate-enter));
+  }
+}
+
+.page-enter-fallback {
+  animation: enter-fallback var(--motion-enter) var(--ease-out) both;
+}
+
+/* --- Overlays ---------------------------------------------------------------------- */
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes overlay-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+dialog[open].overlay {
+  animation: overlay-in var(--motion-overlay-open) var(--ease-out) both;
+}
+dialog.overlay.closing {
+  animation: overlay-out var(--motion-overlay-close) var(--ease-in) both;
+}
+dialog[open].overlay::backdrop {
+  animation: backdrop-in var(--motion-overlay-open) var(--ease-out) both;
+}
+dialog[open].sheet {
+  animation: sheet-in var(--motion-overlay-open) var(--ease-out) both;
+}
+
+/* --- Highlight for a freshly published text: a tint that fades, nothing slides in. */
+
+@keyframes tint-fade {
+  from {
+    background-color: var(--color-accent-soft);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.just-published {
+  animation: tint-fade var(--motion-tint) linear both;
+}
+
+/* --- State changes (reaction, vote, join): the icon changes, nothing else. */
+
+.state-toggle {
+  transition:
+    color var(--motion-fast) ease-out,
+    background-color var(--motion-fast) ease-out,
+    border-color var(--motion-fast) ease-out;
+}
+
+/* --- Staggered fade-up on the landing page (IntersectionObserver adds .is-visible). */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--motion-base) var(--ease-out),
+    transform var(--motion-base) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Onboarding steps slide horizontally inside the panel ----------------------- */
+
+@keyframes step-forward {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+@keyframes step-back {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+}
+
+.auth-step-forward {
+  animation: step-forward var(--motion-tab) var(--ease-out) both;
+}
+.auth-step-back {
+  animation: step-back var(--motion-tab) var(--ease-out) both;
+}
+
+/* Browsers without the View Transitions API still get the enter half of the page change. */
+@supports not (view-transition-name: none) {
+  .page-enter {
+    animation: enter-fallback var(--motion-enter) var(--ease-out) both;
+  }
+}
+
+/* The editor scales out of the write button. */
+dialog[open].overlay.full-editor {
+  transform-origin: var(--write-origin-x, 50%) var(--write-origin-y, 50%);
+  animation-duration: var(--motion-overlay-open);
+}
+
+/* The completion panel darkens the editor behind it without hiding it. */
+.editor-dimmed {
+  opacity: 0.4;
+  transition: opacity var(--motion-base) var(--ease-out);
+}

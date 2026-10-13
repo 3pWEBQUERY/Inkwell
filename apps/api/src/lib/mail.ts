@@ -12,18 +12,24 @@ export interface Mail {
 
 export interface Mailer {
   send(mail: Mail): Promise<void>;
+  /** Only populated with E2E_MAILBOX=1 (console transport). */
+  lastTo?: (address: string) => Mail | undefined;
 }
 
 export function createMailer(env: Env, logger: Logger): Mailer {
   if (env.MAIL_TRANSPORT === 'console') {
-    return {
+    const captured = new Map<string, Mail>();
+    const mailer: Mailer = {
       async send(mail) {
         logger.info(
           { to: mail.to, subject: mail.subject, body: mail.text },
           'mail (console transport)',
         );
+        if (env.E2E_MAILBOX === '1') captured.set(mail.to.toLowerCase(), mail);
       },
     };
+    if (env.E2E_MAILBOX === '1') mailer.lastTo = (address) => captured.get(address.toLowerCase());
+    return mailer;
   }
 
   const transporter = nodemailer.createTransport({

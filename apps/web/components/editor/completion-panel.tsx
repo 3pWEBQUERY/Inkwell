@@ -1,0 +1,301 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
+
+import { LIMITS, type Expiry, type PostType, type Visibility } from '@inkwell/shared';
+
+import { Button } from '@/components/ui/button';
+import { ErrorText } from '@/components/ui/error-text';
+import { Input } from '@/components/ui/field';
+import { Icon, type IconName } from '@/components/ui/icon';
+import { Switch } from '@/components/ui/switch';
+import { Link } from '@/i18n/navigation';
+import { cn } from '@/lib/cn';
+
+import type { OwnSeries, RoomView } from '@/features/posts/queries';
+
+export interface CompletionChoice {
+  type: PostType;
+  visibility: Visibility;
+  roomId: string | null;
+  expiry: Expiry;
+  commentsEnabled: boolean;
+  seriesId: string | null;
+  newSeriesTitle: string | null;
+}
+
+interface CompletionPanelProps {
+  rooms: RoomView[];
+  series: OwnSeries[];
+  wordCount: number;
+  hasTitle: boolean;
+  charCount: number;
+  defaults: { visibility: Visibility; expiry: Expiry };
+  canEncrypt: boolean;
+  busy: boolean;
+  error: string | null;
+  onSubmit: (choice: CompletionChoice) => void;
+}
+
+const VISIBILITY_ICON: Record<Visibility, IconName> = {
+  private: 'lock',
+  anonymous: 'mask',
+  public: 'globe',
+};
+
+/**
+ * Every decision about visibility happens here, after writing. Type is
+ * pre-selected from length and title; the room list unfolds when sharing.
+ */
+export function CompletionPanel({
+  rooms,
+  series,
+  wordCount,
+  hasTitle,
+  charCount,
+  defaults,
+  canEncrypt,
+  busy,
+  error,
+  onSubmit,
+}: CompletionPanelProps) {
+  const t = useTranslations('completion');
+  const editor = useTranslations('editor');
+  const [type, setType] = useState<PostType>(
+    wordCount > LIMITS.storyWordThreshold || hasTitle ? 'story' : 'thought',
+  );
+  const [visibility, setVisibility] = useState<Visibility>(
+    defaults.visibility === 'anonymous' && type === 'story' ? 'public' : defaults.visibility,
+  );
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const [roomQuery, setRoomQuery] = useState('');
+  const [expiry, setExpiry] = useState<Expiry>(defaults.expiry);
+  const [commentsEnabled, setCommentsEnabled] = useState<boolean | null>(null);
+  const [seriesId, setSeriesId] = useState<string | null>(null);
+  const [newSeriesTitle, setNewSeriesTitle] = useState('');
+
+  const sharing = visibility !== 'private';
+  const kind = type === 'story' ? 'fiction' : 'reflection';
+  const candidateRooms = useMemo(() => {
+    const needle = roomQuery.trim().toLowerCase();
+    return rooms.filter(
+      (room) =>
+        room.joined &&
+        room.kind === kind &&
+        (needle === '' || room.name.toLowerCase().includes(needle)),
+    );
+  }, [rooms, kind, roomQuery]);
+
+  const comments = commentsEnabled ?? visibility === 'public';
+  const tooShort = sharing && charCount < LIMITS.sharedPostMinChars;
+  const titleMissing = type === 'story' && !hasTitle;
+  const privateBlocked = visibility === 'private' && !canEncrypt;
+  const disabled = busy || (sharing && !roomId) || tooShort || titleMissing || privateBlocked;
+
+  const choose = (next: Visibility) => {
+    if (next === 'anonymous' && type === 'story') return;
+    setVisibility(next);
+  };
+
+  const chooseType = (next: PostType) => {
+    setType(next);
+    setRoomId(null);
+    if (next === 'story' && visibility === 'anonymous') setVisibility('public');
+  };
+
+  return (
+    <form
+      className="flex flex-col gap-6"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (disabled) return;
+        onSubmit({
+          type,
+          visibility,
+          roomId: sharing ? roomId : null,
+          expiry: sharing ? expiry : 'none',
+          commentsEnabled: sharing ? comments : false,
+          seriesId: sharing && type === 'story' && visibility === 'public' ? seriesId : null,
+          newSeriesTitle: seriesId === 'new' ? newSeriesTitle.trim() || null : null,
+        });
+      }}
+    >
+      <fieldset>
+        <legend className="text-sm font-medium text-ink-secondary">{t('type.label')}</legend>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {(['thought', 'story'] as const).map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={type === option}
+              onClick={() => chooseType(option)}
+              className={cn(
+                'h-11 rounded-md border state-toggle',
+                type === option
+                  ? 'border-accent bg-accent-soft'
+                  : 'border-line-strong text-ink-secondary',
+              )}
+            >
+              {t(`type.${option}`)}
+            </button>
+          ))}
+        </div>
+        {titleMissing ? <p className="mt-2 text-[13px] text-warn">{t('titleRequired')}</p> : null}
+      </fieldset>
+
+      <fieldset>
+        <legend className="text-sm font-medium text-ink-secondary">{t('visibility.label')}</legend>
+        <div className="mt-2 flex flex-col gap-2">
+          {(['private', 'anonymous', 'public'] as const).map((option) => {
+            const greyed = option === 'anonymous' && type === 'story';
+            return (
+              <button
+                key={option}
+                type="button"
+                aria-pressed={visibility === option}
+                aria-disabled={greyed}
+                onClick={() => choose(option)}
+                className={cn(
+                  'flex items-start gap-3 rounded-md border p-3 text-left state-toggle',
+                  visibility === option ? 'border-accent bg-accent-soft' : 'border-line-strong',
+                  greyed && 'opacity-40',
+                )}
+              >
+                <Icon name={VISIBILITY_ICON[option]} className="mt-0.5 shrink-0" />
+                <span>
+                  <span className="block font-medium">{t(`visibility.${option}.title`)}</span>
+                  <span className="block text-[13px] text-ink-secondary">
+                    {greyed ? t('visibility.anonymousDisabled') : t(`visibility.${option}.body`)}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {privateBlocked ? (
+          <p className="mt-2 text-[13px] text-warn">{editor('unlockToWrite')}</p>
+        ) : null}
+      </fieldset>
+
+      <div
+        className="grid transition-[grid-template-rows]"
+        style={{
+          gridTemplateRows: sharing ? '1fr' : '0fr',
+          transitionDuration: 'var(--motion-base)',
+          transitionTimingFunction: 'var(--ease-out)',
+        }}
+      >
+        <div className="flex flex-col gap-6 overflow-hidden">
+          <fieldset>
+            <legend className="text-sm font-medium text-ink-secondary">{t('room.label')}</legend>
+            {rooms.some((room) => room.joined && room.kind === kind) ? (
+              <>
+                <Input
+                  type="search"
+                  value={roomQuery}
+                  onChange={(e) => setRoomQuery(e.target.value)}
+                  placeholder={t('room.search')}
+                  aria-label={t('room.search')}
+                  className="mt-2"
+                />
+                <ul className="mt-2 max-h-48 overflow-y-auto rounded-md border border-line">
+                  {candidateRooms.map((room) => (
+                    <li key={room.id}>
+                      <button
+                        type="button"
+                        aria-pressed={roomId === room.id}
+                        onClick={() => setRoomId(room.id)}
+                        className={cn(
+                          'flex min-h-11 w-full items-center justify-between px-3 text-left state-toggle',
+                          roomId === room.id ? 'bg-accent-soft' : 'hover:bg-paper-raised',
+                        )}
+                      >
+                        <span>{room.name}</span>
+                        {roomId === room.id ? (
+                          <Icon name="check" size={16} className="text-accent" />
+                        ) : null}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="mt-2 text-[13px] text-ink-secondary">
+                {t('room.none')}{' '}
+                <Link
+                  href={`/rooms?kind=${kind}`}
+                  className="text-accent underline-offset-4 hover:underline"
+                >
+                  {t('room.browse')}
+                </Link>
+              </p>
+            )}
+            {tooShort ? <p className="mt-2 text-[13px] text-warn">{t('tooShort')}</p> : null}
+          </fieldset>
+
+          <fieldset>
+            <legend className="text-sm font-medium text-ink-secondary">{t('expiry.label')}</legend>
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {(['none', '24h', '7d'] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  aria-pressed={expiry === option}
+                  onClick={() => setExpiry(option)}
+                  className={cn(
+                    'h-11 rounded-md border state-toggle',
+                    expiry === option
+                      ? 'border-accent bg-accent-soft'
+                      : 'border-line-strong text-ink-secondary',
+                  )}
+                >
+                  {t(`expiry.${option}`)}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-[13px] text-ink-secondary">{t('expiry.hint')}</p>
+          </fieldset>
+
+          <Switch checked={comments} onChange={setCommentsEnabled} label={t('comments.label')} />
+
+          {type === 'story' && visibility === 'public' ? (
+            <fieldset>
+              <legend className="text-sm font-medium text-ink-secondary">
+                {t('series.label')}
+              </legend>
+              <select
+                value={seriesId ?? ''}
+                onChange={(e) => setSeriesId(e.target.value || null)}
+                aria-label={t('series.label')}
+                className="mt-2 h-11 w-full rounded-md border border-line-strong bg-paper px-3"
+              >
+                <option value="">{t('series.none')}</option>
+                {series.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title} · {t('series.chapterHint', { chapter: item.chapterCount + 1 })}
+                  </option>
+                ))}
+                <option value="new">{t('series.new')}</option>
+              </select>
+              {seriesId === 'new' ? (
+                <Input
+                  value={newSeriesTitle}
+                  onChange={(e) => setNewSeriesTitle(e.target.value)}
+                  placeholder={t('series.newTitle')}
+                  aria-label={t('series.newTitle')}
+                  className="mt-2"
+                />
+              ) : null}
+            </fieldset>
+          ) : null}
+        </div>
+      </div>
+
+      <ErrorText code={error} />
+      <Button type="submit" size="lg" disabled={disabled} busy={busy}>
+        {t(`submit.${visibility}`)}
+      </Button>
+    </form>
+  );
+}

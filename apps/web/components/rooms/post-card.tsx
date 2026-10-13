@@ -1,0 +1,94 @@
+'use client';
+
+import { useLocale, useTranslations } from 'next-intl';
+
+import { hoursUntil, type FeedPost, type Locale } from '@inkwell/shared';
+
+import { Avatar } from '@/components/ui/avatar';
+import { Icon } from '@/components/ui/icon';
+import { Link } from '@/i18n/navigation';
+import { cn } from '@/lib/cn';
+import { relativeBucket } from '@/lib/format';
+
+interface PostCardProps {
+  post: FeedPost;
+  showRoom?: boolean;
+  highlight?: boolean;
+}
+
+/**
+ * A card in a list: room, first line (three lines at most), pseudonym or
+ * "anonymous", relative time. No counters anywhere. The first line carries the
+ * shared-element name so it travels into the reading view.
+ */
+export function PostCard({ post, showRoom = false, highlight = false }: PostCardProps) {
+  const t = useTranslations('common');
+  const rooms = useTranslations('rooms');
+  const locale = useLocale() as Locale;
+  const relative = relativeBucket(post.createdAt);
+  const expiresIn = hoursUntil(post.expiresAt);
+
+  return (
+    <article className={cn('border-b border-line', highlight && 'just-published')}>
+      <Link
+        href={`/posts/${post.id}`}
+        data-list-item
+        className="block rounded-md py-5 outline-none focus-visible:shadow-[var(--focus-ring)]"
+      >
+        <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
+          {showRoom ? <span>{post.room.name}</span> : null}
+          {showRoom ? <span aria-hidden>·</span> : null}
+          {post.author ? (
+            <span className="flex items-center gap-1.5">
+              <Avatar avatar={post.author.avatar} size={16} />
+              {post.author.pseudonym}
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5">
+              <Icon name="mask" size={14} />
+              {t('anonymous')}
+            </span>
+          )}
+          <span aria-hidden>·</span>
+          <time dateTime={post.createdAt}>
+            {relative.key === 'justNow'
+              ? t('relative.justNow')
+              : t(`relative.${relative.key}`, { count: relative.count })}
+          </time>
+          {expiresIn !== null ? (
+            <>
+              <span aria-hidden>·</span>
+              <span className="flex items-center gap-1">
+                <Icon name="clock" size={14} />
+                {t('expiresIn', { hours: expiresIn })}
+              </span>
+            </>
+          ) : null}
+        </div>
+        {post.title ? (
+          <h3
+            className="mt-2 font-serif text-xl font-semibold"
+            style={{ viewTransitionName: `post-title-${post.id}` }}
+          >
+            {post.title}
+          </h3>
+        ) : null}
+        <p
+          className={cn('prose-reading mt-2 line-clamp-3 text-[1.0625rem]', post.title && 'mt-1')}
+          style={post.title ? undefined : { viewTransitionName: `post-line-${post.id}` }}
+        >
+          {post.preview}
+        </p>
+        {post.type === 'story' ? (
+          <p className="mt-2 text-[13px] text-ink-tertiary">
+            {t('words', { count: post.wordCount })}
+            {post.series
+              ? ` · ${post.series.title}, ${rooms('chapter', { chapter: post.series.chapter })}`
+              : ''}
+          </p>
+        ) : null}
+        <span className="sr-only">{locale}</span>
+      </Link>
+    </article>
+  );
+}

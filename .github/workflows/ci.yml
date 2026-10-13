@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  checks:
+    name: Typecheck, lint, unit tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+        env:
+          API_URL: http://localhost:4000
+          API_INTERNAL_TOKEN: ci-internal-token-0123456789abcdef0123456789
+          NEXT_PUBLIC_APP_ORIGIN: http://localhost:3000
+          NEXT_PUBLIC_BUILD_ID: ${{ github.sha }}
+
+  api-integration:
+    name: API against Postgres
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: inkwell
+          POSTGRES_PASSWORD: inkwell
+          POSTGRES_DB: inkwell_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U inkwell"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://inkwell:inkwell@localhost:5432/inkwell_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @inkwell/shared build
+      - run: pnpm --filter @inkwell/api db:migrate
+      - run: pnpm --filter @inkwell/api db:seed
+      - run: pnpm --filter @inkwell/api test:integration
+
+  e2e:
+    name: Browser flows (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [checks]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: inkwell
+          POSTGRES_PASSWORD: inkwell
+          POSTGRES_DB: inkwell_e2e
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U inkwell"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://inkwell:inkwell@localhost:5432/inkwell_e2e
+      APP_ORIGIN: http://localhost:3000
+      RP_ID: localhost
+      API_INTERNAL_TOKEN: ci-internal-token-0123456789abcdef0123456789
+      SESSION_SECRET: ci-session-secret-0123456789abcdef0123456789
+      CRON_SECRET: ci-cron-secret-0123456789abcdef0123456789abcdef
+      MAIL_FROM: Inkwell <no-reply@example.ch>
+      MAIL_TRANSPORT: console
+      E2E_MAILBOX: "1"
+      API_URL: http://localhost:4000
+      NEXT_PUBLIC_APP_ORIGIN: http://localhost:3000
+      E2E_BASE_URL: http://localhost:3000
+      E2E_MAILBOX_URL: http://localhost:4000/dev/mailbox
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @inkwell/web exec playwright install --with-deps chromium
+      - run: pnpm build
+      - run: pnpm --filter @inkwell/api db:migrate && pnpm --filter @inkwell/api db:seed
+      - name: Start api and web
+        run: |
+          (node apps/api/dist/server.js > api.log 2>&1 &)
+          (pnpm --filter @inkwell/web start > web.log 2>&1 &)
+          npx wait-on -t 60000 http://localhost:4000/health http://localhost:3000/api/health
+      - run: pnpm --filter @inkwell/web test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            apps/web/playwright-report
+            api.log
+            web.log
+
+  lighthouse:
+    name: Lighthouse budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [checks]
+    env:
+      API_URL: http://localhost:4000
+      API_INTERNAL_TOKEN: ci-internal-token-0123456789abcdef0123456789
+      NEXT_PUBLIC_APP_ORIGIN: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @inkwell/shared build && pnpm --filter @inkwell/web build
+      - name: Start web
+        run: |
+          (pnpm --filter @inkwell/web start > web.log 2>&1 &)
+          npx wait-on -t 60000 http://localhost:3000/
+      - run: pnpm --filter @inkwell/web lighthouse

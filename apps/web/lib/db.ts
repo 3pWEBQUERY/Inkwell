@@ -1,0 +1,96 @@
+import Dexie, { type EntityTable } from 'dexie';
+
+import type { Expiry, PostStatus, PostType, Visibility } from '@inkwell/shared';
+
+/** An encrypted draft; the editor autosaves here every two seconds. Drafts never reach the server. */
+export interface DraftRecord {
+  id: string;
+  ciphertext: string;
+  nonce: string;
+  wrappedKey: string;
+  updatedAt: number;
+}
+
+/** Local copy of a journal entry. Private entries keep their decrypted text here for search; the index never leaves the browser. */
+export interface EntryRecord {
+  id: string;
+  type: PostType;
+  visibility: Visibility;
+  status: PostStatus;
+  title: string | null;
+  /** Plaintext Markdown (shared entries from the server, private entries after local decryption). */
+  body: string | null;
+  ciphertext: string | null;
+  nonce: string | null;
+  wrappedKey: string | null;
+  roomSlug: string | null;
+  roomName: string | null;
+  expiry: Expiry;
+  expiresAt: string | null;
+  seriesId: string | null;
+  chapter: number | null;
+  hasFeedback: boolean;
+  createdAt: string;
+  updatedAt: string;
+  /** Lowercased search text, derived from title + body. */
+  searchText: string;
+  locked: boolean;
+}
+
+export interface ReadProgressRecord {
+  postId: string;
+  ratio: number;
+  updatedAt: number;
+}
+
+/** A publish operation waiting for connectivity. */
+export interface QueueRecord {
+  id: string;
+  kind: 'createPost';
+  payload: unknown;
+  createdAt: number;
+  attempts: number;
+  lastError: string | null;
+}
+
+export interface MetaRecord {
+  key: string;
+  value: string;
+}
+
+class InkwellDatabase extends Dexie {
+  drafts!: EntityTable<DraftRecord, 'id'>;
+  entries!: EntityTable<EntryRecord, 'id'>;
+  readProgress!: EntityTable<ReadProgressRecord, 'postId'>;
+  queue!: EntityTable<QueueRecord, 'id'>;
+  meta!: EntityTable<MetaRecord, 'key'>;
+
+  constructor() {
+    super('inkwell');
+    this.version(1).stores({
+      drafts: 'id, updatedAt',
+      entries: 'id, visibility, createdAt, updatedAt, expiresAt',
+      readProgress: 'postId, updatedAt',
+      queue: 'id, createdAt',
+      meta: 'key',
+    });
+  }
+}
+
+let instance: InkwellDatabase | null = null;
+
+export function db(): InkwellDatabase {
+  if (!instance) instance = new InkwellDatabase();
+  return instance;
+}
+
+export async function clearLocalData(): Promise<void> {
+  const database = db();
+  await Promise.all([
+    database.drafts.clear(),
+    database.entries.clear(),
+    database.readProgress.clear(),
+    database.queue.clear(),
+    database.meta.clear(),
+  ]);
+}

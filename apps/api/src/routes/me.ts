@@ -23,6 +23,7 @@ import {
   profilePosts,
   reactionSummary,
   requireOwnPost,
+  todayFeed,
   viewerFor,
 } from '../services/posts.js';
 import { changePseudonym, emailHash, findUserByPseudonym, toMe } from '../services/users.js';
@@ -59,6 +60,13 @@ export const meRoutes: FastifyPluginAsyncZod = async (app) => {
     const [updated] = await db.update(users).set(patch).where(eq(users.id, user.id)).returning();
     if (!updated) throw new ApiError('INTERNAL');
     return toMe(db, updated);
+  });
+
+  /** Newest texts from joined rooms, for /today. */
+  app.get('/today', async (request) => {
+    const { user } = request.requireUser();
+    const viewer = await viewerFor(db, user.id);
+    return { items: await todayFeed(db, viewer, user.id) };
   });
 
   app.get('/posts', { schema: { querystring: journalQuerySchema } }, async (request) => {

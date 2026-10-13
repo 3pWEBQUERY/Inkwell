@@ -1,0 +1,808 @@
+{
+  "common": {
+    "appName": "Inkwell",
+    "tagline": "Write it all off your chest.",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "readOnly": "Just read for now",
+    "cancel": "Cancel",
+    "done": "Done",
+    "later": "Later",
+    "save": "Save",
+    "back": "Back",
+    "close": "Close",
+    "continue": "Continue",
+    "confirm": "Confirm",
+    "loadMore": "Load more",
+    "search": "Search",
+    "language": "Language",
+    "anonymous": "anonymous",
+    "you": "you",
+    "edited": "edited",
+    "loading": "Loading",
+    "offline": "You are offline. Reading and writing keep working.",
+    "saved": "Saved",
+    "sent": "Sent",
+    "copied": "Copied",
+    "words": "{count, plural, =1 {1 word} other {# words}}",
+    "readingTime": "{minutes, plural, =1 {1 minute} other {# minutes}} to read",
+    "locales": {
+      "de": "Deutsch",
+      "fr": "Français",
+      "it": "Italiano",
+      "en": "English"
+    },
+    "visibility": {
+      "private": "Only for me",
+      "anonymous": "Shared anonymously",
+      "public": "Shared with profile"
+    },
+    "roomKind": {
+      "reflection": "Thoughts",
+      "fiction": "Stories"
+    },
+    "expiresIn": "disappears in {hours, plural, =0 {less than an hour} =1 {one hour} other {# hrs}}",
+    "relative": {
+      "justNow": "just now",
+      "minutes": "{count} min ago",
+      "hours": "{count} hrs ago",
+      "days": "{count, plural, =1 {one day} other {# days}} ago"
+    }
+  },
+  "nav": {
+    "how": "How it works",
+    "trust": "Trust",
+    "faq": "FAQ",
+    "today": "Today",
+    "rooms": "Rooms",
+    "write": "Write",
+    "journal": "My journal",
+    "me": "Me",
+    "skipToContent": "Skip to content",
+    "menu": "Menu"
+  },
+  "marketing": {
+    "hero": {
+      "title": "Write it all off your chest.",
+      "subtitle": "A place for thoughts, journal and stories. Private if you want. Read if you share. No counters, no algorithm.",
+      "note": "Free. No ads. Runs in the browser, installable on phone and desktop.",
+      "screenshotAlt": "The editor in the browser: an empty page with a short text, no tools in the way."
+    },
+    "promises": {
+      "title": "Three promises",
+      "noPressure": {
+        "title": "No pressure.",
+        "body": "No likes, no followers, no view counts. Just you and your text, and whoever should read it."
+      },
+      "noAlgorithm": {
+        "title": "No algorithm.",
+        "body": "Your feed is chronological. Nobody decides for you what you see."
+      },
+      "noReaders": {
+        "title": "No one reading along.",
+        "body": "Private entries are encrypted in your browser before they reach us. We cannot read them."
+      }
+    },
+    "how": {
+      "title": "How it works",
+      "steps": {
+        "write": {
+          "title": "Write",
+          "body": "The editor opens empty. No title needed, no formatting needed."
+        },
+        "decide": {
+          "title": "Decide",
+          "body": "Keep it, share it anonymously or share it with your pseudonym."
+        },
+        "letGo": {
+          "title": "Let go",
+          "body": "Optionally let it disappear after 24 hours or 7 days. Or burn it right away."
+        },
+        "beRead": {
+          "title": "Be read",
+          "body": "You see that it was read and how many feel it. Nobody else sees numbers."
+        }
+      }
+    },
+    "rooms": {
+      "title": "Two kinds of rooms",
+      "reflection": {
+        "title": "Thought rooms",
+        "body": "Chronological, no voting, mostly anonymous. For what has to get out.",
+        "exampleRoom": "At night",
+        "example": "Three in the morning. The street below is empty, and I do not know if I am tired or just quiet. I am writing this so it exists somewhere that is not me."
+      },
+      "fiction": {
+        "title": "Story rooms",
+        "body": "With voting and feedback, with a pseudonym. For what wants to be read.",
+        "exampleRoom": "Flash fiction",
+        "exampleTitle": "The last train",
+        "example": "She had missed the train three times, always on purpose. The fourth time it simply stood there, doors open, waiting as if it had time."
+      }
+    },
+    "trust": {
+      "title": "Trust",
+      "do": {
+        "title": "What we do with your data",
+        "items": [
+          "Private texts are encrypted in the browser; the server stores ciphertext only.",
+          "Shared texts live on servers in the EU.",
+          "Burned texts are gone from backups after 30 days as well.",
+          "You can export everything as a ZIP or delete your account at any time, in the app, without e-mailing support."
+        ]
+      },
+      "dont": {
+        "title": "What we do not do",
+        "items": [
+          "No selling of data.",
+          "No advertising.",
+          "No training of AI models on your texts.",
+          "No dark patterns when you leave."
+        ]
+      },
+      "links": "More in the <privacy>privacy policy</privacy> and the <imprint>imprint</imprint>."
+    },
+    "safety": {
+      "title": "Sometimes writing is not enough.",
+      "body": "When a text sounds like a hard moment, the app discreetly shows where to find help. The hint is produced in your browser from a word list, without the text reaching us.",
+      "promise": "We do not read your texts. The hint appears only for you, in your browser.",
+      "lines": "Die Dargebotene Hand 143 · Pro Juventute 147 · Germany: Telefonseelsorge 0800 111 0 111"
+    },
+    "install": {
+      "title": "On your home screen",
+      "body": "The app installs like a native app. iOS: Share, then “Add to Home Screen”. Android and desktop: the browser’s install dialog.",
+      "native": "A native iOS app is in the works."
+    },
+    "pricing": {
+      "title": "Price",
+      "body": "Free at launch. Later an optional membership (about CHF 3/month) for unlimited export, series and more rooms. The core stays free. Never ads."
+    },
+    "faq": {
+      "title": "Questions",
+      "items": [
+        {
+          "q": "Is it really anonymous?",
+          "a": "Towards other members, yes: anonymous texts carry neither pseudonym nor profile, and the link to the account is removed on the server before the text is delivered. Towards us, no: internally the text stays linked to your account so abuse can be stopped. The privacy policy says exactly that."
+        },
+        {
+          "q": "Can you read my private texts?",
+          "a": "No. Private entries are encrypted in your browser with a key that exists only on your device. The server stores ciphertext. The limit: we also deliver the code that does the encrypting. A compromised server could deliver manipulated code. Content Security Policy, published build hashes and later the native app address this."
+        },
+        {
+          "q": "What if I lose my recovery code?",
+          "a": "Then private entries can no longer be read on a new device. We have no copy of the key and cannot reset it. Shared texts and your account remain. You can show and save the code again in settings at any time."
+        },
+        {
+          "q": "Is there an app?",
+          "a": "The web app installs on phone and desktop and then behaves like an app, offline too. A native iOS app is planned."
+        },
+        {
+          "q": "Does it work offline?",
+          "a": "Writing, saving and finishing work without a connection. Publishing waits in a queue until you are back online."
+        },
+        {
+          "q": "How is it moderated?",
+          "a": "Every shared text can be reported. Reports go to a review queue handled by people, within one hour for self-harm, otherwise within a day. After three independent reports a text is hidden until review. Nothing is deleted automatically by software."
+        },
+        {
+          "q": "Do you train AI on my texts?",
+          "a": "No. Neither on private nor on shared texts. There is no AI writing help in the editor either: no suggestions, no rephrasing, no mood analysis."
+        },
+        {
+          "q": "How do I delete my account?",
+          "a": "In settings under “Data”. Deletion has a 30-day grace period during which you can revoke it. After that everything is gone for good, from backups at most 30 further days later."
+        },
+        {
+          "q": "Who is behind this?",
+          "a": "A small company in Switzerland. Name, address and the responsible person are in the imprint. We answer questions by e-mail, critical ones too."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Write it all off your chest.",
+      "button": "Create account",
+      "link": "Sign in"
+    },
+    "footer": {
+      "imprint": "Imprint",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "contact": "Contact",
+      "status": "Status",
+      "changelog": "Changelog",
+      "press": "Press"
+    }
+  },
+  "auth": {
+    "intro": "Here you write for yourself. Sharing is optional. There are no numbers.",
+    "passkey": "Continue with passkey",
+    "email": "Continue with e-mail",
+    "apple": "Continue with Apple",
+    "passkeyUnavailable": "No passkey on this device yet. Sign in by e-mail; you can add a passkey in settings afterwards.",
+    "appleUnavailable": "Sign in with Apple is not set up in this environment.",
+    "emailStep": {
+      "title": "Your e-mail",
+      "label": "E-mail address",
+      "send": "Send code",
+      "sent": "We sent you a code.",
+      "codeLabel": "Six-digit code",
+      "codeHint": "The code is valid for ten minutes.",
+      "verify": "Sign in",
+      "resend": "Send a new code",
+      "changeEmail": "Different address"
+    },
+    "age": {
+      "question": "Are you at least 16 years old?",
+      "yes": "Yes",
+      "no": "No",
+      "declined": "Then we cannot create an account for you. If something is on your mind: Pro Juventute is available around the clock at 147.",
+      "declinedCall": "Call 147"
+    },
+    "pseudonym": {
+      "title": "Your pseudonym",
+      "label": "Pseudonym",
+      "hint": "Your pseudonym appears only on texts you share with your profile. Anonymous texts never show it.",
+      "rules": "3 to 24 characters, lowercase letters, dot and digits.",
+      "available": "Available",
+      "taken": "This name is taken. Try another one.",
+      "invalid": "Only lowercase letters, digits and dots, 3 to 24 characters.",
+      "checking": "Checking",
+      "suggest": "Another suggestion"
+    },
+    "recovery": {
+      "title": "Your recovery code",
+      "explain": "Private entries are encrypted in your browser. We have no key. On a new device or after clearing browser data you need this code.",
+      "copy": "Copy",
+      "download": "Save as text file",
+      "saved": "I have saved it",
+      "ack": "I understand that private entries cannot be recovered without this code.",
+      "fileName": "inkwell-recovery-code.txt",
+      "fileHeader": "Inkwell – recovery code\nKeep these twelve words safe. Without them private entries cannot be read on a new device.\n\n"
+    },
+    "unlock": {
+      "title": "Unlock private entries",
+      "explain": "Enter your recovery code to read private entries on this device. You can also do this later.",
+      "label": "Twelve words, separated by spaces",
+      "unlock": "Unlock",
+      "skip": "Skip",
+      "invalid": "That is not a valid code. Check the spelling of the twelve words.",
+      "locked": "Locked. Enter your recovery code to read this entry."
+    },
+    "languages": {
+      "title": "Languages of your rooms",
+      "hint": "You only see rooms in these languages. You can change this at any time."
+    },
+    "firstEntry": {
+      "placeholder": "What is on your mind?"
+    },
+    "newDevice": {
+      "title": "New device",
+      "body": "To read private entries you need your recovery code. Shared texts are available right away."
+    },
+    "signOut": "Sign out"
+  },
+  "today": {
+    "lastEntry": "Your last entry",
+    "noEntry": "You have not written anything yet. That is fine.",
+    "write": "Write",
+    "newInRooms": "New in your rooms",
+    "noRooms": "You have not joined a room yet.",
+    "browseRooms": "Browse rooms",
+    "nothingNew": "Nothing new in your rooms.",
+    "end": "That is all for today.",
+    "newTexts": "{count, plural, =1 {1 new text} other {# new texts}}",
+    "guestTitle": "Reading without an account",
+    "guestBody": "You can read rooms without signing in. To write, join and react you need an account."
+  },
+  "rooms": {
+    "title": "Rooms",
+    "join": "Join",
+    "joined": "Joined",
+    "leave": "Leave",
+    "rules": "Rules",
+    "search": "Search rooms",
+    "empty": "No texts in this room yet.",
+    "end": "No more texts.",
+    "sort": {
+      "new": "New",
+      "week": "This week",
+      "top": "Top"
+    },
+    "push": {
+      "on": "Notifications off",
+      "off": "Notifications on",
+      "explain": "We send a message when a new text appears in this room. Never with numbers. Can be turned off at any time.",
+      "denied": "Your browser blocks notifications. You can change that in the browser settings.",
+      "iosHint": "On iOS notifications only work in the installed app."
+    },
+    "chapter": "Chapter {chapter}",
+    "series": "Series",
+    "notFound": "This room does not exist."
+  },
+  "journal": {
+    "title": "My journal",
+    "search": "Search the journal",
+    "empty": "Your journal is empty.",
+    "noResults": "Nothing found.",
+    "filters": {
+      "all": "All",
+      "private": "Private",
+      "anonymous": "Anonymous",
+      "public": "Public",
+      "story": "Stories",
+      "expiring": "Expiring soon"
+    },
+    "actions": {
+      "visibility": "Visibility",
+      "burn": "Burn"
+    },
+    "burn": {
+      "title": "Burn this text?",
+      "body": "This text will be permanently deleted everywhere.",
+      "confirm": "Delete permanently",
+      "done": "Burned."
+    },
+    "narrow": {
+      "title": "Narrow visibility",
+      "body": "You can only narrow visibility, never widen it.",
+      "toAnonymous": "Anonymous instead of with profile",
+      "toPrivate": "Only for me from now on",
+      "done": "Visibility changed."
+    },
+    "export": {
+      "button": "Export as ZIP",
+      "preparing": "Preparing the export",
+      "decrypting": "Decrypting private entries in your browser",
+      "ready": "Export is ready",
+      "download": "Download",
+      "explain": "Markdown and JSON. Private entries are decrypted here in the browser and written into the ZIP locally. The server never sees them in clear text.",
+      "failed": "The export did not work. Try again later."
+    },
+    "status": {
+      "expired": "expired",
+      "hidden": "hidden",
+      "pending": "will be sent once you are online",
+      "locked": "locked"
+    },
+    "queued": "Will be sent once you are online."
+  },
+  "me": {
+    "title": "Me",
+    "memberSince": "Member since {date}",
+    "feedback": "Feedback",
+    "feedbackLine": "Read by {read} · {felt} feel it · {known} know it · {thanks} thanks",
+    "feedbackVotes": "Net votes: {net}",
+    "feedbackComments": "{count, plural, =0 {no comments} =1 {1 comment} other {# comments}}",
+    "noFeedback": "No feedback yet. It appears here once you share something.",
+    "feedbackOnlyYou": "Only you see these numbers. Nobody sees names.",
+    "publicProfile": "My public profile",
+    "profileHint": "This is how others see you: pseudonym, avatar and your publicly shared texts. Nothing more.",
+    "series": "Series",
+    "settings": "Settings",
+    "notices": "Messages from moderation",
+    "avatar": {
+      "change": "Change avatar",
+      "shapes": "Pick a shape",
+      "upload": "Upload a photo",
+      "hint": "Up to 2 MB. Resized to 512 pixels."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "noPosts": "No public texts yet.",
+    "notFound": "This profile does not exist."
+  },
+  "settings": {
+    "title": "Settings",
+    "groups": {
+      "account": "Account",
+      "security": "Security",
+      "writing": "Writing",
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "languages": "Languages",
+      "blocked": "Blocked",
+      "data": "Data",
+      "about": "About"
+    },
+    "account": {
+      "email": "E-mail",
+      "changeEmail": "Change e-mail",
+      "newEmail": "New e-mail address",
+      "emailCodeSent": "We sent a code to the new address.",
+      "emailChanged": "E-mail changed.",
+      "passkeys": "Passkeys",
+      "addPasskey": "Add passkey",
+      "passkeyName": "Name",
+      "rename": "Rename",
+      "remove": "Remove",
+      "noPasskeys": "No passkey yet. With a passkey you sign in without a code.",
+      "passkeyAdded": "Passkey added.",
+      "apple": "Apple link",
+      "appleLinked": "Linked",
+      "appleNotLinked": "Not linked",
+      "pseudonym": "Pseudonym",
+      "changePseudonym": "Change pseudonym",
+      "pseudonymLock": "Can be changed every 30 days. Next change possible from {date}.",
+      "pseudonymChanged": "Pseudonym changed. Earlier texts with profile now show the new name.",
+      "signOut": "Sign out"
+    },
+    "security": {
+      "recovery": "Recovery code",
+      "showRecovery": "Show code",
+      "recoveryExplain": "You need to sign in again to show it.",
+      "recoveryUnavailable": "There is no key on this device. Enter the code to unlock private entries.",
+      "sessions": "Active sessions",
+      "current": "This session",
+      "lastSeen": "Last active {date}",
+      "signOutSession": "Sign out",
+      "signedOutSession": "Session ended."
+    },
+    "writing": {
+      "defaultVisibility": "Default visibility",
+      "defaultExpiry": "Default expiry",
+      "fontSize": "Font size",
+      "font": "Editor font",
+      "serif": "Serif",
+      "sans": "Sans"
+    },
+    "appearance": {
+      "theme": "Colour scheme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "motion": "Motion",
+      "motionSystem": "Like the system",
+      "motionReduce": "Reduce"
+    },
+    "notifications": {
+      "rooms": "Rooms",
+      "roomsHint": "Per room on or off, right in the room.",
+      "digest": "Feedback once a day",
+      "digestHint": "One message in the evening, without numbers, only if there was something.",
+      "comments": "Comments",
+      "commentsHint": "When someone replies to your text.",
+      "ios": "On iOS notifications only arrive in the installed app.",
+      "enable": "Allow notifications",
+      "enabled": "Allowed",
+      "blocked": "Blocked by the browser"
+    },
+    "languages": {
+      "rooms": "Languages of rooms",
+      "ui": "Interface language"
+    },
+    "blocked": {
+      "title": "Blocked pseudonyms",
+      "empty": "You have not blocked anyone.",
+      "unblock": "Unblock",
+      "anonymousEntry": "Anonymous person",
+      "hint": "Blocked people and you no longer see each other’s texts and comments."
+    },
+    "data": {
+      "export": "Export as ZIP",
+      "delete": "Delete account",
+      "deleteStep1": "Delete account",
+      "deleteExplain": "Your account will be permanently deleted in 30 days. Until then you can revoke the deletion. After that everything is gone, from backups at most 30 further days later.",
+      "deleteConfirmLabel": "I understand that all texts will be permanently deleted.",
+      "deleteConfirm": "Delete account in 30 days",
+      "deleteScheduled": "Your account will be deleted on {date}.",
+      "revoke": "Revoke deletion",
+      "revoked": "Deletion revoked."
+    },
+    "about": {
+      "version": "Version",
+      "build": "Build",
+      "changelog": "Changelog",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "imprint": "Imprint",
+      "report": "Report a problem",
+      "help": "Where to find help",
+      "helpIntro": "If you want to talk. By country, around the clock."
+    }
+  },
+  "editor": {
+    "placeholder": "What is on your mind?",
+    "titlePlaceholder": "Title",
+    "cancel": "Cancel",
+    "done": "Done",
+    "toolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "quote": "Quote",
+      "divider": "Divider",
+      "title": "Title on/off",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
+    "keepDraft": {
+      "title": "Keep the draft?",
+      "keep": "Keep",
+      "discard": "Discard"
+    },
+    "draftRestored": "Draft restored.",
+    "draftFound": {
+      "title": "You have a draft.",
+      "body": "Continue writing or start fresh?",
+      "continue": "Continue",
+      "fresh": "Start fresh"
+    },
+    "autosaved": "Draft saved",
+    "offlineQueued": "Will be sent once you are online.",
+    "signInToWrite": "You need an account to write.",
+    "unlockToWrite": "To write privately you need your recovery code on this device."
+  },
+  "completion": {
+    "title": "Finish",
+    "type": {
+      "label": "Type",
+      "thought": "Thought",
+      "story": "Story"
+    },
+    "visibility": {
+      "label": "Visibility",
+      "private": {
+        "title": "Only for me",
+        "body": "Encrypted in your browser. Nobody else can read it."
+      },
+      "anonymous": {
+        "title": "Share anonymously",
+        "body": "Appears in a room without your name. Not linked to your profile."
+      },
+      "public": {
+        "title": "Share with profile",
+        "body": "Appears with your pseudonym and in your profile."
+      },
+      "anonymousDisabled": "Stories are published with a pseudonym."
+    },
+    "room": {
+      "label": "Room",
+      "search": "Search rooms",
+      "none": "You have not joined a matching room yet.",
+      "browse": "Browse rooms",
+      "required": "Pick a room."
+    },
+    "expiry": {
+      "label": "Expiry",
+      "none": "Stays",
+      "24h": "24 hours",
+      "7d": "7 days",
+      "hint": "After that the text disappears from the room but stays in your journal."
+    },
+    "comments": {
+      "label": "Comments",
+      "on": "On",
+      "off": "Off"
+    },
+    "series": {
+      "label": "Series",
+      "none": "None",
+      "new": "New series",
+      "newTitle": "Series title",
+      "chapterHint": "Chapter {chapter}"
+    },
+    "titleRequired": "Stories need a title.",
+    "tooShort": "Shared texts have at least 20 characters.",
+    "submit": {
+      "private": "Keep in journal",
+      "anonymous": "Share anonymously",
+      "public": "Publish"
+    },
+    "published": "Published.",
+    "stored": "Kept in your journal."
+  },
+  "crisis": {
+    "title": "This sounds like a hard moment.",
+    "body": "If you want to talk: {name}, {number}, around the clock.",
+    "call": "Call",
+    "continue": "Keep writing",
+    "local": "This hint is produced in your browser. Nothing leaves your device."
+  },
+  "reading": {
+    "chapterOf": "Chapter {chapter} of {total}",
+    "previousChapter": "Previous chapter",
+    "nextChapter": "Next chapter",
+    "menu": "More",
+    "report": "Report",
+    "block": "Block",
+    "blocked": "Blocked. You no longer see texts by this person.",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied.",
+    "noLink": "Anonymous and expiring texts have no shareable link.",
+    "edit": "Edit",
+    "editWindow": "Editing is possible for 15 minutes after publishing.",
+    "notFound": "This text no longer exists.",
+    "helplinesIntro": "If you want to talk",
+    "byAnonymous": "anonymous"
+  },
+  "reactions": {
+    "felt": "I feel this",
+    "known": "I know this",
+    "thanks": "thank you",
+    "signIn": "You need an account to react."
+  },
+  "votes": {
+    "up": "Vote up",
+    "down": "Vote down",
+    "hint": "If you vote down, the room rules ask you to say why."
+  },
+  "comments": {
+    "title": "Replies",
+    "placeholder": "Reply if you like. No advice, no diagnoses.",
+    "rules": "Room rules",
+    "send": "Send",
+    "empty": "No replies yet.",
+    "disabled": "The author has turned comments off.",
+    "feedback": {
+      "title": "Feedback",
+      "worked": "What worked well",
+      "unclear": "What I did not understand",
+      "both": "Both fields are required. That forces substance.",
+      "send": "Send feedback"
+    },
+    "hide": "Hide",
+    "hidden": "Hidden",
+    "delete": "Delete",
+    "disableAll": "Turn comments off on this text",
+    "enableAll": "Turn comments on for this text"
+  },
+  "series": {
+    "title": "Series",
+    "chapters": "{count, plural, =1 {1 chapter} other {# chapters}}",
+    "subscribe": "Subscribe",
+    "subscribed": "Subscribed",
+    "unsubscribe": "Unsubscribe",
+    "subscribeHint": "New chapters send a message if you have allowed notifications.",
+    "create": "New series",
+    "titleLabel": "Title",
+    "description": "Description",
+    "reorder": "Reorder",
+    "reorderHint": "Drag to reorder chapters.",
+    "empty": "No series yet. Series appear when you share a story with your profile.",
+    "readProgress": "read",
+    "notFound": "This series does not exist.",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
+  },
+  "report": {
+    "title": "Report",
+    "reasons": {
+      "harassment": "Harassment",
+      "hate": "Hate",
+      "spam": "Spam or advertising",
+      "sexual": "Sexual content",
+      "violence": "Threat of violence",
+      "self_harm_other": "Self-harm of another person",
+      "copyright": "Copyright",
+      "other": "Other"
+    },
+    "freeText": "What happened? (optional)",
+    "send": "Report",
+    "sent": "Thank you. We will look at it.",
+    "selfHarmAck": "Thank you. We will look at it. If you need support yourself: 143.",
+    "already": "You have already reported this text."
+  },
+  "pwa": {
+    "hint": "You can put the app on your home screen.",
+    "show": "Show me how",
+    "notNow": "Not now",
+    "install": "Install",
+    "ios": "In Safari tap “Share”, then “Add to Home Screen”.",
+    "android": "In the browser menu tap “Install app”.",
+    "desktop": "Click the install icon in the address bar.",
+    "update": "A new version is available.",
+    "reload": "Reload"
+  },
+  "errors": {
+    "title": "That did not work.",
+    "retry": "Try again",
+    "generic": "Something went wrong. Try again.",
+    "offline": "You are offline. This will be sent once you are online.",
+    "notFound": "This page does not exist.",
+    "goHome": "Go to the start page",
+    "codes": {
+      "UNAUTHENTICATED": "You are not signed in.",
+      "FORBIDDEN": "You are not allowed to do that.",
+      "EMAIL_INVALID": "That is not a valid e-mail address.",
+      "CODE_INVALID": "The code is wrong. Check the six digits.",
+      "CODE_EXPIRED": "The code has expired. Request a new one.",
+      "PASSKEY_INVALID": "The passkey could not be verified. Try again.",
+      "APPLE_TOKEN_INVALID": "Sign in with Apple did not work.",
+      "SESSION_EXPIRED": "Your session has expired. Sign in again.",
+      "AGE_REQUIREMENT_NOT_MET": "You need to be at least 16 to have an account.",
+      "ACCOUNT_SUSPENDED": "Your account is suspended. You can read and export, but not write.",
+      "ACCOUNT_PENDING_DELETION": "Your account is being deleted. You can revoke the deletion in settings.",
+      "PSEUDONYM_INVALID": "Only lowercase letters, digits and dots, 3 to 24 characters.",
+      "PSEUDONYM_TAKEN": "This name is taken. Try another one.",
+      "PSEUDONYM_CHANGE_LOCKED": "The pseudonym can be changed every 30 days.",
+      "AVATAR_TOO_LARGE": "The image is larger than 2 MB.",
+      "AVATAR_INVALID": "The image could not be read. JPEG, PNG, WebP and HEIC are allowed.",
+      "POST_NOT_FOUND": "This text no longer exists.",
+      "POST_TOO_SHORT": "Shared texts have at least 20 characters.",
+      "POST_TOO_LONG": "The text is too long. Thoughts have at most 10,000 characters, chapters 60,000.",
+      "TITLE_REQUIRED": "Stories need a title.",
+      "TITLE_TOO_LONG": "The title is too long.",
+      "ROOM_REQUIRED": "Pick a room.",
+      "ROOM_NOT_FOUND": "This room does not exist.",
+      "ROOM_NOT_JOINED": "Join the room to share there.",
+      "ANON_NOT_ALLOWED_IN_ROOM": "In story rooms texts are published with a pseudonym.",
+      "VISIBILITY_CANNOT_EXPAND": "Visibility can only be narrowed, not widened.",
+      "EDIT_WINDOW_CLOSED": "Editing is only possible for 15 minutes after publishing.",
+      "CIPHERTEXT_REQUIRED": "The entry could not be encrypted.",
+      "PLAINTEXT_NOT_ALLOWED": "Private entries are stored encrypted only.",
+      "SERIES_NOT_FOUND": "This series does not exist.",
+      "SERIES_NOT_OWNED": "That is not your series.",
+      "VOTING_DISABLED_IN_ROOM": "There is no voting in thought rooms.",
+      "COMMENTS_DISABLED": "Comments are turned off on this text.",
+      "COMMENT_TOO_LONG": "Comments have at most 2,000 characters.",
+      "FEEDBACK_FIELDS_REQUIRED": "Fill in both fields: what worked, and what stayed unclear.",
+      "COMMENT_NOT_FOUND": "This comment no longer exists.",
+      "REACTION_KIND_INVALID": "This reaction does not exist.",
+      "BLOCKED": "That is not possible.",
+      "REPORT_REASON_INVALID": "Pick a reason.",
+      "FLAG_NOT_FOUND": "This report does not exist.",
+      "ALREADY_REPORTED": "You have already reported this.",
+      "EXPORT_NOT_FOUND": "This export does not exist.",
+      "EXPORT_NOT_READY": "The export is not ready yet.",
+      "EXPORT_IN_PROGRESS": "An export is already running.",
+      "VALIDATION_FAILED": "Check your input.",
+      "RATE_LIMITED": "Too many attempts. Wait a moment.",
+      "NOT_FOUND": "Not found.",
+      "CONFLICT": "That already existed.",
+      "PAYLOAD_TOO_LARGE": "That is too large.",
+      "INTERNAL": "Something went wrong on our side. Try again later."
+    }
+  },
+  "admin": {
+    "title": "Review queue",
+    "empty": "No open reports.",
+    "columns": {
+      "priority": "Priority",
+      "reason": "Reason",
+      "reports": "Reports",
+      "preview": "Text",
+      "room": "Room",
+      "age": "Age",
+      "history": "Account history"
+    },
+    "history": "{warnings} warnings · {suspensions} suspensions · {flags} previous reports",
+    "actions": {
+      "keep": "Keep",
+      "hide": "Hide",
+      "delete": "Delete",
+      "warn": "Warn",
+      "suspend_7d": "Suspend 7 days",
+      "suspend_permanent": "Suspend permanently"
+    },
+    "note": "Message to the affected person (plain words, required except for Keep)",
+    "apply": "Apply",
+    "applied": "Done.",
+    "priorityLabel": {
+      "1": "Self-harm",
+      "2": "High",
+      "3": "Normal"
+    },
+    "target": "Target"
+  },
+  "legal": {
+    "updated": "Last updated: {date}",
+    "privacy": "Privacy policy",
+    "imprint": "Imprint",
+    "terms": "Terms of use",
+    "changelog": "Changelog",
+    "status": "Status",
+    "press": "Press",
+    "contact": "Contact",
+    "statusOk": "All systems running.",
+    "statusDegraded": "Degraded: {component}",
+    "statusChecked": "Last checked {date}",
+    "pressIntro": "Facts for journalists. No superlatives, no stock photos.",
+    "pressFacts": "Facts",
+    "pressContact": "Press enquiries",
+    "changelogIntro": "Every version, public. Build hashes are listed next to the version so the delivered code can be verified.",
+    "offline": {
+      "title": "Offline",
+      "body": "This page is not stored. Your journal and the editor work without a connection."
+    }
+  }
+}

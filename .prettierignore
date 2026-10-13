@@ -7,3 +7,7 @@ pnpm-lock.yaml
 apps/web/public/sw.js
 apps/api/src/db/migrations/meta
 CHANGELOG.md
+apps/web/next-env.d.ts
+apps/web/.lighthouseci
+apps/web/test-results
+apps/web/playwright-report

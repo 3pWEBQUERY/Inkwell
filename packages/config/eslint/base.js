@@ -74,7 +74,10 @@ export const baseConfig = tseslint.config(
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
-          pathGroups: [{ pattern: '@inkwell/**', group: 'internal', position: 'before' }],
+          pathGroups: [
+            { pattern: '@inkwell/**', group: 'internal', position: 'before' },
+            { pattern: '@/**', group: 'internal', position: 'after' },
+          ],
           pathGroupsExcludedImportTypes: ['type'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc', caseInsensitive: true },

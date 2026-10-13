@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { exports } from '../db/schema.js';
 import { ApiError } from '../lib/errors.js';
-import { requestExport } from '../services/exports.js';
+import { processPendingExports, requestExport } from '../services/exports.js';
 
 import type { ExportJob } from '@inkwell/shared';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
@@ -29,6 +29,8 @@ export const exportRoutes: FastifyPluginAsyncZod = async (app) => {
     const { user } = request.requireUser();
     await app.rateLimit(`export:${user.id}`, 3, 24 * 60 * 60);
     const id = await requestExport(db, user);
+    // Archives are small; build them right away. The cron job only picks up what failed here.
+    await processPendingExports(db, storage);
     return reply.status(202).send({ id });
   });
 

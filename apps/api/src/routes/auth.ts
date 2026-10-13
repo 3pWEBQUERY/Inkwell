@@ -16,6 +16,7 @@ import { users } from '../db/schema.js';
 import { describeDevice } from '../lib/device.js';
 import { ApiError } from '../lib/errors.js';
 import {
+  consumeEmailCode,
   passkeyAuthenticationOptions,
   passkeyAuthenticationVerify,
   passkeyRegistrationOptions,
@@ -168,6 +169,24 @@ export const authRoutes: FastifyPluginAsyncZod = async (app) => {
       .where(eq(users.id, user.id));
     return { ok: true };
   });
+
+  /** Re-authentication before sensitive views (recovery code): a fresh code to the account address. */
+  app.post('/reauth/code', async (request, reply) => {
+    const { user } = request.requireUser();
+    await app.rateLimit(`reauth:${user.id}`, 5, 15 * 60);
+    await requestEmailCode(db, env, mailer, user.email, user.locale, 'login', user.id);
+    return reply.status(202).send({ sent: true });
+  });
+
+  app.post(
+    '/reauth/verify',
+    { schema: { body: z.object({ code: z.string().regex(/^\d{6}$/) }) } },
+    async (request) => {
+      const { user } = request.requireUser();
+      await consumeEmailCode(db, env, user.email, request.body.code, 'login');
+      return { ok: true };
+    },
+  );
 
   app.post('/sign-out', async (request) => {
     const auth = request.auth;

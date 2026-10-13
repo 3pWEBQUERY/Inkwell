@@ -26,6 +26,8 @@ const schema = z.object({
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().optional(),
   APPLE_CLIENT_ID: z.string().optional(),
+  /** Test environments only: exposes the last sign-in code per address at GET /dev/mailbox. Refused in production. */
+  E2E_MAILBOX: z.enum(['0', '1']).default('0'),
 });
 
 export type Env = z.infer<typeof schema>;
@@ -36,6 +38,9 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   if (!parsed.success) {
     const issues = parsed.error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
     throw new Error(`Invalid environment:\n  ${issues.join('\n  ')}`);
+  }
+  if (parsed.data.E2E_MAILBOX === '1' && parsed.data.NODE_ENV === 'production') {
+    throw new Error('Invalid environment:\n  E2E_MAILBOX must not be enabled in production');
   }
   if (parsed.data.MAIL_TRANSPORT === 'smtp' && !parsed.data.SMTP_HOST) {
     throw new Error('Invalid environment:\n  SMTP_HOST is required when MAIL_TRANSPORT=smtp');

@@ -1,0 +1,85 @@
+/*
+ * Design tokens. One accent, warm paper, no gradients, no shadows under cards.
+ * Dark mode follows the system unless `data-theme` overrides it.
+ */
+:root {
+  --color-paper: #faf9f6;
+  --color-paper-raised: #f3f1ec;
+  --color-paper-sunken: #ebe8e1;
+  --color-ink: #1f2124;
+  --color-ink-secondary: rgb(31 33 36 / 0.7);
+  --color-ink-tertiary: rgb(31 33 36 / 0.64);
+  --color-line: rgb(31 33 36 / 0.12);
+  --color-line-strong: rgb(31 33 36 / 0.24);
+  --color-accent: #2f4a6b;
+  --color-accent-ink: #ffffff;
+  --color-accent-soft: rgb(47 74 107 / 0.1);
+  --color-accent-tint: rgb(47 74 107 / 0.06);
+  --color-warn: #9b3b3b;
+  --color-warn-soft: rgb(155 59 59 / 0.1);
+  --color-overlay: rgb(31 33 36 / 0.4);
+
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+
+  --text-ui: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --text-meta: 0.8125rem;
+  --text-reading: 1.1875rem;
+  --leading-reading: 1.5;
+  --measure-reading: 65ch;
+  --width-content: 680px;
+  --width-context: 280px;
+  --width-sidebar: 220px;
+  --height-nav: 56px;
+  --height-tabbar: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --space-gutter: 16px;
+
+  --focus-ring: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-accent);
+
+  color-scheme: light;
+}
+
+:root:not([data-theme='light']) {
+  @media (prefers-color-scheme: dark) {
+    --color-paper: #15171c;
+    --color-paper-raised: #1c1f25;
+    --color-paper-sunken: #0f1115;
+    --color-ink: #e8e6e1;
+    --color-ink-secondary: rgb(232 230 225 / 0.7);
+    --color-ink-tertiary: rgb(232 230 225 / 0.64);
+    --color-line: rgb(232 230 225 / 0.14);
+    --color-line-strong: rgb(232 230 225 / 0.28);
+    --color-accent: #8fb0d6;
+    --color-accent-ink: #15171c;
+    --color-accent-soft: rgb(143 176 214 / 0.14);
+    --color-accent-tint: rgb(143 176 214 / 0.08);
+    --color-warn: #d07a7a;
+    --color-warn-soft: rgb(208 122 122 / 0.14);
+    --color-overlay: rgb(0 0 0 / 0.5);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-paper: #15171c;
+  --color-paper-raised: #1c1f25;
+  --color-paper-sunken: #0f1115;
+  --color-ink: #e8e6e1;
+  --color-ink-secondary: rgb(232 230 225 / 0.7);
+  --color-ink-tertiary: rgb(232 230 225 / 0.64);
+  --color-line: rgb(232 230 225 / 0.14);
+  --color-line-strong: rgb(232 230 225 / 0.28);
+  --color-accent: #8fb0d6;
+  --color-accent-ink: #15171c;
+  --color-accent-soft: rgb(143 176 214 / 0.14);
+  --color-accent-tint: rgb(143 176 214 / 0.08);
+  --color-warn: #d07a7a;
+  --color-warn-soft: rgb(208 122 122 / 0.14);
+  --color-overlay: rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}

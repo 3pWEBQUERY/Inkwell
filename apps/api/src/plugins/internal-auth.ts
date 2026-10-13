@@ -3,7 +3,7 @@ import fp from 'fastify-plugin';
 import { safeEqual } from '../lib/crypto.js';
 import { ApiError } from '../lib/errors.js';
 
-const PUBLIC_PATHS = new Set(['/health', '/health/ready']);
+const PUBLIC_PATHS = new Set(['/health', '/health/ready', '/dev/mailbox']);
 
 /**
  * The API is only reachable over the private network, and on top of that every
