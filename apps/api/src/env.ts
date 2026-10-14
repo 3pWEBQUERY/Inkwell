@@ -22,6 +22,8 @@ const schema = z.object({
   S3_BUCKET: z.string().optional(),
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
+  /** "1" addresses objects as <endpoint>/<bucket>/<key> (MinIO, some providers). Railway buckets use virtual-host style. */
+  S3_FORCE_PATH_STYLE: z.enum(['0', '1']).default('0'),
   VAPID_PUBLIC_KEY: z.string().optional(),
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().optional(),

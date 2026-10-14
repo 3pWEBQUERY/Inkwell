@@ -13,6 +13,6 @@ const scoped = (configs, files) =>
   });
 
 export default [
-  ...scoped(nodeConfig, ['apps/api/**/*.ts', 'packages/**/*.ts']),
+  ...scoped(nodeConfig, ['apps/api/**/*.ts', 'packages/**/*.ts', '.railway/**/*.ts']),
   ...scoped(nextConfig, ['apps/web/**/*.{ts,tsx}']),
 ];

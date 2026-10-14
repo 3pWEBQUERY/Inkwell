@@ -43,13 +43,17 @@ See `.env.example`. The process refuses to start when a required variable is mis
 
 Railway cron calls these with the headers `X-Internal-Token` and `X-Cron-Secret`:
 
-| Schedule    | Endpoint                | Work                                                           |
-| ----------- | ----------------------- | -------------------------------------------------------------- |
-| every hour  | `POST /v1/jobs/hourly`  | expire texts, materialise fiction scores, build exports, prune |
-| every 5 min | `POST /v1/jobs/exports` | build pending export archives                                  |
-| daily 03:10 | `POST /v1/jobs/daily`   | purge accounts after the 30-day grace period                   |
+| Schedule    | Endpoint                | Work                                                                 |
+| ----------- | ----------------------- | -------------------------------------------------------------------- |
+| every hour  | `POST /v1/jobs/hourly`  | expire texts, materialise fiction scores, build exports, prune       |
+| on request  | `POST /v1/jobs/exports` | build pending export archives (also run inline on `POST /me/export`) |
+| daily 03:10 | `POST /v1/jobs/daily`   | purge accounts after the 30-day grace period                         |
 
 ## Deployment
 
-Railway service `api`, root directory `apps/api`, build `pnpm turbo run build --filter=@inkwell/api`,
-start `node apps/api/dist/server.js`. Health check `/health/ready`. Not exposed publicly.
+Railway service `api`, declared in `.railway/railway.ts`. Railpack installs the
+workspace, builds with `pnpm turbo run build --filter=@inkwell/api`, runs
+migrations and the room seed as pre-deploy command, then starts
+`node apps/api/dist/server.js`. Health check `/health/ready`. Reachable only on
+the private network as `api.railway.internal:4000`. Storage points at the
+Railway bucket through variable references; the database at Railway Postgres.

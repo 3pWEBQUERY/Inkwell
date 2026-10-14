@@ -51,6 +51,9 @@ pnpm lighthouse                             # budgets in lighthouserc.json
 
 ## Deployment
 
-Railway service `web`, root directory `apps/web`, standalone output.
-Build `pnpm turbo run build --filter=@inkwell/web`, start
+Railway service `web`, declared in `.railway/railway.ts`, standalone output.
+Railpack installs the workspace and builds with
+`pnpm turbo run build --filter=@inkwell/web`; the start command copies
+`public/` and `.next/static` next to the standalone server and runs
 `node apps/web/.next/standalone/apps/web/server.js`. Health check `/api/health`.
+The API is reached over Railway private networking (`API_URL`).

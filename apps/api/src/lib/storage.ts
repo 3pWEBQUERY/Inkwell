@@ -45,7 +45,8 @@ export function createStorage(env: Env): Storage {
   const bucket = env.S3_BUCKET ?? '';
   const client = new S3Client({
     region: env.S3_REGION,
-    ...(env.S3_ENDPOINT ? { endpoint: env.S3_ENDPOINT, forcePathStyle: true } : {}),
+    ...(env.S3_ENDPOINT ? { endpoint: env.S3_ENDPOINT } : {}),
+    forcePathStyle: env.S3_FORCE_PATH_STYLE === '1',
     credentials: {
       accessKeyId: env.S3_ACCESS_KEY_ID ?? '',
       secretAccessKey: env.S3_SECRET_ACCESS_KEY ?? '',

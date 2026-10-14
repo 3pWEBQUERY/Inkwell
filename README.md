@@ -67,7 +67,19 @@ decision. See `docs/prd.md` section 12.5 for the full set.
 
 ## Deployment
 
-One Railway project, two environments (staging, production), region EU.
-Services: `web`, `api`, `postgres`, a bucket for avatars and exports, and cron
-jobs calling `/v1/jobs/hourly`, `/v1/jobs/exports`, `/v1/jobs/daily`.
-`.github/workflows/deploy.yml` triggers the Railway deploys after CI is green.
+One Railway project (**Inkwell**), region Amsterdam, declared as Infrastructure
+as Code in `.railway/railway.ts`: the services `web` and `api` (built with
+Railpack from this repository, deployed on every push to the configured
+branch), Railway Postgres, the Railway bucket `inkwell-storage` for avatars and
+export archives, and the cron services `jobs-hourly` and `jobs-daily` that post
+to `/v1/jobs/*`. Secrets stay on Railway (`preserve()`).
+
+```sh
+pnpm railway:plan                 # diff .railway/railway.ts against the live environment
+pnpm railway:apply                # apply after confirmation
+```
+
+`.github/workflows/railway-config.yml` plans every pull request that touches
+`.railway/` and applies the reviewed plan on merge (needs the `RAILWAY_TOKEN`
+secret). See `.railway/README.md` for the operator checklist: custom domain,
+SMTP provider, admin IP allowlist, Apple client id.

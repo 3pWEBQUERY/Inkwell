@@ -14,3 +14,4 @@ supersedes an earlier one.
 | 0006 | Page transitions with React ViewTransition and a CSS fallback | accepted |
 | 0007 | Postgres-backed rate limits and cron-triggered jobs           | accepted |
 | 0008 | Recovery code kept wrapped under the master key               | accepted |
+| 0009 | Railway topology declared as Infrastructure as Code           | accepted |
