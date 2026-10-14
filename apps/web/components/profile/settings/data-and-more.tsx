@@ -198,7 +198,7 @@ export function AboutSettings() {
                   <a
                     key={line.number}
                     href={`tel:${line.number}`}
-                    className="inline-flex items-center gap-1 hover:text-accent"
+                    className="inline-flex items-center gap-1 hover:text-accent-text"
                   >
                     <Icon name="phone" size={14} />
                     {line.name} {line.display}

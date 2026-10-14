@@ -17,6 +17,7 @@ import { useCryptoState } from '@/components/providers/crypto-provider';
 import { useOnline } from '@/components/providers/online-provider';
 import { Button } from '@/components/ui/button';
 import { Confirm } from '@/components/ui/confirm';
+import { Icon } from '@/components/ui/icon';
 import { Overlay } from '@/components/ui/overlay';
 import { CrisisScanner } from '@/features/crisis/client';
 import { cryptoClient } from '@/features/crypto/client';
@@ -103,7 +104,10 @@ export function WriteOverlay({
     autofocus: 'end',
     editorProps: {
       attributes: {
-        class: cn('tiptap prose-reading mx-auto w-full', settings.editorFont === 'sans' && 'sans'),
+        class: cn(
+          'tiptap prose-reading mx-auto w-full max-w-none',
+          settings.editorFont === 'sans' && 'sans',
+        ),
         style: `font-size:${settings.fontSize}px`,
         'aria-label': t('placeholder'),
       },
@@ -358,28 +362,29 @@ export function WriteOverlay({
       beforeClose={beforeClose}
     >
       <div className="full-editor flex h-dvh flex-col bg-paper">
-        <div className="flex h-14 shrink-0 items-center justify-between px-3">
-          <Button variant="ghost" onClick={() => (beforeClose() ? close() : undefined)}>
+        <div className="flex h-16 shrink-0 items-center justify-between gap-3 px-3 md:px-5">
+          <Button variant="ghost" size="sm" onClick={() => (beforeClose() ? close() : undefined)}>
             {first ? common('later') : t('cancel')}
           </Button>
+          <div className="hidden md:block">
+            <Toolbar
+              editor={editor}
+              titleVisible={titleVisible}
+              onToggleTitle={() => setTitleVisible((v) => !v)}
+              wordCount={wordCount > 0 && (titleVisible || wordCount > 400) ? wordCount : null}
+            />
+          </div>
           <Button
             variant="primary"
             size="sm"
             onClick={finish}
             disabled={!hasContent || !ready || phase !== 'writing'}
             busy={pending && phase === 'writing'}
+            className="min-w-20"
           >
+            <Icon name="check" size={16} />
             {t('done')}
           </Button>
-        </div>
-
-        <div className="hidden md:block">
-          <Toolbar
-            editor={editor}
-            titleVisible={titleVisible}
-            onToggleTitle={() => setTitleVisible((v) => !v)}
-            wordCount={wordCount > 0 && (titleVisible || wordCount > 400) ? wordCount : null}
-          />
         </div>
 
         <div
@@ -389,7 +394,7 @@ export function WriteOverlay({
           )}
           aria-hidden={phase !== 'writing'}
         >
-          <div className="mx-auto w-full max-w-[680px] py-6">
+          <div className="mx-auto w-full max-w-[680px] pt-8 pb-10 md:pt-16">
             {titleVisible ? (
               <input
                 value={title}
@@ -400,11 +405,11 @@ export function WriteOverlay({
                 placeholder={t('titlePlaceholder')}
                 aria-label={t('titlePlaceholder')}
                 maxLength={120}
-                className="mb-4 w-full bg-transparent font-serif text-3xl font-semibold outline-none placeholder:text-ink-tertiary"
+                className="display mb-6 w-full bg-transparent text-[2.125rem] outline-none placeholder:text-ink-tertiary md:text-[2.5rem]"
               />
             ) : null}
             {draftOffer !== null ? (
-              <div className="mb-6 rounded-md border border-line bg-paper-raised p-4">
+              <div className="mb-8 rounded-lg border border-accent/25 bg-accent-tint p-4">
                 <p className="font-medium">{t('draftFound.title')}</p>
                 <p className="text-sm text-ink-secondary">{t('draftFound.body')}</p>
                 <div className="mt-3 flex gap-2">
@@ -439,9 +444,11 @@ export function WriteOverlay({
         ) : null}
 
         {phase === 'completion' ? (
-          <div className="sheet absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-lg border-t border-line bg-paper p-6 md:inset-y-0 md:right-0 md:left-auto md:w-[440px] md:max-h-none md:rounded-none md:border-t-0 md:border-l">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-serif text-xl">{completion('title')}</h2>
+          <div className="sheet float absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-xl border-b-0 p-6 md:top-2 md:right-2 md:bottom-2 md:left-auto md:max-h-none md:w-[440px] md:rounded-xl md:border-b">
+            <div className="mb-5 flex items-center justify-between">
+              <h2 className="font-serif text-[1.375rem] font-medium tracking-[-0.01em]">
+                {completion('title')}
+              </h2>
               <Button variant="ghost" size="sm" onClick={() => setPhase('writing')}>
                 {common('back')}
               </Button>

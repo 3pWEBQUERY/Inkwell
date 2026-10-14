@@ -148,8 +148,8 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
       <div className="relative">
         <Icon
           name="search"
-          size={18}
-          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-tertiary"
+          size={17}
+          className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-ink-tertiary"
         />
         <Input
           type="search"
@@ -158,10 +158,10 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t('search')}
           aria-label={t('search')}
-          className="pl-10"
+          className="h-10 pl-10 pointer-coarse:h-11"
         />
       </div>
-      <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+      <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1">
         {FILTERS.map((option) => (
           <Chip key={option} active={filter === option} onClick={() => setFilter(option)}>
             {t(`filters.${option}`)}
@@ -174,13 +174,13 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
       ) : visible.length === 0 ? (
         <EmptyState>{t('noResults')}</EmptyState>
       ) : (
-        <div key={`${filter}-${query}`} className="page-enter mt-4">
+        <div key={`${filter}-${query}`} className="page-enter mt-6">
           {groups.map(([month, items]) => (
-            <section key={month} className="mb-6">
-              <h2 className="sticky top-0 bg-paper py-2 text-sm font-medium text-ink-secondary">
+            <section key={month} className="mb-8">
+              <h2 className="label sticky top-0 z-10 bg-paper py-2">
                 {formatMonthYear(items[0]?.createdAt ?? month, locale)}
               </h2>
-              <ul className="divide-y divide-line">
+              <ul className="card divide-y divide-line overflow-hidden">
                 {items.map((entry) => (
                   <JournalRow
                     key={entry.id}
@@ -201,7 +201,7 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
         </div>
       )}
 
-      <div className="mt-8 border-t border-line pt-6">
+      <div className="mt-10 rounded-lg bg-paper-sunken p-5">
         <ExportButton />
       </div>
 
@@ -273,7 +273,15 @@ function JournalRow({
     ? auth('unlock.locked')
     : (entry.title ?? firstLine(entry.body ?? '', 160));
   return (
-    <li className="group flex items-start gap-3 py-4">
+    <li className="group flex items-start gap-4 px-4 py-4 state-toggle hover:bg-paper-raised/50 md:px-5">
+      <span aria-hidden className="flex w-9 shrink-0 flex-col items-center pt-0.5 text-center">
+        <span className="font-serif text-[1.375rem] leading-none font-medium">
+          {formatDate(entry.createdAt, locale, { day: 'numeric' }).replace('.', '')}
+        </span>
+        <span className="mt-1 text-[11px] font-medium text-ink-tertiary">
+          {formatDate(entry.createdAt, locale, { weekday: 'short' }).replace('.', '')}
+        </span>
+      </span>
       <button
         type="button"
         data-list-item
@@ -283,19 +291,18 @@ function JournalRow({
         <span
           className={cn(
             'prose-reading block line-clamp-2 text-[1.0625rem]',
-            entry.locked && 'text-ink-tertiary',
+            entry.locked && 'font-sans text-[0.9375rem] text-ink-tertiary',
           )}
           style={{ viewTransitionName: `post-line-${entry.id}` }}
         >
           {preview || '…'}
         </span>
-        <span className="mt-1 flex flex-wrap items-center gap-2 text-[13px] text-ink-secondary">
-          <Icon
-            name={VISIBILITY_ICON[entry.visibility]}
-            size={14}
-            label={common(`visibility.${entry.visibility}`)}
-          />
-          <time dateTime={entry.createdAt}>
+        <span className="mt-1.5 flex flex-wrap items-center gap-2 text-[13px] text-ink-secondary">
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name={VISIBILITY_ICON[entry.visibility]} size={13} />
+            {common(`visibility.${entry.visibility}`)}
+          </span>
+          <time dateTime={entry.createdAt} className="sr-only">
             {formatDate(entry.createdAt, locale, { day: 'numeric', month: 'short' })}
           </time>
           {entry.roomName ? <span>· {entry.roomName}</span> : null}
@@ -321,7 +328,7 @@ function JournalRow({
             onClick={onNarrow}
             aria-label={t('actions.visibility')}
             title={t('actions.visibility')}
-            className="touch-target flex items-center justify-center rounded-md text-ink-secondary hover:text-ink"
+            className="flex h-9 w-9 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink pointer-coarse:h-11 pointer-coarse:w-11"
           >
             <Icon name="eye" size={18} />
           </button>
@@ -331,7 +338,7 @@ function JournalRow({
           onClick={onBurn}
           aria-label={t('actions.burn')}
           title={t('actions.burn')}
-          className="touch-target flex items-center justify-center rounded-md text-ink-secondary hover:text-warn"
+          className="flex h-9 w-9 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-warn-soft hover:text-warn pointer-coarse:h-11 pointer-coarse:w-11"
         >
           <Icon name="flame" size={18} />
         </button>

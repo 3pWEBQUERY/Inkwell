@@ -50,54 +50,63 @@ export async function ReadingView({
     <article>
       <ReadTracker postId={post.id} isAuthor={post.viewer.isAuthor} />
       <header className="flex items-start justify-between gap-4">
-        <div className="flex flex-col gap-1 text-[13px] text-ink-secondary">
-          <Link href={`/rooms/${post.room.slug}`} className="hover:text-ink">
-            {post.room.name}
-          </Link>
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="flex min-w-0 items-center gap-3">
+          {post.author ? (
+            <Link href={`/u/${post.author.pseudonym}`} className="shrink-0 rounded-full">
+              <Avatar avatar={post.author.avatar} size={40} />
+            </Link>
+          ) : (
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-paper-sunken text-ink-secondary">
+              <Icon name="mask" size={18} />
+            </span>
+          )}
+          <div className="min-w-0">
             {post.author ? (
               <Link
                 href={`/u/${post.author.pseudonym}`}
-                className="flex items-center gap-1.5 hover:text-ink"
+                className="block truncate font-medium hover:text-accent-text"
               >
-                <Avatar avatar={post.author.avatar} size={18} />
                 {post.author.pseudonym}
               </Link>
             ) : (
-              <span className="flex items-center gap-1.5">
-                <Icon name="mask" size={14} />
-                {t('byAnonymous')}
-              </span>
+              <span className="block font-medium">{t('byAnonymous')}</span>
             )}
-            <span aria-hidden>·</span>
-            <time dateTime={post.createdAt} title={formatDate(post.createdAt, locale)}>
-              {relative.key === 'justNow'
-                ? common('relative.justNow')
-                : common(`relative.${relative.key}`, { count: relative.count })}
-            </time>
-            {post.editedAt ? <span>· {common('edited')}</span> : null}
-            {expiresIn !== null ? <span>· {common('expiresIn', { hours: expiresIn })}</span> : null}
+            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-ink-secondary">
+              <Link href={`/rooms/${post.room.slug}`} className="hover:text-ink">
+                {post.room.name}
+              </Link>
+              <span aria-hidden>·</span>
+              <time dateTime={post.createdAt} title={formatDate(post.createdAt, locale)}>
+                {relative.key === 'justNow'
+                  ? common('relative.justNow')
+                  : common(`relative.${relative.key}`, { count: relative.count })}
+              </time>
+              {post.editedAt ? <span>· {common('edited')}</span> : null}
+              {expiresIn !== null ? (
+                <span>· {common('expiresIn', { hours: expiresIn })}</span>
+              ) : null}
+            </div>
           </div>
         </div>
         <PostMenu post={post} />
       </header>
 
-      <div className="mt-8 flex gap-4">
+      <div className="mt-10 flex gap-5">
         {post.room.kind === 'fiction' ? (
           <Vote postId={post.id} initial={post.viewer.vote} isAuthor={post.viewer.isAuthor} />
         ) : null}
         <div className="min-w-0 flex-1">
           {post.title ? (
             <h1
-              className="font-serif text-3xl font-semibold text-balance"
+              className="display text-[2.125rem] md:text-[2.625rem]"
               style={{ viewTransitionName: `post-title-${post.id}` }}
             >
               {post.title}
             </h1>
           ) : null}
           {post.series ? (
-            <p className="mt-2 text-[13px] text-ink-secondary">
-              <Link href={`/series/${post.series.id}`} className="hover:text-ink">
+            <p className="mt-3 text-[13px] text-ink-secondary">
+              <Link href={`/series/${post.series.id}`} className="font-medium hover:text-ink">
                 {post.series.title}
               </Link>
               {' · '}
@@ -124,7 +133,7 @@ export async function ReadingView({
 
       {chapterNav ? (
         <nav
-          className="mt-8 flex justify-between text-sm"
+          className="mt-10 flex justify-between gap-3 text-[0.9375rem]"
           aria-label={t('chapterOf', {
             chapter: post.series?.chapter ?? 1,
             total: post.series?.chapterCount ?? 1,
@@ -133,7 +142,7 @@ export async function ReadingView({
           {chapterNav.previous ? (
             <Link
               href={`/posts/${chapterNav.previous}`}
-              className="inline-flex items-center gap-1 text-accent hover:underline"
+              className="inline-flex h-10 items-center gap-2 rounded-md border border-line-strong bg-surface px-4 font-medium state-toggle hover:bg-paper-raised"
             >
               <Icon name="arrow-left" size={16} />
               {t('previousChapter')}
@@ -144,7 +153,7 @@ export async function ReadingView({
           {chapterNav.next ? (
             <Link
               href={`/posts/${chapterNav.next}`}
-              className="inline-flex items-center gap-1 text-accent hover:underline"
+              className="inline-flex h-10 items-center gap-2 rounded-md bg-accent px-4 font-medium text-accent-ink state-toggle hover:bg-accent-hover"
             >
               {t('nextChapter')}
               <Icon name="arrow-right" size={16} />

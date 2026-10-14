@@ -20,6 +20,8 @@ export type IconName =
   | 'flame'
   | 'close'
   | 'chevron-down'
+  | 'chevron-right'
+  | 'sun'
   | 'copy'
   | 'download'
   | 'search'
@@ -68,6 +70,8 @@ const PATHS: Record<IconName, string> = {
     'M12 21c-4 0-6.5-2.7-6.5-6 0-3 2-5 3.5-7 .5 2 1.5 3 2.5 3 0-3 1-6 3.5-8 0 3 4 5 4 10 0 4.5-3 8-7 8z',
   close: 'M6 6l12 12M18 6L6 18',
   'chevron-down': 'M6 9l6 6 6-6',
+  'chevron-right': 'M9 6l6 6-6 6',
+  sun: 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21M5.6 5.6l1.1 1.1M17.3 17.3l1.1 1.1M5.6 18.4l1.1-1.1M17.3 6.7l1.1-1.1',
   copy: 'M9 9h10v11H9zM5 15V4h10',
   download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
   search: 'M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13zM20 20l-4.5-4.5',

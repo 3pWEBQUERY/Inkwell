@@ -51,12 +51,14 @@ export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: Tool
       onMouseDown={(event) => event.preventDefault()}
       onClick={onClick}
       className={cn(
-        'touch-target flex items-center justify-center rounded-md state-toggle',
-        active ? 'bg-accent-soft text-ink' : 'text-ink-secondary hover:text-ink',
-        disabled && 'opacity-40',
+        'flex h-11 w-11 items-center justify-center rounded-md state-toggle md:h-8 md:w-8',
+        active
+          ? 'bg-accent-soft text-accent-text'
+          : 'text-ink-secondary hover:bg-paper-raised hover:text-ink',
+        disabled && 'opacity-35 hover:bg-transparent',
       )}
     >
-      <Icon name={name} />
+      <Icon name={name} size={18} />
     </button>
   );
 
@@ -64,10 +66,10 @@ export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: Tool
     <div
       role="toolbar"
       aria-label={t('bold')}
-      className="safe-bottom fixed inset-x-0 z-10 flex items-center justify-between border-t border-line bg-paper px-2 md:static md:border-t-0 md:border-b md:px-0"
+      className="safe-bottom fixed inset-x-0 z-10 flex items-center justify-between border-t border-line bg-surface px-2 md:static md:gap-1 md:rounded-[12px] md:border md:p-1"
       style={{ bottom }}
     >
-      <div className="flex items-center">
+      <div className="flex items-center md:gap-0.5">
         {button('bold', t('bold'), editor?.isActive('bold') ?? false, () =>
           editor?.chain().focus().toggleBold().run(),
         )}
@@ -82,9 +84,10 @@ export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: Tool
         )}
         {button('heading', t('title'), titleVisible, onToggleTitle)}
       </div>
-      <div className="flex items-center gap-2">
+      <span aria-hidden className="hidden h-5 w-px bg-line md:block" />
+      <div className="flex items-center gap-1 md:gap-0.5">
         {wordCount !== null ? (
-          <span className="text-[13px] text-ink-tertiary">
+          <span className="px-2 text-[13px] text-ink-tertiary tabular-nums">
             {common('words', { count: wordCount })}
           </span>
         ) : null}

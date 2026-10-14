@@ -19,7 +19,7 @@ export function Helplines() {
   if (lines.length === 0) return null;
 
   return (
-    <aside className="mt-10 border-t border-line pt-6 text-[13px] text-ink-secondary">
+    <aside className="mt-12 rounded-lg bg-paper-sunken p-5 text-[13px] text-ink-secondary">
       <p>{t('helplinesIntro')}</p>
       <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
         {lines.map((line) => (

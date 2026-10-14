@@ -262,7 +262,7 @@ export function AuthPanel({
           <button
             type="button"
             onClick={() => go(step === 'code' ? 'email' : 'entry')}
-            className="touch-target -mr-2 text-ink-secondary hover:text-ink"
+            className="-mr-2 flex h-9 w-9 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink pointer-coarse:h-11 pointer-coarse:w-11"
             aria-label={common('back')}
           >
             <Icon name="arrow-left" />
@@ -277,7 +277,9 @@ export function AuthPanel({
         >
           {step === 'entry' ? (
             <div className="flex flex-col gap-3">
-              <p className="mb-3 font-serif text-xl text-balance">{t('intro')}</p>
+              <p className="display mb-4 text-[1.625rem] leading-[1.2] text-balance">
+                {t('intro')}
+              </p>
               {passkeySupported ? (
                 <Button
                   variant={initialIntent === 'create' ? 'secondary' : 'primary'}
@@ -299,7 +301,7 @@ export function AuthPanel({
               {appleHref ? (
                 <a
                   href={appleHref}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-line-strong font-medium"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-line-strong bg-surface font-medium state-toggle hover:bg-paper-raised"
                 >
                   {t('apple')}
                 </a>
@@ -317,7 +319,7 @@ export function AuthPanel({
                 <button
                   type="button"
                   onClick={() => router.push('/rooms')}
-                  className="text-accent underline-offset-4 hover:underline"
+                  className="text-accent-text underline-offset-4 hover:underline"
                 >
                   {common('readOnly')}
                 </button>
@@ -340,7 +342,9 @@ export function AuthPanel({
                 sendCode();
               }}
             >
-              <h2 className="font-serif text-xl">{t('emailStep.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('emailStep.title')}
+              </h2>
               <Field label={t('emailStep.label')} error={<ErrorText code={error} />}>
                 {({ id, describedBy }) => (
                   <Input
@@ -364,7 +368,9 @@ export function AuthPanel({
 
           {step === 'code' ? (
             <div className="flex flex-col gap-4">
-              <h2 className="font-serif text-xl">{t('emailStep.sent')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('emailStep.sent')}
+              </h2>
               <p className="text-sm text-ink-secondary">{email}</p>
               <CodeInput
                 value={code}
@@ -377,7 +383,7 @@ export function AuthPanel({
               <div className="flex justify-between text-sm">
                 <button
                   type="button"
-                  className="text-accent underline-offset-4 hover:underline"
+                  className="text-accent-text underline-offset-4 hover:underline"
                   onClick={sendCode}
                   disabled={pending}
                 >
@@ -402,7 +408,9 @@ export function AuthPanel({
                 signInWithPasswordNow();
               }}
             >
-              <h2 className="font-serif text-xl">{t('passwordStep.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('passwordStep.title')}
+              </h2>
               <Field label={t('emailStep.label')}>
                 {({ id, describedBy }) => (
                   <Input
@@ -441,7 +449,9 @@ export function AuthPanel({
 
           {step === 'age' ? (
             <div className="flex flex-col gap-4">
-              <h2 className="font-serif text-xl">{t('age.question')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('age.question')}
+              </h2>
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="secondary" size="lg" onClick={() => go('declined')}>
                   {t('age.no')}
@@ -474,7 +484,9 @@ export function AuthPanel({
                 if (availability === 'available') go('recovery');
               }}
             >
-              <h2 className="font-serif text-xl">{t('pseudonym.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('pseudonym.title')}
+              </h2>
               <Field
                 label={t('pseudonym.label')}
                 hint={t('pseudonym.rules')}
@@ -520,7 +532,7 @@ export function AuthPanel({
               <div className="flex items-center justify-between">
                 <button
                   type="button"
-                  className="text-sm text-accent underline-offset-4 hover:underline"
+                  className="text-sm text-accent-text underline-offset-4 hover:underline"
                   onClick={() => setPseudonym(suggestPseudonym(locale))}
                 >
                   {t('pseudonym.suggest')}
@@ -534,7 +546,9 @@ export function AuthPanel({
 
           {step === 'recovery' ? (
             <div className="flex flex-col gap-4">
-              <h2 className="font-serif text-xl">{t('recovery.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('recovery.title')}
+              </h2>
               <p className="text-ink-secondary text-pretty">{t('recovery.explain')}</p>
               {mnemonic ? (
                 <RecoveryGrid mnemonic={mnemonic} />
@@ -570,7 +584,9 @@ export function AuthPanel({
                 unlock();
               }}
             >
-              <h2 className="font-serif text-xl">{t('unlock.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('unlock.title')}
+              </h2>
               <p className="text-ink-secondary text-pretty">{t('unlock.explain')}</p>
               <Field label={t('unlock.label')} error={unlockInvalid ? t('unlock.invalid') : null}>
                 {({ id, describedBy }) => (
@@ -585,7 +601,7 @@ export function AuthPanel({
                     autoComplete="off"
                     spellCheck={false}
                     rows={3}
-                    className="w-full rounded-md border border-line-strong bg-paper px-3 py-2 font-serif text-lg focus:border-accent"
+                    className="w-full rounded-md border border-line-strong bg-surface px-3.5 py-2.5 font-serif text-lg focus:border-accent"
                   />
                 )}
               </Field>
@@ -610,7 +626,9 @@ export function AuthPanel({
 
           {step === 'languages' ? (
             <div className="flex flex-col gap-4">
-              <h2 className="font-serif text-xl">{t('languages.title')}</h2>
+              <h2 className="font-serif text-[1.5rem] font-medium tracking-[-0.015em]">
+                {t('languages.title')}
+              </h2>
               <p className="text-ink-secondary">{t('languages.hint')}</p>
               <div className="flex flex-wrap gap-2">
                 {LOCALES.map((option) => (

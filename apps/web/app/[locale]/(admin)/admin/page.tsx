@@ -17,7 +17,7 @@ export default async function AdminQueuePage() {
   const items = await getModerationQueue();
   return (
     <div>
-      <h1 className="mb-6 font-serif text-2xl">{t('title')}</h1>
+      <h1 className="display mb-8 text-[2rem]">{t('title')}</h1>
       <QueueTable items={items} />
     </div>
   );

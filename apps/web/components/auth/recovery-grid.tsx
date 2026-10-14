@@ -39,12 +39,14 @@ export function RecoveryGrid({ mnemonic }: { mnemonic: string }) {
   return (
     <div>
       <ol
-        className="grid grid-cols-3 gap-2 rounded-md border border-line bg-paper-raised p-3 font-serif"
+        className="grid grid-cols-3 gap-1 rounded-lg bg-paper-sunken p-3 font-serif"
         aria-label={t('title')}
       >
         {words.map((word, index) => (
           <li key={`${word}-${index}`} className="flex items-baseline gap-2 px-2 py-1.5">
-            <span className="w-5 text-right text-xs text-ink-tertiary">{index + 1}</span>
+            <span className="w-5 text-right font-sans text-[11px] text-ink-tertiary tabular-nums">
+              {index + 1}
+            </span>
             <span className="text-lg">{word}</span>
           </li>
         ))}

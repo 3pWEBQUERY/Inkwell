@@ -15,10 +15,10 @@ export function Chip({ active, onClick, children }: ChipProps) {
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        'h-9 rounded-full border px-3.5 text-sm whitespace-nowrap state-toggle',
+        'h-9 rounded-full border px-3.5 text-[0.875rem] font-medium whitespace-nowrap state-toggle pointer-coarse:h-10',
         active
-          ? 'border-accent bg-accent-soft text-ink'
-          : 'border-line-strong text-ink-secondary hover:text-ink',
+          ? 'border-ink bg-ink text-paper'
+          : 'border-line-strong bg-surface text-ink-secondary hover:border-ink-tertiary/60 hover:text-ink',
       )}
     >
       {children}

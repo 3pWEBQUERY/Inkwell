@@ -53,7 +53,7 @@ export function SeriesView({ series, readIds }: { series: Series; readIds: strin
   return (
     <div>
       <p className="text-[13px] text-ink-secondary">{series.author.pseudonym}</p>
-      <h1 className="font-serif text-3xl">{series.title}</h1>
+      <h1 className="display text-[2rem] md:text-[2.375rem]">{series.title}</h1>
       {series.description ? (
         <p className="mt-2 text-ink-secondary text-pretty">{series.description}</p>
       ) : null}

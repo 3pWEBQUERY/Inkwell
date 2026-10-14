@@ -51,21 +51,23 @@ export function RoomList({ rooms, initialKind }: RoomListProps) {
 
   return (
     <div>
-      <Segmented
-        label={t('title')}
-        value={kind}
-        onChange={setKind}
-        options={[
-          { value: 'reflection', label: common('roomKind.reflection') },
-          { value: 'fiction', label: common('roomKind.fiction') },
-        ]}
-      />
+      <div className="md:max-w-sm">
+        <Segmented
+          label={t('title')}
+          value={kind}
+          onChange={setKind}
+          options={[
+            { value: 'reflection', label: common('roomKind.reflection') },
+            { value: 'fiction', label: common('roomKind.fiction') },
+          ]}
+        />
+      </div>
       <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
         <div className="relative flex-1">
           <Icon
             name="search"
-            size={18}
-            className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-tertiary"
+            size={17}
+            className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-ink-tertiary"
           />
           <Input
             type="search"
@@ -73,7 +75,7 @@ export function RoomList({ rooms, initialKind }: RoomListProps) {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('search')}
             aria-label={t('search')}
-            className="pl-10"
+            className="h-10 pl-10 pointer-coarse:h-11"
           />
         </div>
         {available.length > 1 ? (
@@ -98,7 +100,7 @@ export function RoomList({ rooms, initialKind }: RoomListProps) {
           </div>
         ) : null}
       </div>
-      <ul key={kind} className="page-enter mt-2 divide-y divide-line">
+      <ul key={kind} className="page-enter card mt-5 divide-y divide-line overflow-hidden">
         {visible.map((room) => (
           <RoomRow
             key={room.id}
@@ -137,21 +139,24 @@ function RoomRow({
   };
 
   return (
-    <li className="flex items-center gap-4 py-4">
+    <li className="flex items-center gap-4 px-4 py-3.5 state-toggle hover:bg-paper-raised/60 md:px-5">
       <Link
         href={`/rooms/${room.slug}`}
         data-list-item
-        className="min-w-0 flex-1 rounded-md outline-none focus-visible:shadow-[var(--focus-ring)]"
+        className="flex min-w-0 flex-1 items-center gap-4 rounded-md outline-none focus-visible:shadow-[var(--focus-ring)]"
       >
-        <span className="flex items-center gap-2">
-          <Icon
-            name={room.kind === 'fiction' ? 'book' : 'leaf'}
-            size={16}
-            className="text-ink-tertiary"
-          />
-          <span className="font-medium">{room.name}</span>
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-accent-tint font-serif text-[1.25rem] leading-none font-medium text-accent-text"
+        >
+          {room.name.slice(0, 1)}
         </span>
-        <span className="mt-0.5 block text-[15px] text-ink-secondary">{room.description}</span>
+        <span className="min-w-0">
+          <span className="block font-medium">{room.name}</span>
+          <span className="mt-0.5 block truncate text-[0.875rem] text-ink-secondary">
+            {room.description}
+          </span>
+        </span>
       </Link>
       <Button
         variant={joined ? 'ghost' : 'secondary'}
@@ -159,6 +164,7 @@ function RoomRow({
         onClick={toggle}
         busy={pending}
         aria-pressed={joined}
+        className={joined ? 'text-accent-text' : undefined}
       >
         {joined ? <Icon name="check" size={16} /> : null}
         {joined ? t('joined') : t('join')}

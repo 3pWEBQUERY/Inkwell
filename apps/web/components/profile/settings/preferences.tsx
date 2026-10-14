@@ -63,10 +63,10 @@ function OptionRow<T extends string>({
             aria-pressed={value === option.value}
             onClick={() => onChange(option.value)}
             className={cn(
-              'h-10 rounded-md border px-3.5 text-sm state-toggle',
+              'h-10 rounded-md border px-4 text-[0.875rem] font-medium state-toggle',
               value === option.value
-                ? 'border-accent bg-accent-soft'
-                : 'border-line-strong text-ink-secondary',
+                ? 'border-accent bg-accent-tint text-accent-text shadow-[inset_0_0_0_1px_var(--color-accent)]'
+                : 'border-line-strong bg-surface text-ink-secondary hover:text-ink',
             )}
           >
             {option.label}

@@ -192,13 +192,12 @@ dialog[open].sheet {
 @keyframes tint-fade {
   from {
     background-color: var(--color-accent-soft);
-  }
-  to {
-    background-color: transparent;
+    border-color: var(--color-accent);
   }
 }
 
-.just-published {
+.just-published,
+.just-published > .card {
   animation: tint-fade var(--motion-tint) linear both;
 }
 

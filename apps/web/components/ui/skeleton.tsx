@@ -18,7 +18,7 @@ export function SkeletonLines({ lines = 3, className }: { lines?: number; classN
 
 export function SkeletonCard() {
   return (
-    <div className="border-b border-line py-5" aria-hidden>
+    <div className="card p-5" aria-hidden>
       <div className="skeleton-line mb-3 w-24" />
       <SkeletonLines lines={3} />
       <div className="skeleton-line mt-3 w-32" />

@@ -38,12 +38,23 @@ export function WriteButton({ label, compact = false, signedIn }: WriteButtonPro
       aria-label={label}
       data-testid="write-button"
       className={cn(
-        'inline-flex items-center justify-center gap-2 bg-accent font-medium text-accent-ink state-toggle hover:opacity-90',
-        compact ? 'h-12 w-12 rounded-full' : 'h-11 w-full rounded-md px-4',
+        'group inline-flex items-center gap-2 bg-accent font-medium text-accent-ink state-toggle hover:bg-accent-hover',
+        compact
+          ? 'h-12 w-12 justify-center rounded-[16px]'
+          : 'h-10 w-full rounded-md pr-2 pl-3 text-[0.9375rem]',
       )}
     >
-      <Icon name="pen" size={compact ? 22 : 18} />
-      {compact ? null : label}
+      <Icon name="pen" size={compact ? 22 : 17} />
+      {compact ? null : (
+        <>
+          <span className="flex-1">{label}</span>
+          {signedIn ? (
+            <kbd aria-hidden className="kbd bg-accent-ink/15 font-sans text-accent-ink">
+              N
+            </kbd>
+          ) : null}
+        </>
+      )}
     </Link>
   );
 }

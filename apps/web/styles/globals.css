@@ -6,6 +6,7 @@
 
 @theme inline {
   --color-paper: var(--color-paper);
+  --color-surface: var(--color-surface);
   --color-paper-raised: var(--color-paper-raised);
   --color-paper-sunken: var(--color-paper-sunken);
   --color-ink: var(--color-ink);
@@ -14,17 +15,26 @@
   --color-line: var(--color-line);
   --color-line-strong: var(--color-line-strong);
   --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
   --color-accent-ink: var(--color-accent-ink);
+  --color-accent-text: var(--color-accent-text);
   --color-accent-soft: var(--color-accent-soft);
   --color-accent-tint: var(--color-accent-tint);
   --color-warn: var(--color-warn);
   --color-warn-soft: var(--color-warn-soft);
   --color-overlay: var(--color-overlay);
+  --color-night: var(--color-night);
+  --color-night-ink: var(--color-night-ink);
+  --color-night-muted: var(--color-night-muted);
+  --color-night-line: var(--color-night-line);
+  --color-night-accent: var(--color-night-accent);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --shadow-float: var(--shadow-float);
   --breakpoint-md: 768px;
   --breakpoint-xl: 1200px;
 }
@@ -119,7 +129,10 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
     scrollbar-gutter: stable;
+    scrollbar-color: var(--color-line-strong) transparent;
   }
 
   body {
@@ -138,6 +151,13 @@
 
   ::selection {
     background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   button,
@@ -158,10 +178,62 @@
 
   .font-serif {
     font-family: var(--font-serif), 'Source Serif 4 Fallback';
+    font-feature-settings: normal;
   }
 }
 
 @layer components {
+  /* Display type: the serif set tight, for page titles and the landing page. */
+  .display {
+    font-family: var(--font-serif), 'Source Serif 4 Fallback';
+    font-feature-settings: normal;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.08;
+  }
+
+  /* A card is a surface with a hairline. No shadow: cards sit on the page, they do not float. */
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+  a.card,
+  button.card {
+    transition: border-color var(--motion-fast) var(--ease-out);
+  }
+  a.card:hover,
+  button.card:hover {
+    border-color: var(--color-line-strong);
+  }
+
+  /* Floating layers only: dialogs, menus, toasts, the mobile tab bar. */
+  .float {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-float);
+  }
+
+  /* Section label above a group: small, quiet, never uppercase. */
+  .label {
+    font-size: var(--text-meta);
+    font-weight: 550;
+    color: var(--color-ink-secondary);
+  }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.375rem;
+    height: 1.375rem;
+    padding-inline: 0.3rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 550;
+    line-height: 1;
+  }
+
   /* Reading typography: book page, 65 characters per line. */
   .prose-reading {
     font-family: var(--font-serif), 'Source Serif 4 Fallback';
@@ -180,8 +252,17 @@
   .prose-reading blockquote {
     margin: 1.25em 0;
     padding-left: 1em;
-    border-left: 2px solid var(--color-line-strong);
+    border-left: 2px solid var(--color-accent);
     color: var(--color-ink-secondary);
+    font-style: italic;
+  }
+  .prose-reading h2,
+  .prose-reading h1 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    font-size: 1.35em;
+    line-height: 1.25;
+    margin: 1.4em 0 0.5em;
   }
   .prose-reading hr {
     border: 0;
@@ -210,7 +291,7 @@
   /* Static skeletons: lines in the final shape, no shimmer. */
   .skeleton-line {
     height: 0.9em;
-    border-radius: 4px;
+    border-radius: 6px;
     background: var(--color-paper-sunken);
   }
 
@@ -242,6 +323,42 @@
   .vt-page {
     view-transition-name: page;
   }
+}
+
+/* On desktop the app shell sits on the sunken tone; the root and the scrollbar gutter follow it. */
+@media (min-width: 768px) {
+  html:has([data-app-shell]),
+  html:has([data-app-shell]) body {
+    background: var(--color-paper-sunken);
+  }
+}
+
+/* Screenshots in the reader's colour scheme (same rules as the tokens). */
+.theme-light-only {
+  display: block;
+}
+.theme-dark-only {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-light-only {
+    display: none;
+  }
+  :root:not([data-theme='light']) .theme-dark-only {
+    display: block;
+  }
+}
+:root[data-theme='dark'] .theme-light-only {
+  display: none;
+}
+:root[data-theme='dark'] .theme-dark-only {
+  display: block;
+}
+
+/* The full-screen editor covers the page; the reserved scrollbar gutter takes its paper colour. */
+html:has(dialog[open][data-kind='full']),
+html:has(dialog[open][data-kind='full']) body {
+  background: var(--color-paper);
 }
 
 /* The editor is nothing but text: no focus ring around the writing surface. */

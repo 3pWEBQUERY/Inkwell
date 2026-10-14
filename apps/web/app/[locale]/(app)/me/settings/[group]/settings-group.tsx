@@ -85,7 +85,7 @@ export async function SettingsGroupContent({ group, locale }: { group: string; l
 
   return (
     <div>
-      <h1 className="mb-6 font-serif text-2xl">{t(`groups.${group}`)}</h1>
+      <h1 className="display mb-8 text-[1.875rem] md:text-[2.125rem]">{t(`groups.${group}`)}</h1>
       {content}
     </div>
   );

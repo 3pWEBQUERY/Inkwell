@@ -34,16 +34,16 @@ export default async function StatusPage({ params }: { params: Promise<{ locale:
   }
   const now = new Date();
   return (
-    <article className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="font-serif text-4xl">{t('status')}</h1>
+    <article className="mx-auto w-full max-w-3xl px-5 pt-16 pb-24 md:px-8 md:pt-24">
+      <h1 className="display text-[2.5rem] md:text-[3.25rem]">{t('status')}</h1>
       <p className="mt-6 flex items-center gap-3 text-lg">
         <span
           aria-hidden
-          className={`inline-block h-3 w-3 rounded-full ${apiOk ? 'bg-accent' : 'bg-warn'}`}
+          className={`inline-block h-2.5 w-2.5 rounded-full ring-4 ${apiOk ? 'bg-accent ring-accent-soft' : 'bg-warn ring-warn-soft'}`}
         />
         {apiOk ? t('statusOk') : t('statusDegraded', { component: 'API' })}
       </p>
-      <p className="mt-2 text-sm text-ink-tertiary">
+      <p className="mt-3 text-sm text-ink-tertiary">
         {t('statusChecked', {
           date: formatDate(now, locale as Locale, { dateStyle: 'medium', timeStyle: 'short' }),
         })}

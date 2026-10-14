@@ -24,8 +24,8 @@ export function MarketingNav({ signedIn }: { signedIn: boolean }) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 h-14 border-b transition-colors',
-        scrolled ? 'border-line bg-paper/80 backdrop-blur-md' : 'border-transparent bg-paper',
+        'sticky top-0 z-30 h-[var(--height-nav)] border-b transition-colors',
+        scrolled ? 'border-line bg-paper/85 backdrop-blur-md' : 'border-transparent bg-paper',
       )}
       style={{ transitionDuration: 'var(--motion-base)' }}
     >
@@ -35,21 +35,30 @@ export function MarketingNav({ signedIn }: { signedIn: boolean }) {
       >
         {t('nav.skipToContent')}
       </a>
-      <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-4 px-4">
+      <div className="mx-auto flex h-full w-full max-w-6xl items-center justify-between gap-4 px-5 md:px-8">
         <Link href="/" className="flex items-center">
           <Wordmark compact={scrolled} className="transition-[font-size]" />
         </Link>
         <nav
-          className="hidden items-center gap-6 text-sm text-ink-secondary md:flex"
+          className="hidden items-center gap-1 text-[0.9375rem] text-ink-secondary md:flex"
           aria-label="Sections"
         >
-          <a href="#how" className="hover:text-ink">
+          <a
+            href="#how"
+            className="rounded-md px-3 py-1.5 state-toggle hover:bg-paper-raised hover:text-ink"
+          >
             {t('nav.how')}
           </a>
-          <a href="#trust" className="hover:text-ink">
+          <a
+            href="#trust"
+            className="rounded-md px-3 py-1.5 state-toggle hover:bg-paper-raised hover:text-ink"
+          >
             {t('nav.trust')}
           </a>
-          <a href="#faq" className="hover:text-ink">
+          <a
+            href="#faq"
+            className="rounded-md px-3 py-1.5 state-toggle hover:bg-paper-raised hover:text-ink"
+          >
             {t('nav.faq')}
           </a>
         </nav>
@@ -60,7 +69,7 @@ export function MarketingNav({ signedIn }: { signedIn: boolean }) {
           {signedIn ? (
             <Link
               href="/today"
-              className="inline-flex h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-accent-ink"
+              className="inline-flex h-9 items-center rounded-md bg-accent px-3.5 text-[0.875rem] font-medium text-accent-ink state-toggle hover:bg-accent-hover"
             >
               {t('nav.today')}
             </Link>
@@ -68,13 +77,13 @@ export function MarketingNav({ signedIn }: { signedIn: boolean }) {
             <>
               <Link
                 href="/sign-in"
-                className="inline-flex h-9 items-center rounded-md border border-line-strong px-3.5 text-sm font-medium"
+                className="hidden h-9 items-center rounded-md px-3.5 text-[0.875rem] font-medium state-toggle hover:bg-paper-raised sm:inline-flex"
               >
                 {t('common.signIn')}
               </Link>
               <Link
                 href="/sign-in?intent=create"
-                className="inline-flex h-9 items-center rounded-md bg-accent px-3.5 text-sm font-medium text-accent-ink"
+                className="inline-flex h-9 items-center rounded-md bg-accent px-3.5 text-[0.875rem] font-medium text-accent-ink state-toggle hover:bg-accent-hover"
               >
                 {t('common.createAccount')}
               </Link>

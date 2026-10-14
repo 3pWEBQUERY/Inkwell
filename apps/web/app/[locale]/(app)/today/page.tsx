@@ -2,6 +2,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { LastEntry } from '@/components/journal/last-entry';
 import { TodayFeed } from '@/components/rooms/today-feed';
+import { Icon } from '@/components/ui/icon';
+import { PageHeader, Section } from '@/components/ui/page-header';
 import { getMe } from '@/features/auth/session';
 import { getJournal, getTodayFeed } from '@/features/posts/queries';
 import { Link, redirect } from '@/i18n/navigation';
@@ -28,35 +30,28 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
 
   return (
     <div>
-      <h1 className="font-serif text-3xl">{formatWeekday(new Date(), current)}</h1>
+      <PageHeader title={formatWeekday(new Date(), current)} />
 
-      <section className="mt-8" aria-labelledby="last-entry">
-        <h2 id="last-entry" className="text-sm font-medium text-ink-secondary">
-          {t('lastEntry')}
-        </h2>
-        <div className="mt-2">
-          {last ? (
-            <LastEntry entry={last} />
-          ) : (
-            <div className="flex flex-col items-start gap-3 py-4">
-              <p className="font-serif text-lg">{t('noEntry')}</p>
-              <Link
-                href="/write"
-                className="inline-flex h-11 items-center rounded-md bg-accent px-4 font-medium text-accent-ink"
-              >
-                {t('write')}
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
+      <Section id="last-entry" label={t('lastEntry')}>
+        {last ? (
+          <LastEntry entry={last} />
+        ) : (
+          <Link
+            href="/write"
+            className="card group flex items-center justify-between gap-4 p-5 outline-none focus-visible:shadow-[var(--focus-ring)]"
+          >
+            <span className="font-serif text-lg">{t('noEntry')}</span>
+            <span className="inline-flex h-10 shrink-0 items-center gap-2 rounded-md bg-accent px-4 text-[0.9375rem] font-medium text-accent-ink state-toggle group-hover:bg-accent-hover">
+              <Icon name="pen" size={17} />
+              {t('write')}
+            </span>
+          </Link>
+        )}
+      </Section>
 
-      <section className="mt-10" aria-labelledby="new-in-rooms">
-        <h2 id="new-in-rooms" className="text-sm font-medium text-ink-secondary">
-          {t('newInRooms')}
-        </h2>
+      <Section id="new-in-rooms" label={t('newInRooms')}>
         <TodayFeed initial={feed} />
-      </section>
+      </Section>
     </div>
   );
 }

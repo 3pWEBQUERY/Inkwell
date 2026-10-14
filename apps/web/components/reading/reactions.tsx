@@ -57,7 +57,7 @@ export function Reactions({
 
   return (
     <div
-      className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6"
+      className="mt-12 flex flex-wrap gap-2 border-t border-line pt-8"
       role="group"
       aria-label={t('felt')}
     >
@@ -70,10 +70,10 @@ export function Reactions({
             aria-pressed={on}
             onClick={() => toggle(kind)}
             className={cn(
-              'inline-flex h-11 items-center gap-2 rounded-full border px-4 text-sm state-toggle',
+              'inline-flex h-10 items-center gap-2 rounded-full border px-4 text-[0.875rem] font-medium state-toggle pointer-coarse:h-11',
               on
-                ? 'border-accent bg-accent-soft text-ink'
-                : 'border-line-strong text-ink-secondary hover:text-ink',
+                ? 'border-accent bg-accent-tint text-accent-text'
+                : 'border-line-strong bg-surface text-ink-secondary hover:border-ink-tertiary/60 hover:text-ink',
             )}
           >
             <Icon name={icon} size={16} />

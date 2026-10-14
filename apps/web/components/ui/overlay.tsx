@@ -88,26 +88,28 @@ export function Overlay({
     <dialog
       ref={ref}
       aria-label={title}
+      data-kind={kind}
       onClick={onBackdropClick}
       className={cn(
-        'overlay m-auto bg-paper text-ink',
+        'overlay m-auto text-ink',
         closing && 'closing',
-        kind === 'panel' && 'w-[calc(100%-32px)] rounded-lg p-6',
+        kind === 'panel' && 'float w-[calc(100%-32px)] rounded-xl p-6',
         kind === 'sheet' &&
-          'sheet fixed inset-x-0 bottom-0 mb-0 w-full max-h-[90dvh] rounded-t-lg p-6 md:inset-auto md:top-0 md:right-0 md:h-dvh md:max-h-none md:w-[420px] md:rounded-none md:border-l md:border-line',
-        kind === 'full' && 'h-dvh max-h-none w-screen max-w-none rounded-none p-0',
+          'sheet float fixed inset-x-0 bottom-0 mb-0 w-full max-h-[90dvh] rounded-t-xl border-b-0 p-6 md:inset-auto md:top-2 md:right-2 md:bottom-2 md:h-[calc(100dvh-16px)] md:max-h-none md:w-[420px] md:rounded-xl md:border-b',
+        kind === 'full' &&
+          'fixed inset-0 h-dvh max-h-none w-full max-w-none rounded-none border-0 bg-paper p-0',
       )}
       style={kind === 'panel' ? { maxWidth: width } : undefined}
     >
       {title && kind !== 'full' ? (
         <div className="mb-4 flex items-center justify-between gap-4">
-          <h2 className="font-serif text-xl">{title}</h2>
+          <h2 className="font-serif text-xl font-medium tracking-[-0.01em]">{title}</h2>
           {!hideClose ? (
             <button
               type="button"
               onClick={requestClose}
               aria-label={closeLabel}
-              className="touch-target -mr-2 rounded-md text-ink-secondary hover:text-ink"
+              className="-mr-2 inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink pointer-coarse:h-11 pointer-coarse:w-11"
             >
               <Icon name="close" />
             </button>

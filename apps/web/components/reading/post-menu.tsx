@@ -100,20 +100,20 @@ export function PostMenu({ post }: { post: FeedPost }) {
         aria-expanded={open}
         aria-label={t('menu')}
         onClick={() => setOpen((o) => !o)}
-        className="touch-target flex items-center justify-center rounded-md text-ink-secondary hover:text-ink"
+        className="flex h-9 w-9 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink pointer-coarse:h-11 pointer-coarse:w-11"
       >
         <Icon name="more" />
       </button>
       {open ? (
         <div
           role="menu"
-          className="absolute top-full right-0 z-20 mt-1 w-56 rounded-md border border-line bg-paper py-1"
+          className="float absolute top-full right-0 z-20 mt-1.5 w-60 rounded-lg p-1.5"
         >
           {post.viewer.isAuthor ? (
             <Link
               href={`/write?edit=${post.id}`}
               role="menuitem"
-              className="block px-4 py-2.5 hover:bg-paper-raised"
+              className="block rounded-md px-3 py-2 text-[0.9375rem] hover:bg-paper-raised"
             >
               {t('edit')}
             </Link>
@@ -122,7 +122,7 @@ export function PostMenu({ post }: { post: FeedPost }) {
             type="button"
             role="menuitem"
             onClick={copyLink}
-            className="block w-full px-4 py-2.5 text-left hover:bg-paper-raised"
+            className="block w-full rounded-md px-3 py-2 text-left text-[0.9375rem] hover:bg-paper-raised"
           >
             {t('copyLink')}
           </button>
@@ -136,7 +136,7 @@ export function PostMenu({ post }: { post: FeedPost }) {
                   if (!me) return router.push('/sign-in');
                   setReporting(true);
                 }}
-                className="block w-full px-4 py-2.5 text-left hover:bg-paper-raised"
+                className="block w-full rounded-md px-3 py-2 text-left text-[0.9375rem] hover:bg-paper-raised"
               >
                 {t('report')}
               </button>
@@ -144,7 +144,7 @@ export function PostMenu({ post }: { post: FeedPost }) {
                 type="button"
                 role="menuitem"
                 onClick={block}
-                className="block w-full px-4 py-2.5 text-left text-warn hover:bg-paper-raised"
+                className="block w-full rounded-md px-3 py-2 text-left text-[0.9375rem] text-warn hover:bg-warn-soft"
               >
                 {t('block')}
               </button>

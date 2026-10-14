@@ -46,9 +46,9 @@ export function AppNav({ signedIn, variant }: AppNavProps) {
     return (
       <nav
         aria-label={t('menu')}
-        className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-line bg-paper md:hidden"
+        className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface md:hidden"
       >
-        <ul className="flex h-16 items-stretch">
+        <ul className="flex h-16 items-stretch px-1">
           {items.slice(0, 2).map((item) => (
             <TabItem
               key={item.key}
@@ -92,40 +92,43 @@ export function AppNav({ signedIn, variant }: AppNavProps) {
   return (
     <nav
       aria-label={t('menu')}
-      className="sticky top-0 hidden h-dvh w-[220px] shrink-0 flex-col border-r border-line px-3 py-5 md:flex"
+      className="sticky top-0 hidden h-dvh w-[var(--width-sidebar)] shrink-0 flex-col px-4 pt-6 pb-5 md:flex"
     >
       <Link
         href={signedIn ? '/today' : '/'}
-        className="mb-6 px-2 font-serif text-xl tracking-tight"
+        className="mb-7 inline-flex h-8 items-center self-start rounded-sm px-2 font-serif text-[1.375rem] leading-none tracking-[-0.02em]"
       >
         inkwell<span className="text-accent">.</span>
       </Link>
       <WriteButton label={t('write')} signedIn={signedIn} />
-      <ul className="mt-6 flex flex-col gap-1">
-        {items.map((item) => (
-          <li key={item.key}>
-            <Link
-              href={item.href}
-              aria-current={activeKey === item.key ? 'page' : undefined}
-              className={cn(
-                'flex h-11 items-center gap-3 rounded-md px-3 state-toggle',
-                activeKey === item.key
-                  ? 'bg-accent-soft text-ink font-medium'
-                  : 'text-ink-secondary hover:bg-paper-raised hover:text-ink',
-              )}
-            >
-              <Icon name={item.icon} />
-              {t(item.key)}
-            </Link>
-          </li>
-        ))}
+      <ul className="mt-7 flex flex-col gap-0.5">
+        {items.map((item) => {
+          const active = activeKey === item.key;
+          return (
+            <li key={item.key}>
+              <Link
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={cn(
+                  'flex h-9 items-center gap-2.5 rounded-md border px-2.5 text-[0.9375rem] state-toggle',
+                  active
+                    ? 'border-line bg-surface font-medium text-ink'
+                    : 'border-transparent text-ink-secondary hover:bg-paper-raised hover:text-ink',
+                )}
+              >
+                <Icon name={item.icon} size={18} className={active ? 'text-accent' : undefined} />
+                {t(item.key)}
+              </Link>
+            </li>
+          );
+        })}
         {!signedIn ? (
           <li>
             <Link
               href="/sign-in"
-              className="flex h-11 items-center gap-3 rounded-md px-3 text-ink-secondary hover:bg-paper-raised hover:text-ink"
+              className="flex h-9 items-center gap-2.5 rounded-md border border-transparent px-2.5 text-[0.9375rem] text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink"
             >
-              <Icon name="me" />
+              <Icon name="me" size={18} />
               {common('signIn')}
             </Link>
           </li>
@@ -155,11 +158,18 @@ function TabItem({
         aria-current={active ? 'page' : undefined}
         onClick={onNavigate}
         className={cn(
-          'flex flex-1 flex-col items-center justify-center gap-0.5 text-[11px] state-toggle',
-          active ? 'text-ink' : 'text-ink-secondary',
+          'flex flex-1 flex-col items-center justify-center gap-1 text-[11px] font-medium state-toggle',
+          active ? 'text-ink' : 'text-ink-tertiary',
         )}
       >
-        <Icon name={icon} size={22} />
+        <span
+          className={cn(
+            'flex h-7 w-12 items-center justify-center rounded-full state-toggle',
+            active && 'bg-accent-soft text-accent-text',
+          )}
+        >
+          <Icon name={icon} size={20} />
+        </span>
         <span>{label}</span>
       </Link>
     </li>

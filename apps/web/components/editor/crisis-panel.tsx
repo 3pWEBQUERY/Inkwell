@@ -23,7 +23,7 @@ export function CrisisPanel({ onContinue }: { onContinue: () => void }) {
     <div
       role="region"
       aria-live="polite"
-      className="mx-auto w-full max-w-[520px] rounded-lg border border-line bg-paper-raised p-6"
+      className="float mx-auto w-full max-w-[520px] rounded-xl p-6"
     >
       <p className="font-serif text-xl text-balance">{t('title')}</p>
       <p className="mt-3 text-ink-secondary">
@@ -32,7 +32,7 @@ export function CrisisPanel({ onContinue }: { onContinue: () => void }) {
       <div className="mt-5 flex flex-wrap gap-2">
         <a
           href={`tel:${line.number}`}
-          className="inline-flex h-11 items-center gap-2 rounded-md bg-accent px-4 font-medium text-accent-ink"
+          className="inline-flex h-11 items-center gap-2 rounded-md bg-accent px-4 font-medium text-accent-ink state-toggle hover:bg-accent-hover"
         >
           <Icon name="phone" size={18} />
           {t('call')}

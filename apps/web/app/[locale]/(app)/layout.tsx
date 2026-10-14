@@ -25,18 +25,20 @@ export default async function AppLayout({
   const signedIn = Boolean(me);
 
   return (
-    <div className="flex min-h-dvh">
+    <div data-app-shell className="flex min-h-dvh md:bg-paper-sunken">
       <AppNav signedIn={signedIn} variant="sidebar" />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col bg-paper md:my-2 md:mr-2 md:min-h-[calc(100dvh-16px)] md:rounded-xl md:border md:border-line">
         <OfflineBanner />
-        <div className="flex flex-1 justify-center gap-10">
+        <div className="flex flex-1 justify-center gap-12">
           <main
             id="content"
-            className="content-width gutter min-w-0 pb-[calc(var(--height-tabbar)+24px)] pt-4 md:pb-16 md:pt-8"
+            className="content-width gutter min-w-0 pt-6 pb-[calc(var(--height-tabbar)+32px)] md:pt-12 md:pb-20"
           >
             <ViewTransition name="page">{children}</ViewTransition>
           </main>
-          <aside className="hidden w-[280px] shrink-0 pt-8 pr-6 xl:block">{context}</aside>
+          <aside className="hidden w-[var(--width-context)] shrink-0 pt-12 pr-8 xl:block xl:empty:hidden">
+            {context}
+          </aside>
         </div>
       </div>
       <AppNav signedIn={signedIn} variant="tabbar" />

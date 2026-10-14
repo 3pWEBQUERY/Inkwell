@@ -18,7 +18,7 @@ export default function LocaleError({
   }, [error]);
   return (
     <main className="content-width gutter flex min-h-[60dvh] flex-col items-start justify-center gap-4">
-      <h1 className="font-serif text-2xl">{t('title')}</h1>
+      <h1 className="display text-[2rem]">{t('title')}</h1>
       <p className="text-ink-secondary">{t('generic')}</p>
       <Button variant="secondary" onClick={reset}>
         {t('retry')}

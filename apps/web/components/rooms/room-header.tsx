@@ -23,6 +23,7 @@ export function RoomHeader({
   vapidPublicKey: string | null;
 }) {
   const t = useTranslations('rooms');
+  const common = useTranslations('common');
   const me = useMe();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -57,11 +58,15 @@ export function RoomHeader({
   };
 
   return (
-    <header className="border-b border-line pb-5">
-      <div className="flex items-start justify-between gap-4">
+    <header className="mb-6">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
         <div className="min-w-0">
-          <h1 className="font-serif text-3xl">{room.name}</h1>
-          <p className="mt-1 text-ink-secondary">{room.description}</p>
+          <p className="label mb-2 flex items-center gap-1.5">
+            <Icon name={room.kind === 'fiction' ? 'book' : 'leaf'} size={15} />
+            {common(`roomKind.${room.kind}`)}
+          </p>
+          <h1 className="display text-[2rem] md:text-[2.375rem]">{room.name}</h1>
+          <p className="mt-2 text-[0.9375rem] text-ink-secondary">{room.description}</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {joined ? (
@@ -71,13 +76,13 @@ export function RoomHeader({
               aria-pressed={push}
               aria-label={push ? t('push.on') : t('push.off')}
               title={t('push.explain')}
-              className="touch-target flex items-center justify-center rounded-md text-ink-secondary state-toggle hover:text-ink"
+              className="flex h-9 w-9 items-center justify-center rounded-md border border-line-strong bg-surface text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink pointer-coarse:h-11 pointer-coarse:w-11"
             >
-              <Icon name={push ? 'bell' : 'bell-off'} />
+              <Icon name={push ? 'bell' : 'bell-off'} size={18} />
             </button>
           ) : null}
           <Button
-            variant={joined ? 'ghost' : 'primary'}
+            variant={joined ? 'secondary' : 'primary'}
             size="sm"
             onClick={toggleJoin}
             busy={pending}
@@ -87,12 +92,12 @@ export function RoomHeader({
         </div>
       </div>
       {room.rules ? (
-        <div className="mt-4">
+        <div className="mt-5 rounded-lg bg-paper-sunken px-4 xl:hidden">
           <button
             type="button"
             onClick={() => setRulesOpen((open) => !open)}
             aria-expanded={rulesOpen}
-            className="flex min-h-11 items-center gap-1 text-sm text-ink-secondary hover:text-ink"
+            className="flex min-h-11 w-full items-center justify-between gap-1 text-[0.875rem] font-medium text-ink-secondary hover:text-ink"
           >
             {t('rules')}
             <Icon
@@ -113,7 +118,9 @@ export function RoomHeader({
               transitionTimingFunction: 'var(--ease-out)',
             }}
           >
-            <p className="overflow-hidden text-[15px] text-ink-secondary">{room.rules}</p>
+            <p className="overflow-hidden text-[0.9375rem] leading-relaxed text-ink-secondary">
+              <span className="block pb-4">{room.rules}</span>
+            </p>
           </div>
         </div>
       ) : null}

@@ -40,18 +40,23 @@ export function Vote({
   };
 
   return (
-    <div className="flex flex-col items-center" title={t('hint')}>
+    <div
+      className="flex h-fit flex-col items-center gap-0.5 rounded-full border border-line bg-surface p-1"
+      title={t('hint')}
+    >
       <button
         type="button"
         aria-label={t('up')}
         aria-pressed={value === 1}
         onClick={() => cast(1)}
         className={cn(
-          'touch-target rounded-md state-toggle',
-          value === 1 ? 'text-accent' : 'text-ink-tertiary hover:text-ink',
+          'flex h-9 w-9 items-center justify-center rounded-full state-toggle pointer-coarse:h-11 pointer-coarse:w-11',
+          value === 1
+            ? 'bg-accent-soft text-accent-text'
+            : 'text-ink-tertiary hover:bg-paper-raised hover:text-ink',
         )}
       >
-        <Icon name="arrow-up" strokeWidth={value === 1 ? 2.5 : 1.5} />
+        <Icon name="arrow-up" size={18} strokeWidth={value === 1 ? 2.25 : 1.5} />
       </button>
       <button
         type="button"
@@ -59,11 +64,13 @@ export function Vote({
         aria-pressed={value === -1}
         onClick={() => cast(-1)}
         className={cn(
-          'touch-target rounded-md state-toggle',
-          value === -1 ? 'text-accent' : 'text-ink-tertiary hover:text-ink',
+          'flex h-9 w-9 items-center justify-center rounded-full state-toggle pointer-coarse:h-11 pointer-coarse:w-11',
+          value === -1
+            ? 'bg-accent-soft text-accent-text'
+            : 'text-ink-tertiary hover:bg-paper-raised hover:text-ink',
         )}
       >
-        <Icon name="arrow-down" strokeWidth={value === -1 ? 2.5 : 1.5} />
+        <Icon name="arrow-down" size={18} strokeWidth={value === -1 ? 2.25 : 1.5} />
       </button>
     </div>
   );

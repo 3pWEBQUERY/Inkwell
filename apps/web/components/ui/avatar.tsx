@@ -11,7 +11,8 @@ const SHAPES: Record<string, string> = {
   feather: 'M8 24l12-12M24 6c-6 0-12 4-14 12l2 2c8-2 12-8 12-14z',
 };
 
-const TONES = ['#2f4a6b', '#4a6b5a', '#6b4a4a', '#6b5f3a', '#4a5a6b', '#5a4a6b'];
+/** Earthy inks, all readable on paper and on the dark surface at 1.6 px. */
+const TONES = ['#2f6bc4', '#3f8a6a', '#b8573f', '#a37a2c', '#5b7fa0', '#8a5f9a'];
 
 interface AvatarProps {
   avatar: string;
@@ -49,7 +50,7 @@ export function Avatar({ avatar, pseudonym, size = 40, className, userId }: Avat
       aria-hidden={pseudonym ? undefined : true}
       className={cn('rounded-full', className)}
     >
-      <circle cx="16" cy="16" r="16" fill={tone} opacity="0.12" />
+      <circle cx="16" cy="16" r="16" fill={tone} opacity="0.14" />
       <path
         d={SHAPES[shape] ?? SHAPES.leaf}
         fill="none"

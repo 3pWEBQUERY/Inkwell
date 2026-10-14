@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { LOCALES } from '@inkwell/shared';
 
 import { RoomList } from '@/components/rooms/room-list';
+import { PageHeader } from '@/components/ui/page-header';
 import { getMe } from '@/features/auth/session';
 import { getRooms } from '@/features/posts/queries';
 
@@ -24,7 +25,7 @@ export default async function RoomsPage({
   const rooms = await getRooms(me ? me.roomLocales : [...LOCALES]);
   return (
     <div>
-      <h1 className="mb-6 font-serif text-3xl">{t('title')}</h1>
+      <PageHeader title={t('title')} />
       <RoomList rooms={rooms} initialKind={kind === 'fiction' ? 'fiction' : 'reflection'} />
     </div>
   );

@@ -59,7 +59,7 @@ export function ExportButton() {
         <a
           href={url}
           download="inkwell-export.zip"
-          className="inline-flex h-11 w-fit items-center gap-2 rounded-md bg-accent px-4 font-medium text-accent-ink"
+          className="inline-flex h-10 w-fit items-center gap-2 rounded-md bg-accent px-4 text-[0.9375rem] font-medium text-accent-ink state-toggle hover:bg-accent-hover"
         >
           <Icon name="download" size={18} />
           {t('download')}

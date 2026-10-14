@@ -20,14 +20,16 @@ export default async function ChangelogPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'legal' });
   return (
-    <article className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="font-serif text-4xl">{t('changelog')}</h1>
+    <article className="mx-auto w-full max-w-3xl px-5 pt-16 pb-24 md:px-8 md:pt-24">
+      <h1 className="display text-[2.5rem] md:text-[3.25rem]">{t('changelog')}</h1>
       <p className="mt-4 text-ink-secondary">{t('changelogIntro')}</p>
       <ol className="mt-10 space-y-10">
         {CHANGELOG.map((entry) => (
           <li key={entry.version}>
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <h2 className="font-serif text-2xl">{entry.version}</h2>
+              <h2 className="font-serif text-[1.625rem] font-medium tracking-[-0.015em]">
+                {entry.version}
+              </h2>
               <span className="text-sm text-ink-tertiary">
                 {formatDate(entry.date, locale as Locale)}
               </span>

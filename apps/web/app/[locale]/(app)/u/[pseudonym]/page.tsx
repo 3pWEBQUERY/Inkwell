@@ -32,7 +32,7 @@ export default async function ProfilePage({ params }: Props) {
       <header className="flex items-center gap-4">
         <Avatar avatar={profile.avatar} pseudonym={profile.pseudonym} size={64} />
         <div>
-          <h1 className="font-serif text-2xl">{profile.pseudonym}</h1>
+          <h1 className="display text-[1.875rem] md:text-[2.125rem]">{profile.pseudonym}</h1>
           <p className="text-[13px] text-ink-secondary">
             {me('memberSince', { date: formatMonthYear(profile.memberSince, current) })}
           </p>

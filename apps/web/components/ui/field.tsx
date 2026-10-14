@@ -22,8 +22,8 @@ export function Field({ label, hint, error, children }: FieldProps) {
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
   return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-ink">
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-[0.875rem] font-medium text-ink">
         {label}
       </label>
       {children({ id, describedBy })}
@@ -42,7 +42,7 @@ export function Field({ label, hint, error, children }: FieldProps) {
 }
 
 const CONTROL =
-  'w-full rounded-md border border-line-strong bg-paper px-3 text-ink placeholder:text-ink-tertiary focus:border-accent';
+  'w-full rounded-md border border-line-strong bg-surface px-3.5 text-ink placeholder:text-ink-tertiary state-toggle hover:border-ink-tertiary/60 focus:border-accent focus-visible:shadow-[0_0_0_3px_var(--color-accent-soft)] focus-visible:rounded-md';
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
   function Input({ className, ...rest }, ref) {

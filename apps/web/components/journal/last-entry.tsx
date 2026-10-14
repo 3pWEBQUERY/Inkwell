@@ -42,21 +42,24 @@ export function LastEntry({ entry }: { entry: JournalPost }) {
     <Link
       href={href}
       data-list-item
-      className="block rounded-md py-3 outline-none focus-visible:shadow-[var(--focus-ring)]"
+      className="card block p-5 outline-none focus-visible:shadow-[var(--focus-ring)]"
     >
+      <p className="flex items-center gap-2 text-[13px] text-ink-secondary">
+        <span className="inline-flex h-6 items-center gap-1.5 rounded-full bg-paper-sunken px-2 font-medium">
+          <Icon name={VISIBILITY_ICON[entry.visibility]} size={13} />
+          {common(`visibility.${entry.visibility}`)}
+        </span>
+        <time dateTime={entry.createdAt}>{formatDate(entry.createdAt, locale)}</time>
+      </p>
       <p
-        className="prose-reading line-clamp-2 text-[1.0625rem]"
+        className={
+          locked
+            ? 'mt-3 text-[0.9375rem] text-ink-secondary'
+            : 'prose-reading mt-3 line-clamp-3 text-[1.125rem]'
+        }
         style={{ viewTransitionName: `post-line-${entry.id}` }}
       >
         {entry.title ?? line ?? (locked ? auth('unlock.locked') : '…')}
-      </p>
-      <p className="mt-1 flex items-center gap-2 text-[13px] text-ink-secondary">
-        <Icon
-          name={VISIBILITY_ICON[entry.visibility]}
-          size={14}
-          label={common(`visibility.${entry.visibility}`)}
-        />
-        <time dateTime={entry.createdAt}>{formatDate(entry.createdAt, locale)}</time>
       </p>
     </Link>
   );

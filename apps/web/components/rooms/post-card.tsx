@@ -29,26 +29,32 @@ export function PostCard({ post, showRoom = false, highlight = false }: PostCard
   const expiresIn = hoursUntil(post.expiresAt);
 
   return (
-    <article className={cn('border-b border-line', highlight && 'just-published')}>
+    <article className={cn('rounded-lg', highlight && 'just-published')}>
       <Link
         href={`/posts/${post.id}`}
         data-list-item
-        className="block rounded-md py-5 outline-none focus-visible:shadow-[var(--focus-ring)]"
+        className="card block p-5 outline-none focus-visible:shadow-[var(--focus-ring)] md:px-6"
       >
-        <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
-          {showRoom ? <span>{post.room.name}</span> : null}
-          {showRoom ? <span aria-hidden>·</span> : null}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-ink-secondary">
           {post.author ? (
-            <span className="flex items-center gap-1.5">
-              <Avatar avatar={post.author.avatar} size={16} />
+            <span className="flex items-center gap-2 font-medium text-ink">
+              <Avatar avatar={post.author.avatar} size={22} />
               {post.author.pseudonym}
             </span>
           ) : (
-            <span className="flex items-center gap-1.5">
-              <Icon name="mask" size={14} />
+            <span className="flex items-center gap-2 font-medium text-ink">
+              <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-paper-sunken text-ink-secondary">
+                <Icon name="mask" size={13} />
+              </span>
               {t('anonymous')}
             </span>
           )}
+          {showRoom ? (
+            <>
+              <span aria-hidden>·</span>
+              <span>{post.room.name}</span>
+            </>
+          ) : null}
           <span aria-hidden>·</span>
           <time dateTime={post.createdAt}>
             {relative.key === 'justNow'
@@ -67,20 +73,23 @@ export function PostCard({ post, showRoom = false, highlight = false }: PostCard
         </div>
         {post.title ? (
           <h3
-            className="mt-2 font-serif text-xl font-semibold"
+            className="mt-3 font-serif text-[1.375rem] leading-snug font-semibold tracking-[-0.01em]"
             style={{ viewTransitionName: `post-title-${post.id}` }}
           >
             {post.title}
           </h3>
         ) : null}
         <p
-          className={cn('prose-reading mt-2 line-clamp-3 text-[1.0625rem]', post.title && 'mt-1')}
+          className={cn(
+            'prose-reading mt-3 line-clamp-3 text-[1.125rem]',
+            post.title && 'mt-1.5 text-ink-secondary',
+          )}
           style={post.title ? undefined : { viewTransitionName: `post-line-${post.id}` }}
         >
           {post.preview}
         </p>
         {post.type === 'story' ? (
-          <p className="mt-2 text-[13px] text-ink-tertiary">
+          <p className="mt-3 text-[13px] text-ink-tertiary">
             {t('words', { count: post.wordCount })}
             {post.series
               ? ` · ${post.series.title}, ${rooms('chapter', { chapter: post.series.chapter })}`

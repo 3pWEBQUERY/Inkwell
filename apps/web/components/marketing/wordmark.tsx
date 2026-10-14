@@ -11,8 +11,8 @@ export function Wordmark({
   return (
     <span
       className={cn(
-        'font-serif tracking-tight text-ink',
-        compact ? 'text-lg' : 'text-xl',
+        'font-serif tracking-[-0.02em] text-ink',
+        compact ? 'text-[1.25rem]' : 'text-[1.375rem]',
         className,
       )}
       aria-label="Inkwell"

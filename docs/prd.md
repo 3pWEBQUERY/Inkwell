@@ -593,10 +593,10 @@ Das Design ist das eines guten Notizbuchs: Papierweiss oder eine passende gedeck
 
 **Farben** (als CSS-Variablen, Dunkelmodus über `prefers-color-scheme` und `data-theme`)
 
-- Hintergrund: warmes Weiss (#FAF9F6) hell, tiefes Graublau (#15171C) dunkel. Kein reines Schwarz, kein reines Weiss.
-- Text: #1F2124 hell, #E8E6E1 dunkel. Sekundärtext mit 60 % Deckung.
-- Akzent: eine gedeckte Tinte (#2F4A6B) für Buttons und aktive Zustände. Keine zweite Akzentfarbe.
-- Warnung nur für Verbrennen und Krisenhinweis: gedecktes Rot (#9B3B3B).
+- Hintergrund: warmes Weiss (#F9F8F5) hell, tiefes Graublau (#0F1014) dunkel, dazu Kartenfläche und vertiefte Fläche als eigene Töne. Kein reines Schwarz, kein reines Weiss. (Werte seit ADR 0010.)
+- Text: #16181E hell, #EDEBE7 dunkel. Sekundär- und Tertiärtext als feste Grautöne mit mindestens 4.5:1 Kontrast.
+- Akzent: ein Tintenblau (#1A57AD hell, #83B3FA dunkel) für Buttons und aktive Zustände. Keine zweite Akzentfarbe.
+- Warnung nur für Verbrennen und Krisenhinweis: gedecktes Rot (#B3392D hell, #F2897B dunkel).
 - Keine Verläufe, keine Schatten unter Karten; Karten werden durch Abstand getrennt.
 - Theme-Wechsel animiert als Cross-Fade der ganzen Seite (View Transition, 200 ms), nicht als Farbsprung.
 

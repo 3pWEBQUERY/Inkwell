@@ -62,27 +62,29 @@ export function RoomFeed({ slug, kind, initialSort, initialPage, highlightId }: 
   };
 
   return (
-    <section className="mt-2">
+    <section>
       {kind === 'fiction' ? (
-        <Segmented
-          label={t('sort.new')}
-          value={sort}
-          onChange={changeSort}
-          options={[
-            { value: 'new', label: t('sort.new') },
-            { value: 'week', label: t('sort.week') },
-            { value: 'top', label: t('sort.top') },
-          ]}
-        />
+        <div className="mb-5 md:max-w-md">
+          <Segmented
+            label={t('sort.new')}
+            value={sort}
+            onChange={changeSort}
+            options={[
+              { value: 'new', label: t('sort.new') },
+              { value: 'week', label: t('sort.week') },
+              { value: 'top', label: t('sort.top') },
+            ]}
+          />
+        </div>
       ) : null}
       {page === null ? null : page.items.length === 0 ? (
         <EmptyState>{t('empty')}</EmptyState>
       ) : (
-        <div key={sort} className="page-enter">
+        <div key={sort} className="page-enter flex flex-col gap-3">
           {page.items.map((post) => (
             <PostCard key={post.id} post={post} highlight={post.id === highlightId} />
           ))}
-          <div className="py-6 text-center text-sm text-ink-tertiary">
+          <div className="pt-6 pb-2 text-center text-[0.875rem] text-ink-tertiary">
             {page.nextCursor ? (
               <Button
                 variant="secondary"

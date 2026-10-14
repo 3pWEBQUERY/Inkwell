@@ -18,10 +18,10 @@ export default async function SettingsContext({ params }: { params: Promise<{ gr
               href={`/me/settings/${candidate}`}
               aria-current={candidate === group ? 'page' : undefined}
               className={cn(
-                'block rounded-md px-3 py-2 text-sm state-toggle',
+                'block rounded-md border px-3 py-2 text-[0.875rem] state-toggle',
                 candidate === group
-                  ? 'bg-accent-soft text-ink'
-                  : 'text-ink-secondary hover:text-ink',
+                  ? 'border-line bg-surface font-medium text-ink'
+                  : 'border-transparent text-ink-secondary hover:bg-paper-raised hover:text-ink',
               )}
             >
               {t(`groups.${candidate}`)}

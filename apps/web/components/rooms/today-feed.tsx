@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { EmptyState } from '@/components/ui/empty-state';
+import { Icon } from '@/components/ui/icon';
 import { refreshToday } from '@/features/posts/today-actions';
 import { Link } from '@/i18n/navigation';
 
@@ -43,7 +44,10 @@ export function TodayFeed({ initial }: { initial: FeedPost[] }) {
     return (
       <EmptyState
         action={
-          <Link href="/rooms" className="text-accent underline-offset-4 hover:underline">
+          <Link
+            href="/rooms"
+            className="inline-flex h-10 items-center rounded-md border border-line-strong bg-surface px-4 text-[0.9375rem] font-medium text-ink state-toggle hover:bg-paper-raised"
+          >
             {t('browseRooms')}
           </Link>
         }
@@ -54,20 +58,21 @@ export function TodayFeed({ initial }: { initial: FeedPost[] }) {
   }
 
   return (
-    <div className="mt-2">
+    <div className="flex flex-col gap-3">
       {incoming.length > 0 ? (
         <button
           type="button"
           onClick={reveal}
-          className="flex min-h-11 w-full items-center justify-center text-sm text-accent"
+          className="mx-auto inline-flex h-9 items-center gap-1.5 rounded-full bg-accent-soft px-4 text-[0.875rem] font-medium text-accent-text state-toggle hover:bg-accent-tint"
         >
+          <Icon name="arrow-up" size={15} />
           {t('newTexts', { count: incoming.length })}
         </button>
       ) : null}
       {items.map((post) => (
         <PostCard key={post.id} post={post} showRoom />
       ))}
-      <p className="py-8 text-center text-sm text-ink-tertiary">{t('end')}</p>
+      <p className="pt-6 pb-2 text-center text-[0.875rem] text-ink-tertiary">{t('end')}</p>
     </div>
   );
 }

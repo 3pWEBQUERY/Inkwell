@@ -37,7 +37,7 @@ export function CodeInput({ value, onChange, label, describedBy, disabled }: Cod
           disabled={disabled}
           aria-label={`${label} ${index + 1}`}
           aria-describedby={describedBy}
-          className="h-14 w-11 rounded-md border border-line-strong bg-paper text-center font-serif text-2xl focus:border-accent"
+          className="h-14 w-12 rounded-lg border border-line-strong bg-surface text-center font-serif text-2xl tabular-nums state-toggle focus:border-accent focus-visible:shadow-[0_0_0_3px_var(--color-accent-soft)] focus-visible:rounded-lg"
           onChange={(event) => {
             const char = event.target.value.replace(/\D/g, '').slice(-1);
             update(index, char);

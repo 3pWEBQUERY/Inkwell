@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "lighthouse": "lhci autorun",
-    "clean": "rm -rf .next public/sw.js"
+    "clean": "rm -rf .next public/sw.js",
+    "shots": "node scripts/product-shots.mjs && SCHEME=dark node scripts/product-shots.mjs"
   },
   "dependencies": {
     "@inkwell/shared": "workspace:*",

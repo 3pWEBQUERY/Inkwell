@@ -122,7 +122,7 @@ export function CompletionPanel({
       }}
     >
       <fieldset>
-        <legend className="text-sm font-medium text-ink-secondary">{t('type.label')}</legend>
+        <legend className="label">{t('type.label')}</legend>
         <div className="mt-2 grid grid-cols-2 gap-2">
           {(['thought', 'story'] as const).map((option) => (
             <button
@@ -131,10 +131,10 @@ export function CompletionPanel({
               aria-pressed={type === option}
               onClick={() => chooseType(option)}
               className={cn(
-                'h-11 rounded-md border state-toggle',
+                'h-11 rounded-md border font-medium state-toggle',
                 type === option
-                  ? 'border-accent bg-accent-soft'
-                  : 'border-line-strong text-ink-secondary',
+                  ? 'border-accent bg-accent-tint text-ink shadow-[inset_0_0_0_1px_var(--color-accent)]'
+                  : 'border-line-strong bg-surface text-ink-secondary hover:border-ink-tertiary/60 hover:text-ink',
               )}
             >
               {t(`type.${option}`)}
@@ -145,7 +145,7 @@ export function CompletionPanel({
       </fieldset>
 
       <fieldset>
-        <legend className="text-sm font-medium text-ink-secondary">{t('visibility.label')}</legend>
+        <legend className="label">{t('visibility.label')}</legend>
         <div className="mt-2 flex flex-col gap-2">
           {(['private', 'anonymous', 'public'] as const).map((option) => {
             const greyed = option === 'anonymous' && type === 'story';
@@ -157,12 +157,23 @@ export function CompletionPanel({
                 aria-disabled={greyed}
                 onClick={() => choose(option)}
                 className={cn(
-                  'flex items-start gap-3 rounded-md border p-3 text-left state-toggle',
-                  visibility === option ? 'border-accent bg-accent-soft' : 'border-line-strong',
+                  'flex items-start gap-3 rounded-lg border p-3.5 text-left state-toggle',
+                  visibility === option
+                    ? 'border-accent bg-accent-tint text-ink shadow-[inset_0_0_0_1px_var(--color-accent)]'
+                    : 'border-line-strong bg-surface hover:border-ink-tertiary/60',
                   greyed && 'opacity-40',
                 )}
               >
-                <Icon name={VISIBILITY_ICON[option]} className="mt-0.5 shrink-0" />
+                <span
+                  className={cn(
+                    'flex h-8 w-8 shrink-0 items-center justify-center rounded-md state-toggle',
+                    visibility === option
+                      ? 'bg-accent text-accent-ink'
+                      : 'bg-paper-sunken text-ink-secondary',
+                  )}
+                >
+                  <Icon name={VISIBILITY_ICON[option]} size={17} />
+                </span>
                 <span>
                   <span className="block font-medium">{t(`visibility.${option}.title`)}</span>
                   <span className="block text-[13px] text-ink-secondary">
@@ -188,7 +199,7 @@ export function CompletionPanel({
       >
         <div className="flex flex-col gap-6 overflow-hidden">
           <fieldset>
-            <legend className="text-sm font-medium text-ink-secondary">{t('room.label')}</legend>
+            <legend className="label">{t('room.label')}</legend>
             {rooms.some((room) => room.joined && room.kind === kind) ? (
               <>
                 <Input
@@ -199,7 +210,7 @@ export function CompletionPanel({
                   aria-label={t('room.search')}
                   className="mt-2"
                 />
-                <ul className="mt-2 max-h-48 overflow-y-auto rounded-md border border-line">
+                <ul className="mt-2 max-h-48 divide-y divide-line overflow-y-auto rounded-lg border border-line bg-surface">
                   {candidateRooms.map((room) => (
                     <li key={room.id}>
                       <button
@@ -207,13 +218,15 @@ export function CompletionPanel({
                         aria-pressed={roomId === room.id}
                         onClick={() => setRoomId(room.id)}
                         className={cn(
-                          'flex min-h-11 w-full items-center justify-between px-3 text-left state-toggle',
-                          roomId === room.id ? 'bg-accent-soft' : 'hover:bg-paper-raised',
+                          'flex min-h-11 w-full items-center justify-between px-3.5 text-left state-toggle',
+                          roomId === room.id
+                            ? 'bg-accent-tint font-medium'
+                            : 'hover:bg-paper-raised',
                         )}
                       >
                         <span>{room.name}</span>
                         {roomId === room.id ? (
-                          <Icon name="check" size={16} className="text-accent" />
+                          <Icon name="check" size={16} className="text-accent-text" />
                         ) : null}
                       </button>
                     </li>
@@ -225,7 +238,7 @@ export function CompletionPanel({
                 {t('room.none')}{' '}
                 <Link
                   href={`/rooms?kind=${kind}`}
-                  className="text-accent underline-offset-4 hover:underline"
+                  className="text-accent-text underline-offset-4 hover:underline"
                 >
                   {t('room.browse')}
                 </Link>
@@ -235,7 +248,7 @@ export function CompletionPanel({
           </fieldset>
 
           <fieldset>
-            <legend className="text-sm font-medium text-ink-secondary">{t('expiry.label')}</legend>
+            <legend className="label">{t('expiry.label')}</legend>
             <div className="mt-2 grid grid-cols-3 gap-2">
               {(['none', '24h', '7d'] as const).map((option) => (
                 <button
@@ -244,10 +257,10 @@ export function CompletionPanel({
                   aria-pressed={expiry === option}
                   onClick={() => setExpiry(option)}
                   className={cn(
-                    'h-11 rounded-md border state-toggle',
+                    'h-11 rounded-md border font-medium state-toggle',
                     expiry === option
-                      ? 'border-accent bg-accent-soft'
-                      : 'border-line-strong text-ink-secondary',
+                      ? 'border-accent bg-accent-tint text-ink shadow-[inset_0_0_0_1px_var(--color-accent)]'
+                      : 'border-line-strong bg-surface text-ink-secondary hover:border-ink-tertiary/60 hover:text-ink',
                   )}
                 >
                   {t(`expiry.${option}`)}
@@ -261,14 +274,12 @@ export function CompletionPanel({
 
           {type === 'story' && visibility === 'public' ? (
             <fieldset>
-              <legend className="text-sm font-medium text-ink-secondary">
-                {t('series.label')}
-              </legend>
+              <legend className="label">{t('series.label')}</legend>
               <select
                 value={seriesId ?? ''}
                 onChange={(e) => setSeriesId(e.target.value || null)}
                 aria-label={t('series.label')}
-                className="mt-2 h-11 w-full rounded-md border border-line-strong bg-paper px-3"
+                className="mt-2 h-11 w-full rounded-md border border-line-strong bg-surface px-3"
               >
                 <option value="">{t('series.none')}</option>
                 {series.map((item) => (

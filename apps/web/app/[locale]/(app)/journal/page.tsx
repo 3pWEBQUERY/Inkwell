@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { JournalList } from '@/components/journal/journal-list';
+import { PageHeader } from '@/components/ui/page-header';
 import { getMe } from '@/features/auth/session';
 import { getJournal } from '@/features/posts/queries';
 import { redirect } from '@/i18n/navigation';
@@ -30,7 +31,7 @@ export default async function JournalPage({
   const journal = await getJournal();
   return (
     <div>
-      <h1 className="mb-6 font-serif text-3xl">{t('title')}</h1>
+      <PageHeader title={t('title')} />
       <JournalList initial={journal.items} focusSearch={focus === 'search'} openId={open ?? null} />
     </div>
   );

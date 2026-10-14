@@ -18,11 +18,11 @@ function svg(size, { maskable }) {
   const r = inner * 0.5;
   const cx = size / 2;
   const cy = size / 2;
-  // A nib: a rounded square of paper with a single ink dot, calm and recognisable at 48 px.
+  // A nib in paper on an ink tile, with the wordmark's blue dot: recognisable at 48 px.
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-  <rect width="${size}" height="${size}" rx="${maskable ? 0 : size * 0.22}" fill="#faf9f6"/>
-  <path d="M${cx - r * 0.55} ${cy + r * 0.62} L${cx + r * 0.08} ${cy - r * 0.62} L${cx + r * 0.55} ${cy - r * 0.62} L${cx - r * 0.08} ${cy + r * 0.62} Z" fill="#2f4a6b" opacity="0.92"/>
-  <circle cx="${cx + r * 0.52}" cy="${cy + r * 0.5}" r="${r * 0.17}" fill="#2f4a6b"/>
+  <rect width="${size}" height="${size}" rx="${maskable ? 0 : size * 0.22}" fill="#121a2b"/>
+  <path d="M${cx - r * 0.55} ${cy + r * 0.62} L${cx + r * 0.08} ${cy - r * 0.62} L${cx + r * 0.55} ${cy - r * 0.62} L${cx - r * 0.08} ${cy + r * 0.62} Z" fill="#f9f8f5"/>
+  <circle cx="${cx + r * 0.52}" cy="${cy + r * 0.5}" r="${r * 0.17}" fill="#83b3fa"/>
 </svg>`;
 }
 

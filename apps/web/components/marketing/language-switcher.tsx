@@ -25,7 +25,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
           const next = event.target.value as Locale;
           startTransition(() => router.replace(pathname, { locale: next }));
         }}
-        className="h-9 rounded-md border border-line-strong bg-paper px-2 text-ink"
+        className="h-9 rounded-md border border-line-strong bg-surface pr-7 pl-2.5 text-[0.875rem] text-ink state-toggle hover:bg-paper-raised"
       >
         {LOCALES.map((option) => (
           <option key={option} value={option}>

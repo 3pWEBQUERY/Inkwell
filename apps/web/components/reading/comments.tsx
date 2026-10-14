@@ -73,9 +73,12 @@ export function Comments({ post, comments }: CommentsProps) {
     : body.trim().length > 0;
 
   return (
-    <section className="mt-10 border-t border-line pt-6" aria-labelledby="comments-title">
+    <section className="mt-12 border-t border-line pt-8" aria-labelledby="comments-title">
       <div className="flex items-center justify-between gap-4">
-        <h2 id="comments-title" className="font-serif text-xl">
+        <h2
+          id="comments-title"
+          className="font-serif text-[1.375rem] font-medium tracking-[-0.01em]"
+        >
           {feedbackMode ? t('feedback.title') : t('title')}
         </h2>
         {post.viewer.isAuthor ? (
@@ -90,11 +93,11 @@ export function Comments({ post, comments }: CommentsProps) {
       </div>
 
       {comments.length === 0 ? <p className="mt-4 text-ink-secondary">{t('empty')}</p> : null}
-      <ol className="mt-4 flex flex-col divide-y divide-line">
+      <ol className="mt-5 flex flex-col gap-3">
         {comments.map((comment) => {
           const relative = relativeBucket(comment.createdAt);
           return (
-            <li key={comment.id} className="py-4">
+            <li key={comment.id} className="card px-5 py-4">
               <div className="flex items-center gap-2 text-[13px] text-ink-secondary">
                 {comment.author ? (
                   <span className="flex items-center gap-1.5">

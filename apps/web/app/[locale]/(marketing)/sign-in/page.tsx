@@ -29,11 +29,13 @@ export default async function SignInPage({
   if (me?.pseudonym && !me.pseudonym.startsWith('new.')) redirect({ href: '/today', locale });
   const { intent } = await searchParams;
   return (
-    <div className="flex min-h-[calc(100dvh-56px)] items-center px-4 py-16">
-      <AuthPanel
-        initialIntent={intent === 'create' ? 'create' : 'sign-in'}
-        appleClientId={process.env.NEXT_PUBLIC_APPLE_CLIENT_ID}
-      />
+    <div className="flex min-h-[calc(100dvh-var(--height-nav))] items-center justify-center px-4 py-12 md:py-20">
+      <div className="card w-full max-w-[488px] p-6 md:p-8">
+        <AuthPanel
+          initialIntent={intent === 'create' ? 'create' : 'sign-in'}
+          appleClientId={process.env.NEXT_PUBLIC_APPLE_CLIENT_ID}
+        />
+      </div>
     </div>
   );
 }
