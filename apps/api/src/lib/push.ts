@@ -1,4 +1,6 @@
-import * as webPush from 'web-push';
+// web-push is CommonJS and builds its exports from member expressions, which Node's
+// named-export detection cannot see: under ESM only `default` carries setVapidDetails.
+import webPush from 'web-push';
 
 import type { Env } from '../env.js';
 import type { Logger } from 'pino';

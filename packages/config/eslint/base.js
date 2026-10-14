@@ -83,7 +83,10 @@ export const baseConfig = tseslint.config(
           alphabetize: { order: 'asc', caseInsensitive: true },
         },
       ],
+      // Resolution and export shapes are checked by the TypeScript compiler. The
+      // plugin's own checks differ per resolver root and misjudge CommonJS packages.
       'import-x/no-unresolved': 'off',
+      'import-x/default': 'off',
       'import-x/no-named-as-default-member': 'off',
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'no-warning-comments': ['error', { terms: ['todo', 'fixme'], location: 'start' }],
