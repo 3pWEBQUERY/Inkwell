@@ -15,6 +15,13 @@
       "when": 1791922080255,
       "tag": "0001_room_rule_triggers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791958800000,
+      "tag": "0002_user_passwords",
+      "breakpoints": true
     }
   ]
 }

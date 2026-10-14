@@ -84,9 +84,16 @@ export default defineRailway(() => {
       API_INTERNAL_TOKEN: preserve(),
       SESSION_SECRET: preserve(),
       CRON_SECRET: preserve(),
-      // Mail: switch to smtp once an EU provider is configured (SMTP_* variables).
+      // Mail goes through Resend over SMTP. Stays on `console` (codes only in the
+      // api logs) until the sending domain is verified in Resend; then set
+      // MAIL_TRANSPORT to 'smtp', MAIL_FROM to an address on that domain and
+      // SMTP_PASS to the Resend API key on Railway.
       MAIL_TRANSPORT: 'console',
       MAIL_FROM: 'Inkwell <no-reply@inkwell.app>',
+      SMTP_HOST: 'smtp.resend.com',
+      SMTP_PORT: '465',
+      SMTP_USER: 'resend',
+      SMTP_PASS: preserve(),
       // Object storage: avatars and export archives in the Railway bucket.
       S3_ENDPOINT: ref(storage, 'ENDPOINT'),
       S3_REGION: ref(storage, 'REGION'),
@@ -130,8 +137,9 @@ export default defineRailway(() => {
       API_URL: `http://\${{api.RAILWAY_PRIVATE_DOMAIN}}:${API_PORT}`,
       API_INTERNAL_TOKEN: api.env.API_INTERNAL_TOKEN,
       SESSION_COOKIE_NAME: 'inkwell_session',
-      // Empty = /admin answers 404 in production. Fill with the operators' IPs or CIDRs.
-      ADMIN_IP_ALLOWLIST: '',
+      // "*" = no network restriction while the team has no fixed addresses; the
+      // admin role still gates /admin. Replace with the operators' IPs or CIDRs.
+      ADMIN_IP_ALLOWLIST: '*',
       NEXT_PUBLIC_APP_ORIGIN: PUBLIC_ORIGIN,
       NEXT_PUBLIC_APP_VERSION: '0.1.0',
       NEXT_PUBLIC_BUILD_ID: '${{RAILWAY_GIT_COMMIT_SHA}}',

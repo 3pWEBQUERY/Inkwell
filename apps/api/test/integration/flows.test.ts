@@ -6,6 +6,8 @@ import { loadEnv } from '../../src/env.js';
 import { createLogger } from '../../src/lib/logger.js';
 import { createPushSender } from '../../src/lib/push.js';
 import { createStorage } from '../../src/lib/storage.js';
+import { setPassword } from '../../src/services/auth.js';
+import { createUser } from '../../src/services/users.js';
 
 import type { Mail } from '../../src/lib/mail.js';
 
@@ -264,6 +266,41 @@ describeIf('core flows', () => {
     expect(gone.statusCode).toBe(404);
   });
 
+  it('signs in with a password only where one was set by an operator', async () => {
+    const email = `ops-${suffix}@example.ch`;
+    const password = 'correct horse battery';
+    const unknown = await app.inject({
+      method: 'POST',
+      url: '/v1/auth/password/sign-in',
+      headers: headers(),
+      payload: { email, password },
+    });
+    expect(unknown.statusCode).toBe(400);
+    expect(unknown.json<{ error: string }>().error).toBe('CREDENTIALS_INVALID');
+
+    const user = await createUser(app.ctx.db, app.ctx.env.SESSION_SECRET, { email, locale: 'de' });
+    await setPassword(app.ctx.db, user.id, password);
+    const wrong = await app.inject({
+      method: 'POST',
+      url: '/v1/auth/password/sign-in',
+      headers: headers(),
+      payload: { email, password: 'not the password' },
+    });
+    expect(wrong.statusCode).toBe(400);
+
+    const signedIn = await app.inject({
+      method: 'POST',
+      url: '/v1/auth/password/sign-in',
+      headers: headers(),
+      payload: { email, password },
+    });
+    expect(signedIn.statusCode).toBe(200);
+    const body = signedIn.json<{ token: string; needsOnboarding: boolean }>();
+    expect(body.needsOnboarding).toBe(true);
+    const me = await app.inject({ method: 'GET', url: '/v1/me', headers: headers(body.token) });
+    expect(me.statusCode).toBe(200);
+  });
+
   it('prepares an export and schedules deletion with a grace period', async () => {
     const requested = await app.inject({
       method: 'POST',
@@ -271,13 +308,14 @@ describeIf('core flows', () => {
       headers: headers(authorToken),
     });
     expect(requested.statusCode).toBe(202);
+    // The archive is built inline on request; the hourly job only picks up leftovers.
     const job = await app.inject({
       method: 'POST',
       url: '/v1/jobs/exports',
       headers: { ...headers(), 'x-cron-secret': 'c'.repeat(32) },
     });
     expect(job.statusCode, job.body).toBe(200);
-    expect(job.json<{ processed: number }>().processed).toBeGreaterThanOrEqual(1);
+    expect(job.json<{ processed: number }>().processed).toBe(0);
     const latest = await app.inject({
       method: 'GET',
       url: '/v1/me/export/latest',

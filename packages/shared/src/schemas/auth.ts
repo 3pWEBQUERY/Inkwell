@@ -11,6 +11,11 @@ export const verifyEmailCodeSchema = z.object({
   code: z.string().regex(/^\d{6}$/),
 });
 
+export const passwordSignInSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(8).max(128),
+});
+
 export const passkeyOptionsSchema = z.object({
   intent: z.enum(['register', 'authenticate']),
   /** Required for registration of a new passkey on an existing account. */
@@ -42,4 +47,5 @@ export const pseudonymAvailabilitySchema = z.object({
 
 export type RequestEmailCodeInput = z.infer<typeof requestEmailCodeSchema>;
 export type VerifyEmailCodeInput = z.infer<typeof verifyEmailCodeSchema>;
+export type PasswordSignInInput = z.infer<typeof passwordSignInSchema>;
 export type CompleteOnboardingInput = z.infer<typeof completeOnboardingSchema>;

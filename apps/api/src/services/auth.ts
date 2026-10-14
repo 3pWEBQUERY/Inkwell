@@ -163,6 +163,36 @@ export async function signInWithEmailCode(
   return { token: session.token, sessionId: session.id, user, isNew };
 }
 
+// --- Password ---------------------------------------------------------------------
+
+/**
+ * Hash verified when the address is unknown or has no password, so a failed
+ * attempt costs the same time either way and reveals nothing about the account.
+ */
+const DECOY_HASH = await scryptHash(randomToken(16));
+
+export async function signInWithPassword(
+  db: Database,
+  env: Env,
+  email: string,
+  password: string,
+  device: string,
+): Promise<SessionResult> {
+  const user = await findUserByEmail(db, env.SESSION_SECRET, email);
+  const valid = await scryptVerify(password, user?.passwordHash ?? DECOY_HASH);
+  if (!user?.passwordHash || !valid) throw new ApiError('CREDENTIALS_INVALID');
+  assertCanSignIn(user);
+  const session = await createSession(db, user.id, device);
+  return { token: session.token, sessionId: session.id, user, isNew: false };
+}
+
+export async function setPassword(db: Database, userId: string, password: string): Promise<void> {
+  await db
+    .update(users)
+    .set({ passwordHash: await scryptHash(password), updatedAt: new Date() })
+    .where(eq(users.id, userId));
+}
+
 function assertCanSignIn(user: UserRow): void {
   if (user.suspendedPermanently) return; // may still read and export
   if (user.deletedAt && user.purgeAfter && user.purgeAfter.getTime() <= Date.now()) {

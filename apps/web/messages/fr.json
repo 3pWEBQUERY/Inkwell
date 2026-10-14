@@ -220,6 +220,13 @@
     "apple": "Continuer avec Apple",
     "passkeyUnavailable": "Pas encore de passkey sur cet appareil. Connecte-toi par e-mail ; tu pourras ajouter un passkey ensuite dans les réglages.",
     "appleUnavailable": "La connexion avec Apple n'est pas configurée dans cet environnement.",
+    "password": "Se connecter avec un mot de passe",
+    "passwordStep": {
+      "title": "Connexion avec mot de passe",
+      "label": "Mot de passe",
+      "signIn": "Se connecter",
+      "hint": "Seuls les comptes créés par l’équipe ont un mot de passe. Les autres se connectent par code ou par passkey."
+    },
     "emailStep": {
       "title": "Ton e-mail",
       "label": "Adresse e-mail",
@@ -706,6 +713,7 @@
       "EMAIL_INVALID": "Ce n'est pas une adresse e-mail valable.",
       "CODE_INVALID": "Le code est incorrect. Vérifie les six chiffres.",
       "CODE_EXPIRED": "Le code a expiré. Demande un nouveau code.",
+      "CREDENTIALS_INVALID": "L’adresse e-mail ou le mot de passe est incorrect.",
       "PASSKEY_INVALID": "Le passkey n'a pas pu être vérifié. Réessaie.",
       "APPLE_TOKEN_INVALID": "La connexion avec Apple n'a pas fonctionné.",
       "SESSION_EXPIRED": "Ta session a expiré. Reconnecte-toi.",

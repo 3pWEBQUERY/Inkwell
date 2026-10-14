@@ -220,6 +220,13 @@
     "apple": "Mit Apple fortfahren",
     "passkeyUnavailable": "Noch kein Passkey auf diesem Gerät. Melde dich per E-Mail an; einen Passkey kannst du danach in den Einstellungen hinzufügen.",
     "appleUnavailable": "Anmeldung mit Apple ist in dieser Umgebung nicht eingerichtet.",
+    "password": "Mit Passwort anmelden",
+    "passwordStep": {
+      "title": "Anmelden mit Passwort",
+      "label": "Passwort",
+      "signIn": "Anmelden",
+      "hint": "Passwörter gibt es nur für Konten, die das Team eingerichtet hat. Alle anderen melden sich per Code oder Passkey an."
+    },
     "emailStep": {
       "title": "Deine E-Mail",
       "label": "E-Mail-Adresse",
@@ -706,6 +713,7 @@
       "EMAIL_INVALID": "Das ist keine gültige E-Mail-Adresse.",
       "CODE_INVALID": "Der Code stimmt nicht. Prüfe die sechs Ziffern.",
       "CODE_EXPIRED": "Der Code ist abgelaufen. Lass dir einen neuen schicken.",
+      "CREDENTIALS_INVALID": "E-Mail-Adresse oder Passwort stimmt nicht.",
       "PASSKEY_INVALID": "Der Passkey konnte nicht geprüft werden. Versuch es noch einmal.",
       "APPLE_TOKEN_INVALID": "Die Anmeldung mit Apple hat nicht geklappt.",
       "SESSION_EXPIRED": "Deine Sitzung ist abgelaufen. Melde dich erneut an.",

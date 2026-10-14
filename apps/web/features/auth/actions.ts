@@ -42,6 +42,25 @@ export async function verifyEmailCode(
   }
 }
 
+export async function signInWithPassword(
+  email: string,
+  password: string,
+  locale: Locale,
+): Promise<ActionResult<{ needsOnboarding: boolean; me: Me }>> {
+  try {
+    const result = await api<SessionResponse>('/auth/password/sign-in', {
+      method: 'POST',
+      body: { email, password },
+      locale,
+      token: null,
+    });
+    await setSessionCookie(result.token);
+    return { ok: true, data: { needsOnboarding: result.needsOnboarding, me: result.me } };
+  } catch (error) {
+    return failure(error);
+  }
+}
+
 export async function passkeyOptions(
   intent: 'register' | 'authenticate',
 ): Promise<ActionResult<{ challengeId: string; options: unknown }>> {

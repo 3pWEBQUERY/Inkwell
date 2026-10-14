@@ -34,11 +34,35 @@ in the Railway dashboard, never by committing values.
 - Attach the custom domain to `web` and update `PUBLIC_ORIGIN` in `railway.ts`
   (`APP_ORIGIN`, `RP_ID`, `NEXT_PUBLIC_APP_ORIGIN`, `VAPID_SUBJECT` derive from it).
   Passkeys are bound to the hostname: register them only on the final domain.
-- Set `MAIL_TRANSPORT=smtp` plus `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
-  for an EU mail provider. Until then sign-in codes appear only in the `api` logs.
-- Fill `ADMIN_IP_ALLOWLIST` on `web` with the operators' IPs or CIDR ranges.
+- Turn mail on. Resend is wired up over SMTP (`smtp.resend.com:465`, user
+  `resend`); what is missing is the domain. In Resend: add and verify the
+  sending domain, create an API key. On Railway (`api`): set `SMTP_PASS` to that
+  key, `MAIL_FROM` to an address on the verified domain, `MAIL_TRANSPORT=smtp`.
+  Until then sign-in codes appear only in the `api` logs, and operators sign in
+  with the password accounts below.
+- Narrow `ADMIN_IP_ALLOWLIST` on `web` from `*` to the operators' IPs or CIDR
+  ranges once the team has fixed addresses.
 - Set `APPLE_CLIENT_ID` on `api` once Sign in with Apple is configured.
 - Point `BRANCH` at `main` after the initial work is merged.
+
+## Accounts with a password
+
+Sign-in is by e-mail code or passkey. Accounts for operators and testers get a
+password through the API script, which creates the account if needed, sets the
+roles and the password, and leaves onboarding (age check, pseudonym, recovery
+code) to the first sign-in. The script needs the API's `DATABASE_URL` and
+`SESSION_SECRET`.
+
+```sh
+INKWELL_USERS='[{"email":"ops@example.ch","password":"…","roles":["admin"]}]' \
+  railway run --service api pnpm --filter @inkwell/api users:create
+```
+
+Without the CLI, run it as a one-off service from this repository with the same
+build as `api`, the start command `pnpm --filter @inkwell/api users:create`,
+restart policy `NEVER`, and the variables `DATABASE_URL`, `SESSION_SECRET`
+(references to Postgres and `api`) and `INKWELL_USERS`. Delete the service
+afterwards so the password leaves Railway with it.
 
 ## CI
 

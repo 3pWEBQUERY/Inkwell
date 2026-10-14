@@ -80,6 +80,8 @@ function ipAllowed(request: NextRequest): boolean {
     .map((entry) => entry.trim())
     .filter(Boolean);
   if (allowlist.length === 0) return process.env.NODE_ENV !== 'production';
+  // "*" opts out of the network restriction on purpose; the admin role still applies.
+  if (allowlist.includes('*')) return true;
   const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
   const ip = forwarded ?? request.headers.get('x-real-ip') ?? '';
   return allowlist.some((entry) => matches(ip, entry));

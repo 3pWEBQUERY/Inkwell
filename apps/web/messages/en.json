@@ -220,6 +220,13 @@
     "apple": "Continue with Apple",
     "passkeyUnavailable": "No passkey on this device yet. Sign in by e-mail; you can add a passkey in settings afterwards.",
     "appleUnavailable": "Sign in with Apple is not set up in this environment.",
+    "password": "Sign in with a password",
+    "passwordStep": {
+      "title": "Sign in with your password",
+      "label": "Password",
+      "signIn": "Sign in",
+      "hint": "Only accounts set up by the team have a password. Everyone else signs in with a code or a passkey."
+    },
     "emailStep": {
       "title": "Your e-mail",
       "label": "E-mail address",
@@ -706,6 +713,7 @@
       "EMAIL_INVALID": "That is not a valid e-mail address.",
       "CODE_INVALID": "The code is wrong. Check the six digits.",
       "CODE_EXPIRED": "The code has expired. Request a new one.",
+      "CREDENTIALS_INVALID": "E-mail address or password is not right.",
       "PASSKEY_INVALID": "The passkey could not be verified. Try again.",
       "APPLE_TOKEN_INVALID": "Sign in with Apple did not work.",
       "SESSION_EXPIRED": "Your session has expired. Sign in again.",

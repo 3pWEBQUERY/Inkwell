@@ -26,6 +26,7 @@ import {
   passkeyOptions,
   passkeyVerify,
   requestEmailCode,
+  signInWithPassword,
   verifyEmailCode,
 } from '@/features/auth/actions';
 import { cryptoClient } from '@/features/crypto/client';
@@ -39,6 +40,7 @@ type Step =
   | 'entry'
   | 'email'
   | 'code'
+  | 'password'
   | 'age'
   | 'declined'
   | 'pseudonym'
@@ -50,6 +52,7 @@ const ORDER: Step[] = [
   'entry',
   'email',
   'code',
+  'password',
   'age',
   'declined',
   'pseudonym',
@@ -143,6 +146,19 @@ export function AuthPanel({
     startTransition(async () => {
       const result = await verifyEmailCode(email, value, locale);
       if (!result.ok) return setError(result.error);
+      setMe(result.data.me);
+      afterSignIn(result.data.needsOnboarding);
+    });
+  };
+
+  // --- Password (accounts set up by the team) ---------------------------------------------------
+  const [password, setPassword] = useState('');
+
+  const signInWithPasswordNow = () => {
+    startTransition(async () => {
+      const result = await signInWithPassword(email, password, locale);
+      if (!result.ok) return setError(result.error);
+      setPassword('');
       setMe(result.data.me);
       afterSignIn(result.data.needsOnboarding);
     });
@@ -297,13 +313,22 @@ export function AuthPanel({
               ) : (
                 <ErrorText code={error} />
               )}
-              <button
-                type="button"
-                onClick={() => router.push('/rooms')}
-                className="mt-4 self-center text-accent underline-offset-4 hover:underline"
-              >
-                {common('readOnly')}
-              </button>
+              <div className="mt-4 flex flex-col items-center gap-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() => router.push('/rooms')}
+                  className="text-accent underline-offset-4 hover:underline"
+                >
+                  {common('readOnly')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go('password')}
+                  className="text-ink-secondary underline-offset-4 hover:text-ink hover:underline"
+                >
+                  {t('password')}
+                </button>
+              </div>
             </div>
           ) : null}
 
@@ -367,6 +392,51 @@ export function AuthPanel({
                 </button>
               </div>
             </div>
+          ) : null}
+
+          {step === 'password' ? (
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                signInWithPasswordNow();
+              }}
+            >
+              <h2 className="font-serif text-xl">{t('passwordStep.title')}</h2>
+              <Field label={t('emailStep.label')}>
+                {({ id, describedBy }) => (
+                  <Input
+                    id={id}
+                    type="email"
+                    autoComplete="username"
+                    inputMode="email"
+                    required
+                    autoFocus
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-describedby={describedBy}
+                  />
+                )}
+              </Field>
+              <Field label={t('passwordStep.label')} error={<ErrorText code={error} />}>
+                {({ id, describedBy }) => (
+                  <Input
+                    id={id}
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    minLength={8}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    aria-describedby={describedBy}
+                  />
+                )}
+              </Field>
+              <p className="text-[13px] text-ink-secondary">{t('passwordStep.hint')}</p>
+              <Button type="submit" size="lg" busy={pending}>
+                {t('passwordStep.signIn')}
+              </Button>
+            </form>
           ) : null}
 
           {step === 'age' ? (

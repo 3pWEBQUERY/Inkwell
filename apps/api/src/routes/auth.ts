@@ -6,6 +6,7 @@ import {
   completeOnboardingSchema,
   isLocale,
   passkeyVerifySchema,
+  passwordSignInSchema,
   pseudonymAvailabilitySchema,
   requestEmailCodeSchema,
   verifyEmailCodeSchema,
@@ -25,6 +26,7 @@ import {
   revokeSession,
   signInWithApple,
   signInWithEmailCode,
+  signInWithPassword,
   type SessionResult,
 } from '../services/auth.js';
 import { changePseudonym, isPseudonymAvailable, toMe } from '../services/users.js';
@@ -70,6 +72,20 @@ export const authRoutes: FastifyPluginAsyncZod = async (app) => {
       request.body.email,
       request.body.code,
       localeOf(request.headers['x-locale']),
+      describeDevice(request.headers['user-agent']),
+    );
+    return sessionResponse(result);
+  });
+
+  app.post('/password/sign-in', { schema: { body: passwordSignInSchema } }, async (request) => {
+    await app.rateLimit(`password:${request.body.email.toLowerCase()}`, 10, 15 * 60);
+    if (request.deviceHash)
+      await app.rateLimit(`password:device:${request.deviceHash}`, 30, 60 * 60);
+    const result = await signInWithPassword(
+      db,
+      env,
+      request.body.email,
+      request.body.password,
       describeDevice(request.headers['user-agent']),
     );
     return sessionResponse(result);

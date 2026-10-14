@@ -68,6 +68,8 @@ export const users = pgTable(
     email: text().notNull(),
     emailHash: text().notNull(),
     appleSub: text(),
+    /** scrypt hash; null for accounts that sign in with codes or passkeys only. */
+    passwordHash: text('password_hash'),
     pseudonym: text().notNull(),
     pseudonymChangedAt: timestampTz('pseudonym_changed_at'),
     avatar: text().notNull().default('shape:leaf-1'),
