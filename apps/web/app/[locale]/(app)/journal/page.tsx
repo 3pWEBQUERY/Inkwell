@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { DraftList } from '@/components/journal/draft-list';
 import { JournalList } from '@/components/journal/journal-list';
 import { OnThisDay } from '@/components/journal/on-this-day';
+import { PassageList } from '@/components/journal/passage-list';
 import { PostCard } from '@/components/rooms/post-card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
@@ -36,16 +37,27 @@ export default async function JournalPage({
   const { focus, open, view, day } = await searchParams;
   const kept = view === 'kept';
   const drafts = view === 'drafts';
+  const lines = view === 'lines';
   const tabs = (
     <TabLinks
       label={t('views.label')}
       tabs={[
-        { href: '/journal', label: t('views.written'), active: !kept && !drafts },
+        { href: '/journal', label: t('views.written'), active: !kept && !drafts && !lines },
         { href: '/journal?view=drafts', label: t('views.drafts'), active: drafts },
+        { href: '/journal?view=lines', label: t('views.lines'), active: lines },
         { href: '/journal?view=kept', label: t('views.kept'), active: kept },
       ]}
     />
   );
+
+  if (lines) {
+    return (
+      <div>
+        <PageHeader title={t('title')} actions={tabs} />
+        <PassageList />
+      </div>
+    );
+  }
 
   if (drafts) {
     return (

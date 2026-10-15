@@ -47,6 +47,13 @@ function newDraftId(): string {
   return globalThis.crypto.randomUUID();
 }
 
+/** The text a new entry responds to (`?about=`): shown above, never part of the entry. */
+export interface AboutText {
+  id: string;
+  line: string;
+  roomName: string;
+}
+
 interface WriteOverlayProps {
   rooms: RoomView[];
   series: OwnSeries[];
@@ -63,6 +70,7 @@ interface WriteOverlayProps {
   roomSlug: string | null;
   /** Opened from the journal's drafts (`?draft=`): continues that draft. */
   draftId: string | null;
+  about: AboutText | null;
   /** Rendered through the @modal slot over another page. */
   intercepted: boolean;
   /** Rendered as its own page (/write loaded directly or right after onboarding). */
@@ -87,6 +95,7 @@ export function WriteOverlay({
   promptIndex,
   roomSlug,
   draftId,
+  about,
   intercepted,
   fullPage,
   onClose,
@@ -116,6 +125,7 @@ export function WriteOverlay({
   const [pending, startTransition] = useTransition();
   const [ready, setReady] = useState(false);
   const [prompt, setPrompt] = useState<number | null>(promptIndex);
+  const [aboutVisible, setAboutVisible] = useState(about !== null);
   const [focusMode, setFocusMode] = useState(false);
   useEffect(() => {
     try {
@@ -455,6 +465,26 @@ export function WriteOverlay({
           aria-hidden={phase !== 'writing'}
         >
           <div className="mx-auto w-full max-w-[680px] pt-8 pb-10 md:pt-16">
+            {about && aboutVisible ? (
+              <div className="mb-8 flex items-start gap-3 rounded-lg bg-paper-sunken py-3 pr-2 pl-4">
+                <Icon name="book-open" size={17} className="mt-1 shrink-0 text-accent-text" />
+                <p className="min-w-0 flex-1 text-[0.875rem] leading-snug text-ink-secondary">
+                  <span className="block">{t('about.label', { room: about.roomName })}</span>
+                  <span className="mt-0.5 block font-serif text-[1.0625rem] text-ink-secondary italic">
+                    {about.line}
+                  </span>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setAboutVisible(false)}
+                  aria-label={t('about.hide')}
+                  title={t('about.hide')}
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink"
+                >
+                  <Icon name="close" size={16} />
+                </button>
+              </div>
+            ) : null}
             {prompt !== null ? (
               <div className="mb-8 flex items-start gap-3 rounded-lg bg-paper-sunken py-3 pr-2 pl-4">
                 <Icon name="compass" size={17} className="mt-1 shrink-0 text-accent-text" />

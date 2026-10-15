@@ -36,7 +36,8 @@ export default async function AppLayout({
           >
             <ViewTransition name="page">{children}</ViewTransition>
           </main>
-          <aside className="hidden w-[var(--width-context)] shrink-0 pt-12 pr-8 xl:block xl:empty:hidden">
+          {/* The column itself is sticky: the template wraps every slot, so a sticky child could never move. */}
+          <aside className="context-column sticky top-2 hidden max-h-[calc(100dvh-16px)] w-[var(--width-context)] shrink-0 self-start overflow-y-auto overscroll-contain pt-12 pr-8 pb-10 xl:block xl:empty:hidden">
             {context}
           </aside>
         </div>

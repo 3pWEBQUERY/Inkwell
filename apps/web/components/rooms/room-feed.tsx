@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useState, useTransition } from 'react';
+import { Fragment, useEffect, useState, useTransition } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -45,6 +45,24 @@ export function RoomFeed({
   });
   const [pending, startTransition] = useTransition();
   const page = pages[sort];
+  const [lastVisit, setLastVisit] = useState<number | null>(null);
+
+  // Where the reader stopped last time, remembered in this browser only.
+  useEffect(() => {
+    const key = `inkwell.room-visit.${slug}`;
+    try {
+      const stored = Number(localStorage.getItem(key));
+      if (stored > 0) setLastVisit(stored);
+      localStorage.setItem(key, String(Date.now()));
+    } catch {
+      // Storage may be unavailable; the marker simply does not appear.
+    }
+  }, [slug]);
+
+  const markerIndex =
+    sort === 'new' && lastVisit !== null && page
+      ? page.items.findIndex((post) => new Date(post.createdAt).getTime() <= lastVisit)
+      : -1;
 
   // A refreshed server render (after publishing) replaces the first page of the initial sort.
   useEffect(() => {
@@ -113,8 +131,20 @@ export function RoomFeed({
         </div>
       ) : (
         <div key={sort} className="page-enter flex flex-col gap-3">
-          {page.items.map((post) => (
-            <PostCard key={post.id} post={post} highlight={post.id === highlightId} />
+          {page.items.map((post, index) => (
+            <Fragment key={post.id}>
+              {index > 0 && index === markerIndex ? (
+                <div
+                  role="separator"
+                  className="my-2 flex items-center gap-3 text-[12px] font-medium text-ink-tertiary"
+                >
+                  <span className="h-px flex-1 bg-line-strong" />
+                  {t('lastVisit')}
+                  <span className="h-px flex-1 bg-line-strong" />
+                </div>
+              ) : null}
+              <PostCard post={post} highlight={post.id === highlightId} />
+            </Fragment>
           ))}
           <div className="pt-6 pb-2 text-center text-[0.875rem] text-ink-tertiary">
             {page.nextCursor ? (

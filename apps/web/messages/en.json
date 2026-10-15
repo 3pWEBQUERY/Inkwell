@@ -360,7 +360,8 @@
     "emptyGuest": "Sign in to write here.",
     "kinds": {
       "title": "Two kinds of rooms"
-    }
+    },
+    "lastVisit": "You left off here"
   },
   "journal": {
     "title": "My journal",
@@ -413,7 +414,8 @@
       "label": "View",
       "written": "Written",
       "kept": "Kept",
-      "drafts": "Drafts"
+      "drafts": "Drafts",
+      "lines": "Lines"
     },
     "keptEmpty": "Nothing kept yet. Below every text in a room you can keep it for later.",
     "day": {
@@ -449,6 +451,12 @@
       "removeTitle": "Delete this draft?",
       "removeBody": "The draft will be deleted from this browser. This cannot be undone.",
       "removed": "Draft deleted."
+    },
+    "lines": {
+      "empty": "No lines yet. While reading, select a passage that stays with you and keep it here.",
+      "localOnly": "Lines stay in this browser. Nobody learns what you keep.",
+      "remove": "Remove line",
+      "removed": "Line removed."
     }
   },
   "me": {
@@ -632,6 +640,10 @@
       "stopped": "Writing time stopped.",
       "done": "Time is up. Keep writing if you like.",
       "doneShort": "Time up"
+    },
+    "about": {
+      "label": "About a text from {room}",
+      "hide": "Hide"
     }
   },
   "completion": {
@@ -736,6 +748,24 @@
     "resume": {
       "jump": "Continue where you were",
       "dismiss": "Read from the start"
+    },
+    "keepLine": {
+      "keep": "Keep this line",
+      "kept": "Kept. You will find it in your journal under Lines."
+    },
+    "settings": {
+      "label": "Display",
+      "size": "Text size",
+      "face": "Typeface",
+      "smaller": "Smaller",
+      "larger": "Larger",
+      "serif": "Serif",
+      "sans": "Sans",
+      "guest": "Without an account this lasts until you reload the page."
+    },
+    "writeAbout": {
+      "title": "Write about it in your journal",
+      "body": "Private and just for you. Nobody will know."
     }
   },
   "reactions": {

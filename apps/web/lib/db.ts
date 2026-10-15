@@ -49,6 +49,19 @@ export interface ReadProgressRecord {
   roomName?: string;
 }
 
+/** A passage a reader kept while reading. Stays in this browser only. */
+export interface PassageRecord {
+  id: string;
+  postId: string;
+  text: string;
+  /** Title or first line of the text it came from. */
+  source: string;
+  roomName: string;
+  /** Pseudonym, or null for anonymous texts. */
+  author: string | null;
+  createdAt: number;
+}
+
 /** A publish operation waiting for connectivity. */
 export interface QueueRecord {
   id: string;
@@ -70,6 +83,7 @@ class InkwellDatabase extends Dexie {
   readProgress!: EntityTable<ReadProgressRecord, 'postId'>;
   queue!: EntityTable<QueueRecord, 'id'>;
   meta!: EntityTable<MetaRecord, 'key'>;
+  passages!: EntityTable<PassageRecord, 'id'>;
 
   constructor() {
     super('inkwell');
@@ -79,6 +93,9 @@ class InkwellDatabase extends Dexie {
       readProgress: 'postId, updatedAt',
       queue: 'id, createdAt',
       meta: 'key',
+    });
+    this.version(2).stores({
+      passages: 'id, createdAt, postId',
     });
   }
 }
@@ -98,5 +115,6 @@ export async function clearLocalData(): Promise<void> {
     database.readProgress.clear(),
     database.queue.clear(),
     database.meta.clear(),
+    database.passages.clear(),
   ]);
 }

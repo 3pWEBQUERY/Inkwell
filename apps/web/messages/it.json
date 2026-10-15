@@ -360,7 +360,8 @@
     "emptyGuest": "Accedi per scrivere qui.",
     "kinds": {
       "title": "Due tipi di stanze"
-    }
+    },
+    "lastVisit": "La tua ultima visita finiva qui"
   },
   "journal": {
     "title": "Il mio quaderno",
@@ -413,7 +414,8 @@
       "label": "Vista",
       "written": "Scritti",
       "kept": "Salvati",
-      "drafts": "Bozze"
+      "drafts": "Bozze",
+      "lines": "Passi"
     },
     "keptEmpty": "Ancora niente di salvato. Sotto ogni testo in una stanza puoi salvarlo per dopo.",
     "day": {
@@ -449,6 +451,12 @@
       "removeTitle": "Eliminare la bozza?",
       "removeBody": "La bozza verrà eliminata da questo browser. Non si può annullare.",
       "removed": "Bozza eliminata."
+    },
+    "lines": {
+      "empty": "Ancora nessun passo. Mentre leggi, seleziona un punto che ti resta e tienilo qui.",
+      "localOnly": "I passi restano in questo browser. Nessuno sa cosa tieni.",
+      "remove": "Rimuovi il passo",
+      "removed": "Passo rimosso."
     }
   },
   "me": {
@@ -632,6 +640,10 @@
       "stopped": "Tempo di scrittura fermato.",
       "done": "Il tempo è finito. Continua pure a scrivere.",
       "doneShort": "Finito"
+    },
+    "about": {
+      "label": "Su un testo da {room}",
+      "hide": "Nascondi"
     }
   },
   "completion": {
@@ -736,6 +748,24 @@
     "resume": {
       "jump": "Riprendi da dove eri",
       "dismiss": "Leggi dall’inizio"
+    },
+    "keepLine": {
+      "keep": "Tieni questo passo",
+      "kept": "Tenuto. Lo trovi nel tuo quaderno, sotto Passi."
+    },
+    "settings": {
+      "label": "Aspetto",
+      "size": "Dimensione del testo",
+      "face": "Carattere",
+      "smaller": "Più piccolo",
+      "larger": "Più grande",
+      "serif": "Serif",
+      "sans": "Sans",
+      "guest": "Senza account vale solo finché non ricarichi la pagina."
+    },
+    "writeAbout": {
+      "title": "Scrivine qualcosa nel tuo quaderno",
+      "body": "Privato, solo per te. Nessuno lo saprà."
     }
   },
   "reactions": {

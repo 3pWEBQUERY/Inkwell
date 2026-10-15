@@ -12,6 +12,7 @@ export default async function InterceptedWrite({
     prompt?: string;
     room?: string;
     draft?: string;
+    about?: string;
   }>;
 }) {
   const { locale } = await params;

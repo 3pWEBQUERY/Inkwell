@@ -18,9 +18,11 @@ import { formatDate, relativeBucket } from '@/lib/format';
 import { BookmarkButton } from './bookmark-button';
 import { Comments } from './comments';
 import { Helplines } from './helplines';
+import { KeepLine } from './keep-line';
 import { PostMenu } from './post-menu';
 import { Reactions } from './reactions';
 import { ReadTracker } from './read-tracker';
+import { ReadingSettings } from './reading-settings';
 import { Vote } from './vote';
 
 interface ReadingViewProps {
@@ -47,6 +49,8 @@ export async function ReadingView({
   const relative = relativeBucket(post.createdAt);
   const expiresIn = hoursUntil(post.expiresAt);
   const html = renderMarkdown(post.body);
+  const bodyId = `reading-body-${post.id}`;
+  const source = post.title ?? firstLine(post.body, 80);
 
   return (
     <article>
@@ -96,7 +100,8 @@ export async function ReadingView({
             </div>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="relative flex shrink-0 items-center gap-1.5">
+          <ReadingSettings bodyId={bodyId} fontSize={fontSize} font={editorFont} />
           {post.viewer.isAuthor ? null : (
             <BookmarkButton postId={post.id} initial={post.viewer.bookmarked} />
           )}
@@ -133,6 +138,7 @@ export async function ReadingView({
             </p>
           ) : null}
           <div
+            id={bodyId}
             className={`prose-reading mt-6 ${editorFont === 'sans' ? 'sans' : ''}`}
             style={{
               fontSize: `${fontSize}px`,
@@ -174,6 +180,28 @@ export async function ReadingView({
           ) : null}
         </nav>
       ) : null}
+
+      {post.viewer.isAuthor ? null : (
+        <>
+          <KeepLine
+            postId={post.id}
+            bodyId={bodyId}
+            source={source}
+            roomName={post.room.name}
+            author={post.author?.pseudonym ?? null}
+          />
+          <Link
+            href={`/write?about=${post.id}`}
+            className="mt-10 flex items-center gap-3 rounded-lg border border-dashed border-line-strong px-4 py-3.5 text-[0.9375rem] text-ink-secondary state-toggle hover:border-ink-tertiary/60 hover:bg-paper-raised/50 hover:text-ink"
+          >
+            <Icon name="pen" size={16} className="shrink-0 text-accent-text" />
+            <span>
+              <span className="font-medium text-ink">{t('writeAbout.title')}</span>
+              <span className="block text-[13px]">{t('writeAbout.body')}</span>
+            </span>
+          </Link>
+        </>
+      )}
 
       <Reactions postId={post.id} initial={post.viewer.reactions} isAuthor={post.viewer.isAuthor} />
       {post.commentsEnabled || post.viewer.isAuthor || comments.length > 0 ? (

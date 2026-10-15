@@ -373,3 +373,9 @@ html:has(dialog[open][data-kind='full']) body {
 .tiptap:focus-visible {
   box-shadow: none;
 }
+
+/* The context column scrolls on its own only when taller than the screen; keep its scrollbar quiet. */
+.context-column {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}

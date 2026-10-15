@@ -10,7 +10,7 @@ export default async function TodayContext() {
   if (!me) return null;
   const rooms = await getRooms(me.roomLocales).catch(() => []);
   return (
-    <div className="sticky top-12">
+    <div>
       <YourRooms rooms={rooms} />
       <ContinueReading />
       <ShortcutList />

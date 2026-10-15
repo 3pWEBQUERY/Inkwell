@@ -12,7 +12,7 @@ export default async function RoomsContext() {
   const me = await getMe();
   const rooms = me ? await getRooms(me.roomLocales).catch(() => []) : [];
   return (
-    <div className="sticky top-12 flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
       <section aria-labelledby="room-kinds" className="rounded-lg bg-paper-sunken p-5">
         <h2 id="room-kinds" className="label">
           {t('kinds.title')}

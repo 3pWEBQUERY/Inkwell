@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import { canGoBackInApp, leaveFullPageEditor } from '@/features/navigation/close-overlay';
 import { getPathname } from '@/i18n/navigation';
 
-import { WriteOverlay } from './write-overlay';
+import { WriteOverlay, type AboutText } from './write-overlay';
 
 import type { OwnSeries, RoomView } from '@/features/posts/queries';
 import type { FeedPost, UserSettings } from '@inkwell/shared';
@@ -21,6 +21,7 @@ interface WriteRouteProps {
   promptIndex: number | null;
   roomSlug: string | null;
   draftId: string | null;
+  about: AboutText | null;
   intercepted: boolean;
 }
 

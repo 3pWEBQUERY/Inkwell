@@ -360,7 +360,8 @@
     "emptyGuest": "Connecte-toi pour écrire ici.",
     "kinds": {
       "title": "Deux sortes d’espaces"
-    }
+    },
+    "lastVisit": "Tu t’étais arrêté·e ici"
   },
   "journal": {
     "title": "Mon carnet",
@@ -413,7 +414,8 @@
       "label": "Affichage",
       "written": "Écrits",
       "kept": "Gardés",
-      "drafts": "Brouillons"
+      "drafts": "Brouillons",
+      "lines": "Passages"
     },
     "keptEmpty": "Rien de gardé pour l’instant. Sous chaque texte d’un espace, tu peux le garder pour plus tard.",
     "day": {
@@ -449,6 +451,12 @@
       "removeTitle": "Supprimer le brouillon ?",
       "removeBody": "Le brouillon sera supprimé de ce navigateur. C’est irréversible.",
       "removed": "Brouillon supprimé."
+    },
+    "lines": {
+      "empty": "Aucun passage pour l’instant. En lisant, sélectionne un passage qui te reste et garde-le ici.",
+      "localOnly": "Les passages restent dans ce navigateur. Personne ne sait ce que tu gardes.",
+      "remove": "Retirer le passage",
+      "removed": "Passage retiré."
     }
   },
   "me": {
@@ -632,6 +640,10 @@
       "stopped": "Temps d’écriture arrêté.",
       "done": "Le temps est écoulé. Continue tranquillement.",
       "doneShort": "Terminé"
+    },
+    "about": {
+      "label": "À propos d’un texte de {room}",
+      "hide": "Masquer"
     }
   },
   "completion": {
@@ -736,6 +748,24 @@
     "resume": {
       "jump": "Reprendre là où tu étais",
       "dismiss": "Lire depuis le début"
+    },
+    "keepLine": {
+      "keep": "Garder ce passage",
+      "kept": "Gardé. Tu le retrouves dans ton carnet, sous Passages."
+    },
+    "settings": {
+      "label": "Affichage",
+      "size": "Taille du texte",
+      "face": "Police",
+      "smaller": "Plus petit",
+      "larger": "Plus grand",
+      "serif": "Serif",
+      "sans": "Sans",
+      "guest": "Sans compte, ce réglage ne vaut que jusqu’au rechargement de la page."
+    },
+    "writeAbout": {
+      "title": "En écrire quelque chose dans ton carnet",
+      "body": "Privé, rien que pour toi. Personne ne le saura."
     }
   },
   "reactions": {

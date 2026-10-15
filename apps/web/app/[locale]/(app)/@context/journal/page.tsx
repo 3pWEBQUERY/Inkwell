@@ -10,9 +10,9 @@ export default async function JournalContext({
   searchParams: Promise<{ day?: string; view?: string }>;
 }) {
   const { day, view } = await searchParams;
-  if (view === 'kept' || view === 'drafts') return null;
+  if (view === 'kept' || view === 'drafts' || view === 'lines') return null;
   return (
-    <div className="sticky top-12">
+    <div>
       <ReviewCalendar selected={isDayKey(day) ? day : null} />
       <OnThisDay />
       <LettersOnTheWay />

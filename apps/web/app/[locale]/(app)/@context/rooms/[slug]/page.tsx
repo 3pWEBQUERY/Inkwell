@@ -9,7 +9,7 @@ export default async function RoomContext({ params }: { params: Promise<{ slug: 
   if (!room?.rules) return null;
   const t = await getTranslations('rooms');
   return (
-    <div className="sticky top-12 rounded-lg bg-paper-sunken p-5">
+    <div className="rounded-lg bg-paper-sunken p-5">
       <h2 className="label">{t('rules')}</h2>
       <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-secondary">{room.rules}</p>
     </div>

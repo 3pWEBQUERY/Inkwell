@@ -21,6 +21,7 @@ export default async function Write({
     prompt?: string;
     room?: string;
     draft?: string;
+    about?: string;
   }>;
 }) {
   const { locale } = await params;

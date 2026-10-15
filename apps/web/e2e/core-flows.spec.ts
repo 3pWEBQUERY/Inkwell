@@ -77,6 +77,8 @@ test.describe('core flows', () => {
   });
 
   test('writes straight into a room, and a reader keeps the text', async ({ page, browser }) => {
+    // Two sign-ups and a full reading session: give it the slow-test budget.
+    test.slow();
     const keptText = `Der erste warme Kaffee ${stamp} nach einer langen Nacht.`;
     await register(page, uniqueEmail(), `${pseudonym}w`);
     await page.getByRole('button', { name: 'Später' }).click();
@@ -100,8 +102,40 @@ test.describe('core flows', () => {
     await expect(reader).toHaveURL(/\/posts\//);
     await reader.getByRole('button', { name: 'Merken' }).click();
     await expect(reader.getByRole('button', { name: 'Gemerkt' })).toBeVisible();
+    const postUrl = reader.url();
+
+    // Reading display changes at once.
+    await reader.getByRole('button', { name: 'Darstellung' }).click();
+    await reader.getByRole('button', { name: 'Grösser' }).click();
+    const body = reader.locator('[id^="reading-body-"]');
+    await expect(body).toHaveCSS('font-size', '20px');
+    await reader.keyboard.press('Escape');
+
+    // Keep a line: select the words "warme Kaffee" in the text.
+    await body.evaluate((element) => {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      const node = walker.nextNode();
+      if (!node) return;
+      const start = (node.textContent ?? '').indexOf('warme Kaffee');
+      const range = document.createRange();
+      range.setStart(node, start);
+      range.setEnd(node, start + 'warme Kaffee'.length);
+      const selection = document.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    });
+    await reader.getByRole('button', { name: 'Zeile behalten' }).click();
+    await reader.goto('/journal?view=lines', { waitUntil: 'networkidle' });
+    await expect(reader.getByText('warme Kaffee', { exact: true })).toBeVisible();
+
     await reader.goto('/journal?view=kept', { waitUntil: 'networkidle' });
     await expect(reader.getByText(keptText).first()).toBeVisible();
+
+    // Write about it, privately.
+    await reader.goto(postUrl, { waitUntil: 'networkidle' });
+    await reader.getByRole('link', { name: /Dazu in dein Heft schreiben/ }).click();
+    await expect(reader).toHaveURL(/\/write\?about=/);
+    await expect(reader.getByText('Zu einem Text aus Dankbar')).toBeVisible();
     await readerContext.close();
   });
 

@@ -1,4 +1,4 @@
-import { LOCALES, parsePromptIndex } from '@inkwell/shared';
+import { LOCALES, firstLine, parsePromptIndex } from '@inkwell/shared';
 
 import { WriteRoute } from '@/components/editor/write-route';
 import { getMe } from '@/features/auth/session';
@@ -14,6 +14,7 @@ interface WritePageProps {
     prompt?: string;
     room?: string;
     draft?: string;
+    about?: string;
   };
   intercepted: boolean;
 }
@@ -30,10 +31,13 @@ export async function WritePage({ locale, searchParams, intercepted }: WritePage
     redirect({ href: '/sign-in?intent=create', locale });
     return null;
   }
-  const [rooms, series, editPost] = await Promise.all([
+  const aboutId =
+    searchParams.about && /^[\w-]{8,64}$/.test(searchParams.about) ? searchParams.about : null;
+  const [rooms, series, editPost, aboutPost] = await Promise.all([
     getRooms(me.roomLocales.length > 0 ? me.roomLocales : [...LOCALES]),
     getOwnSeries().catch(() => []),
     searchParams.edit ? getPost(searchParams.edit) : Promise.resolve(null),
+    aboutId ? getPost(aboutId).catch(() => null) : Promise.resolve(null),
   ]);
   return (
     <WriteRoute
@@ -46,6 +50,15 @@ export async function WritePage({ locale, searchParams, intercepted }: WritePage
       promptIndex={parsePromptIndex(searchParams.prompt)}
       roomSlug={searchParams.room ?? null}
       draftId={parseDraftId(searchParams.draft)}
+      about={
+        aboutPost
+          ? {
+              id: aboutPost.id,
+              line: aboutPost.title ?? firstLine(aboutPost.body, 140),
+              roomName: aboutPost.room.name,
+            }
+          : null
+      }
       intercepted={intercepted}
     />
   );

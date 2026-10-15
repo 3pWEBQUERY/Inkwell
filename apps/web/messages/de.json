@@ -360,7 +360,8 @@
     "emptyGuest": "Melde dich an, um hier zu schreiben.",
     "kinds": {
       "title": "Zwei Arten von Räumen"
-    }
+    },
+    "lastVisit": "Hier warst du zuletzt"
   },
   "journal": {
     "title": "Mein Heft",
@@ -413,7 +414,8 @@
       "label": "Ansicht",
       "written": "Geschrieben",
       "kept": "Gemerkt",
-      "drafts": "Entwürfe"
+      "drafts": "Entwürfe",
+      "lines": "Zeilen"
     },
     "keptEmpty": "Noch nichts gemerkt. Unter jedem Text in einem Raum kannst du ihn dir für später merken.",
     "day": {
@@ -449,6 +451,12 @@
       "removeTitle": "Entwurf löschen?",
       "removeBody": "Der Entwurf wird aus diesem Browser gelöscht. Das lässt sich nicht rückgängig machen.",
       "removed": "Entwurf gelöscht."
+    },
+    "lines": {
+      "empty": "Noch keine Zeilen. Markiere beim Lesen eine Stelle, die dir bleibt, und behalte sie hier.",
+      "localOnly": "Zeilen bleiben in diesem Browser. Niemand erfährt, was du behältst.",
+      "remove": "Zeile entfernen",
+      "removed": "Zeile entfernt."
     }
   },
   "me": {
@@ -632,6 +640,10 @@
       "stopped": "Schreibzeit beendet.",
       "done": "Die Zeit ist um. Schreib ruhig weiter.",
       "doneShort": "Zeit um"
+    },
+    "about": {
+      "label": "Zu einem Text aus {room}",
+      "hide": "Ausblenden"
     }
   },
   "completion": {
@@ -736,6 +748,24 @@
     "resume": {
       "jump": "Weiterlesen, wo du warst",
       "dismiss": "Von vorne lesen"
+    },
+    "keepLine": {
+      "keep": "Zeile behalten",
+      "kept": "Behalten. Du findest die Zeile in deinem Heft unter Zeilen."
+    },
+    "settings": {
+      "label": "Darstellung",
+      "size": "Schriftgrösse",
+      "face": "Schrift",
+      "smaller": "Kleiner",
+      "larger": "Grösser",
+      "serif": "Serif",
+      "sans": "Sans",
+      "guest": "Ohne Konto gilt das nur, bis du die Seite neu lädst."
+    },
+    "writeAbout": {
+      "title": "Dazu in dein Heft schreiben",
+      "body": "Privat und nur für dich. Niemand erfährt davon."
     }
   },
   "reactions": {
