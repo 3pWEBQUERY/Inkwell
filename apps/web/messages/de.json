@@ -299,7 +299,28 @@
     "end": "Das war's für heute.",
     "newTexts": "{count, plural, =1 {1 neuer Text} other {# neue Texte}}",
     "guestTitle": "Lesen ohne Konto",
-    "guestBody": "Du kannst Räume lesen, ohne dich anzumelden. Zum Schreiben, Beitreten und Reagieren brauchst du ein Konto."
+    "guestBody": "Du kannst Räume lesen, ohne dich anzumelden. Zum Schreiben, Beitreten und Reagieren brauchst du ein Konto.",
+    "greeting": {
+      "night": "Noch wach?",
+      "morning": "Guten Morgen.",
+      "day": "Guten Tag.",
+      "evening": "Guten Abend."
+    },
+    "prompt": {
+      "label": "Ein Impuls, wenn du magst",
+      "start": "Damit anfangen",
+      "other": "Anderer Impuls"
+    },
+    "yourRooms": "Deine Räume",
+    "allRooms": "Alle Räume",
+    "suggested": "Noch kein Raum? Hier fangen viele an:",
+    "shortcuts": {
+      "title": "Tastenkürzel",
+      "write": "Neuer Text",
+      "search": "Im Heft suchen",
+      "move": "Nächster und voriger Text",
+      "close": "Overlay schliessen"
+    }
   },
   "rooms": {
     "title": "Räume",
@@ -324,7 +345,14 @@
     },
     "chapter": "Kapitel {chapter}",
     "series": "Serie",
-    "notFound": "Diesen Raum gibt es nicht."
+    "notFound": "Diesen Raum gibt es nicht.",
+    "writeHere": "Hier schreiben",
+    "emptyTitle": "Hier ist es noch still.",
+    "emptyBody": "Der erste Text in diesem Raum kann deiner sein. Du entscheidest erst nach dem Schreiben, ob du ihn teilst.",
+    "emptyGuest": "Melde dich an, um hier zu schreiben.",
+    "kinds": {
+      "title": "Zwei Arten von Räumen"
+    }
   },
   "journal": {
     "title": "Mein Heft",
@@ -371,7 +399,28 @@
       "pending": "wird gesendet, sobald du online bist",
       "locked": "gesperrt"
     },
-    "queued": "Wird gesendet, sobald du online bist."
+    "queued": "Wird gesendet, sobald du online bist.",
+    "views": {
+      "label": "Ansicht",
+      "written": "Geschrieben",
+      "kept": "Gemerkt"
+    },
+    "keptEmpty": "Noch nichts gemerkt. Unter jedem Text in einem Raum kannst du ihn dir für später merken.",
+    "day": {
+      "showing": "Einträge vom {date}",
+      "clear": "Alle anzeigen",
+      "none": "An diesem Tag hast du nichts geschrieben."
+    },
+    "review": {
+      "title": "Rückblick",
+      "previousMonth": "Voriger Monat",
+      "nextMonth": "Nächster Monat",
+      "written": "An diesem Tag geschrieben",
+      "onThisDay": "An diesem Tag",
+      "monthsAgo": "{count, plural, one {Vor einem Monat} other {Vor # Monaten}}",
+      "yearsAgo": "{count, plural, one {Vor einem Jahr} other {Vor # Jahren}}",
+      "nothingYet": "Was du heute schreibst, taucht hier in einem Monat wieder auf."
+    }
   },
   "me": {
     "title": "Ich",
@@ -520,7 +569,8 @@
       "divider": "Trennlinie",
       "title": "Titel ein/aus",
       "undo": "Rückgängig",
-      "redo": "Wiederholen"
+      "redo": "Wiederholen",
+      "focus": "Fokus-Modus"
     },
     "keepDraft": {
       "title": "Entwurf behalten?",
@@ -537,7 +587,13 @@
     "autosaved": "Entwurf gespeichert",
     "offlineQueued": "Wird gesendet, sobald du online bist.",
     "signInToWrite": "Zum Schreiben brauchst du ein Konto.",
-    "unlockToWrite": "Um privat zu schreiben, brauchst du deinen Wiederherstellungscode auf diesem Gerät."
+    "unlockToWrite": "Um privat zu schreiben, brauchst du deinen Wiederherstellungscode auf diesem Gerät.",
+    "prompt": {
+      "label": "Impuls",
+      "show": "Impuls zeigen",
+      "next": "Anderer Impuls",
+      "hide": "Impuls ausblenden"
+    }
   },
   "completion": {
     "title": "Abschliessen",
@@ -620,7 +676,12 @@
     "editWindow": "Bearbeiten ist 15 Minuten nach dem Veröffentlichen möglich.",
     "notFound": "Diesen Text gibt es nicht mehr.",
     "helplinesIntro": "Wenn du reden möchtest",
-    "byAnonymous": "anonym"
+    "byAnonymous": "anonym",
+    "bookmark": "Merken",
+    "bookmarked": "Gemerkt",
+    "bookmarkHint": "Nur du siehst, was du dir merkst.",
+    "bookmarkSaved": "Gemerkt. Du findest den Text in deinem Heft.",
+    "bookmarkRemoved": "Nicht mehr gemerkt."
   },
   "reactions": {
     "felt": "fühl ich",

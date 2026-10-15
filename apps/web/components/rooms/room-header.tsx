@@ -10,7 +10,7 @@ import { useErrorMessage } from '@/components/ui/error-text';
 import { Icon } from '@/components/ui/icon';
 import { joinRoom, setRoomPush } from '@/features/posts/actions';
 import { subscribeToPush } from '@/features/pwa/push';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 
 import type { RoomView } from '@/features/posts/queries';
 
@@ -82,13 +82,22 @@ export function RoomHeader({
             </button>
           ) : null}
           <Button
-            variant={joined ? 'secondary' : 'primary'}
+            variant={joined ? 'ghost' : 'primary'}
             size="sm"
             onClick={toggleJoin}
             busy={pending}
           >
             {joined ? t('leave') : t('join')}
           </Button>
+          {joined ? (
+            <Link
+              href={`/write?room=${room.slug}`}
+              className="inline-flex h-9 items-center gap-2 rounded-md bg-accent px-3.5 text-[0.875rem] font-medium text-accent-ink state-toggle hover:bg-accent-hover pointer-coarse:h-11"
+            >
+              <Icon name="pen" size={15} />
+              {t('writeHere')}
+            </Link>
+          ) : null}
         </div>
       </div>
       {room.rules ? (

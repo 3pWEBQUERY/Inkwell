@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Helplines } from '@/components/reading/helplines';
 import { RoomFeed } from '@/components/rooms/room-feed';
 import { RoomHeader } from '@/components/rooms/room-header';
+import { getMe } from '@/features/auth/session';
 import { getRoom, getRoomFeed, getVapidPublicKey } from '@/features/posts/queries';
 
 import type { Metadata } from 'next';
@@ -29,9 +30,10 @@ export default async function RoomPage({ params, searchParams }: Props) {
         ? sort
         : room.sortDefault
       : 'new';
-  const [page, vapid] = await Promise.all([
+  const [page, vapid, me] = await Promise.all([
     getRoomFeed(slug, { sort: initialSort }),
     getVapidPublicKey().catch(() => null),
+    getMe(),
   ]);
 
   return (
@@ -43,6 +45,8 @@ export default async function RoomPage({ params, searchParams }: Props) {
         initialSort={initialSort}
         initialPage={page}
         highlightId={highlight}
+        canWrite={Boolean(me) && room.joined}
+        signedIn={Boolean(me)}
       />
       {room.showHelplines ? <Helplines /> : null}
     </div>

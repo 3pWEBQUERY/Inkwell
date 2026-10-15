@@ -13,11 +13,29 @@ interface ToolbarProps {
   titleVisible: boolean;
   onToggleTitle: () => void;
   wordCount: number | null;
+  promptVisible: boolean;
+  /** Null while editing a published text: prompts belong to new texts only. */
+  onTogglePrompt: (() => void) | null;
+  focusMode: boolean;
+  onToggleFocus: () => void;
 }
 
-/** Bold, italic, quote, divider, title toggle, word count for stories. Sits above the on-screen keyboard on phones. */
-export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: ToolbarProps) {
+/**
+ * Bold, italic, quote, divider, title toggle, prompt, focus mode, word count
+ * for stories. Sits above the on-screen keyboard on phones.
+ */
+export function Toolbar({
+  editor,
+  titleVisible,
+  onToggleTitle,
+  wordCount,
+  promptVisible,
+  onTogglePrompt,
+  focusMode,
+  onToggleFocus,
+}: ToolbarProps) {
   const t = useTranslations('editor.toolbar');
+  const editorT = useTranslations('editor');
   const common = useTranslations('common');
   const [bottom, setBottom] = useState(0);
 
@@ -51,7 +69,7 @@ export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: Tool
       onMouseDown={(event) => event.preventDefault()}
       onClick={onClick}
       className={cn(
-        'flex h-11 w-11 items-center justify-center rounded-md state-toggle md:h-8 md:w-8',
+        'flex h-11 w-10 items-center justify-center rounded-md state-toggle md:h-8 md:w-8',
         active
           ? 'bg-accent-soft text-accent-text'
           : 'text-ink-secondary hover:bg-paper-raised hover:text-ink',
@@ -83,6 +101,10 @@ export function Toolbar({ editor, titleVisible, onToggleTitle, wordCount }: Tool
           editor?.chain().focus().setHorizontalRule().run(),
         )}
         {button('heading', t('title'), titleVisible, onToggleTitle)}
+        {onTogglePrompt
+          ? button('compass', editorT('prompt.show'), promptVisible, onTogglePrompt)
+          : null}
+        {button('focus', t('focus'), focusMode, onToggleFocus)}
       </div>
       <span aria-hidden className="hidden h-5 w-px bg-line md:block" />
       <div className="flex items-center gap-1 md:gap-0.5">

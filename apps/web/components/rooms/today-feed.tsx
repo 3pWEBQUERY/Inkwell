@@ -9,7 +9,9 @@ import { refreshToday } from '@/features/posts/today-actions';
 import { Link } from '@/i18n/navigation';
 
 import { PostCard } from './post-card';
+import { RoomRow } from './room-list';
 
+import type { RoomView } from '@/features/posts/queries';
 import type { FeedPost } from '@inkwell/shared';
 
 /**
@@ -17,7 +19,19 @@ import type { FeedPost } from '@inkwell/shared';
  * arrive while reading are not pushed in; a quiet "3 new texts" line appears
  * on top and extends the list on click.
  */
-export function TodayFeed({ initial }: { initial: FeedPost[] }) {
+export function TodayFeed({
+  initial,
+  hasRooms,
+  suggestions,
+  lastEntryId = null,
+}: {
+  initial: FeedPost[];
+  /** Whether the member has joined any room; without one, rooms to start with are offered. */
+  hasRooms: boolean;
+  suggestions: RoomView[];
+  /** The member's last entry is shown above the feed and owns its shared-element name. */
+  lastEntryId?: string | null;
+}) {
   const t = useTranslations('today');
   const [items, setItems] = useState(initial);
   const [incoming, setIncoming] = useState<FeedPost[]>([]);
@@ -39,6 +53,19 @@ export function TodayFeed({ initial }: { initial: FeedPost[] }) {
     setItems((current) => [...incoming, ...current].slice(0, 20));
     setIncoming([]);
   };
+
+  if (items.length === 0 && incoming.length === 0 && !hasRooms && suggestions.length > 0) {
+    return (
+      <div>
+        <p className="mb-3 text-[0.9375rem] text-ink-secondary">{t('suggested')}</p>
+        <ul className="card divide-y divide-line overflow-hidden">
+          {suggestions.map((room) => (
+            <RoomRow key={room.id} room={room} signedIn onNeedsAccount={() => undefined} />
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   if (items.length === 0 && incoming.length === 0) {
     return (
@@ -70,7 +97,7 @@ export function TodayFeed({ initial }: { initial: FeedPost[] }) {
         </button>
       ) : null}
       {items.map((post) => (
-        <PostCard key={post.id} post={post} showRoom />
+        <PostCard key={post.id} post={post} showRoom sharedTransition={post.id !== lastEntryId} />
       ))}
       <p className="pt-6 pb-2 text-center text-[0.875rem] text-ink-tertiary">{t('end')}</p>
     </div>

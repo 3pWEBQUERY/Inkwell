@@ -3,6 +3,7 @@ export * from './error-codes.js';
 export * from './helplines.js';
 export * from './locales.js';
 export * from './markdown.js';
+export * from './prompts.js';
 export * from './pseudonym.js';
 export * from './schemas/index.js';
 export * from './time.js';

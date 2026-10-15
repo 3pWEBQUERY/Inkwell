@@ -1,4 +1,4 @@
-import { LOCALES } from '@inkwell/shared';
+import { LOCALES, parsePromptIndex } from '@inkwell/shared';
 
 import { WriteRoute } from '@/components/editor/write-route';
 import { getMe } from '@/features/auth/session';
@@ -7,7 +7,13 @@ import { redirect } from '@/i18n/navigation';
 
 interface WritePageProps {
   locale: string;
-  searchParams: { first?: string; edit?: string; editPrivate?: string };
+  searchParams: {
+    first?: string;
+    edit?: string;
+    editPrivate?: string;
+    prompt?: string;
+    room?: string;
+  };
   intercepted: boolean;
 }
 
@@ -31,6 +37,8 @@ export async function WritePage({ locale, searchParams, intercepted }: WritePage
       first={searchParams.first === '1'}
       editPost={editPost?.viewer.isAuthor ? editPost : null}
       editPrivateId={searchParams.editPrivate ?? null}
+      promptIndex={parsePromptIndex(searchParams.prompt)}
+      roomSlug={searchParams.room ?? null}
       intercepted={intercepted}
     />
   );

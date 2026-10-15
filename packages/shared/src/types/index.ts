@@ -50,6 +50,8 @@ export interface FeedPost {
     reactions: ReactionKind[];
     vote: -1 | 0 | 1;
     isAuthor: boolean;
+    /** Kept for later by the viewer. Never shown to anyone else. */
+    bookmarked: boolean;
   };
 }
 

@@ -19,6 +19,7 @@ import {
 } from '@inkwell/shared';
 
 import {
+  bookmarks,
   comments,
   postScores,
   posts,
@@ -504,6 +505,12 @@ async function decorate(db: DbOrTx, rows: FeedRow[], viewer: Viewer): Promise<Fe
         .from(reactions)
         .where(and(inArray(reactions.postId, ids), eq(reactions.userId, viewer.userId)))
     : [];
+  const viewerBookmarks = viewer.userId
+    ? await db
+        .select({ postId: bookmarks.postId })
+        .from(bookmarks)
+        .where(and(inArray(bookmarks.postId, ids), eq(bookmarks.userId, viewer.userId)))
+    : [];
   const viewerVotes = viewer.userId
     ? await db
         .select({ postId: votes.postId, value: votes.value })
@@ -561,9 +568,48 @@ async function decorate(db: DbOrTx, rows: FeedRow[], viewer: Viewer): Promise<Fe
         reactions: viewerReactions.filter((r) => r.postId === post.id).map((r) => r.kind),
         vote: (viewerVotes.find((v) => v.postId === post.id)?.value ?? 0) as -1 | 0 | 1,
         isAuthor: post.authorId === viewer.userId,
+        bookmarked: viewerBookmarks.some((b) => b.postId === post.id),
       },
     };
   });
+}
+
+/** The reader's kept texts, newest kept first. Texts that are gone, hidden or expired drop out silently. */
+export async function bookmarkedPosts(
+  db: Database,
+  viewer: Viewer,
+  userId: string,
+): Promise<FeedPost[]> {
+  const now = new Date();
+  const rows = await db
+    .select({
+      post: posts,
+      room: rooms,
+      authorPseudonym: users.pseudonym,
+      authorAvatar: users.avatar,
+      seriesTitle: series.title,
+    })
+    .from(bookmarks)
+    .innerJoin(posts, eq(posts.id, bookmarks.postId))
+    .innerJoin(rooms, eq(rooms.id, posts.roomId))
+    .innerJoin(users, eq(users.id, posts.authorId))
+    .leftJoin(series, eq(series.id, posts.seriesId))
+    .where(
+      and(
+        eq(bookmarks.userId, userId),
+        eq(posts.status, 'visible'),
+        isNull(posts.deletedAt),
+        isNull(users.deletedAt),
+        or(isNull(posts.expiresAt), gt(posts.expiresAt, now)),
+      ),
+    )
+    .orderBy(desc(bookmarks.createdAt))
+    .limit(LIMITS.bookmarksMax);
+  return decorate(
+    db,
+    rows.filter((row) => !viewer.hidden.has(row.post.authorId)),
+    viewer,
+  );
 }
 
 export async function journal(

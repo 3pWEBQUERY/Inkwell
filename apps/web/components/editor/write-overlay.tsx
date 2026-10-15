@@ -5,8 +5,11 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 
 import {
+  PROMPT_COUNT,
   countChars,
   countWords,
+  promptIndexOfDay,
+  promptText,
   type FeedPost,
   type Locale,
   type UserSettings,
@@ -22,10 +25,10 @@ import { Overlay } from '@/components/ui/overlay';
 import { CrisisScanner } from '@/features/crisis/client';
 import { cryptoClient } from '@/features/crypto/client';
 import { requestAfterNavigation } from '@/features/navigation/after-navigation';
-import { canGoBackInApp } from '@/features/navigation/close-overlay';
+import { canGoBackInApp, leaveFullPageEditor } from '@/features/navigation/close-overlay';
 import { enqueuePublish } from '@/features/offline/queue';
 import { createPost, createSeries, updatePost } from '@/features/posts/actions';
-import { useRouter } from '@/i18n/navigation';
+import { getPathname, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { db } from '@/lib/db';
 
@@ -50,8 +53,14 @@ interface WriteOverlayProps {
   editPost: FeedPost | null;
   /** Editing a private entry: decrypted from the local journal copy. */
   editPrivateId: string | null;
+  /** Opened from a prompt (`?prompt=`): shown above the text, never part of it. */
+  promptIndex: number | null;
+  /** Opened from a room's "write here" (`?room=`): preselects that room when sharing. */
+  roomSlug: string | null;
   /** Rendered through the @modal slot over another page. */
   intercepted: boolean;
+  /** Rendered as its own page (/write loaded directly or right after onboarding). */
+  fullPage: boolean;
   onClose: () => void;
 }
 
@@ -69,7 +78,10 @@ export function WriteOverlay({
   first,
   editPost,
   editPrivateId,
+  promptIndex,
+  roomSlug,
   intercepted,
+  fullPage,
   onClose,
 }: WriteOverlayProps) {
   const t = useTranslations('editor');
@@ -94,6 +106,29 @@ export function WriteOverlay({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [ready, setReady] = useState(false);
+  const [prompt, setPrompt] = useState<number | null>(promptIndex);
+  const [focusMode, setFocusMode] = useState(false);
+  useEffect(() => {
+    try {
+      setFocusMode(localStorage.getItem('inkwell.focus-mode') === '1');
+    } catch {
+      // Storage may be unavailable; focus mode simply starts off.
+    }
+  }, []);
+  const toggleFocus = () =>
+    setFocusMode((current) => {
+      try {
+        localStorage.setItem('inkwell.focus-mode', current ? '0' : '1');
+      } catch {
+        // ignore
+      }
+      return !current;
+    });
+  const togglePrompt = () =>
+    setPrompt((current) => (current === null ? promptIndexOfDay(new Date()) : null));
+  const initialRoomId = roomSlug
+    ? (rooms.find((room) => room.slug === roomSlug && room.joined)?.id ?? null)
+    : null;
   const scanner = useMemo(() => new CrisisScanner(), []);
   const dirty = useRef(false);
 
@@ -220,7 +255,11 @@ export function WriteOverlay({
   const leave = useCallback(
     (href: string) => {
       setOpen(false);
-      if (intercepted && canGoBackInApp()) {
+      if (fullPage) {
+        const [pathname = '/today', query] = href.split('?');
+        const localized = getPathname({ href: pathname, locale });
+        leaveFullPageEditor(query ? `${localized}?${query}` : localized);
+      } else if (intercepted && canGoBackInApp()) {
         requestAfterNavigation({ href });
         router.back();
       } else {
@@ -228,7 +267,7 @@ export function WriteOverlay({
         router.replace(href);
       }
     },
-    [intercepted, router],
+    [fullPage, intercepted, locale, router],
   );
 
   const beforeClose = useCallback(() => {
@@ -372,6 +411,10 @@ export function WriteOverlay({
               titleVisible={titleVisible}
               onToggleTitle={() => setTitleVisible((v) => !v)}
               wordCount={wordCount > 0 && (titleVisible || wordCount > 400) ? wordCount : null}
+              promptVisible={prompt !== null}
+              onTogglePrompt={editPost ? null : togglePrompt}
+              focusMode={focusMode}
+              onToggleFocus={toggleFocus}
             />
           </div>
           <Button
@@ -391,10 +434,38 @@ export function WriteOverlay({
           className={cn(
             'relative flex-1 overflow-y-auto px-4 pb-24 md:pb-8',
             phase !== 'writing' && 'editor-dimmed',
+            focusMode && 'focus-mode',
           )}
           aria-hidden={phase !== 'writing'}
         >
           <div className="mx-auto w-full max-w-[680px] pt-8 pb-10 md:pt-16">
+            {prompt !== null ? (
+              <div className="mb-8 flex items-start gap-3 rounded-lg bg-paper-sunken py-3 pr-2 pl-4">
+                <Icon name="compass" size={17} className="mt-1 shrink-0 text-accent-text" />
+                <p className="min-w-0 flex-1 font-serif text-[1.0625rem] leading-snug text-ink-secondary italic">
+                  <span className="sr-only">{t('prompt.label')}: </span>
+                  {promptText(locale, prompt)}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setPrompt((current) => ((current ?? 0) + 1) % PROMPT_COUNT)}
+                  aria-label={t('prompt.next')}
+                  title={t('prompt.next')}
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink"
+                >
+                  <Icon name="redo" size={16} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPrompt(null)}
+                  aria-label={t('prompt.hide')}
+                  title={t('prompt.hide')}
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink-secondary state-toggle hover:bg-paper-raised hover:text-ink"
+                >
+                  <Icon name="close" size={16} />
+                </button>
+              </div>
+            ) : null}
             {titleVisible ? (
               <input
                 value={title}
@@ -433,6 +504,10 @@ export function WriteOverlay({
               titleVisible={titleVisible}
               onToggleTitle={() => setTitleVisible((v) => !v)}
               wordCount={titleVisible && wordCount > 0 ? wordCount : null}
+              promptVisible={prompt !== null}
+              onTogglePrompt={editPost ? null : togglePrompt}
+              focusMode={focusMode}
+              onToggleFocus={toggleFocus}
             />
           ) : null}
         </div>
@@ -460,6 +535,7 @@ export function WriteOverlay({
               hasTitle={titleVisible && title.trim().length > 0}
               charCount={charCount}
               defaults={{ visibility: settings.defaultVisibility, expiry: settings.defaultExpiry }}
+              initialRoomId={initialRoomId}
               canEncrypt={crypto.hasKey === true}
               busy={pending}
               error={error}

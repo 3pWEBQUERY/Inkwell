@@ -299,7 +299,28 @@
     "end": "C'est tout pour aujourd'hui.",
     "newTexts": "{count, plural, =1 {1 nouveau texte} other {# nouveaux textes}}",
     "guestTitle": "Lire sans compte",
-    "guestBody": "Tu peux lire les espaces sans te connecter. Pour écrire, rejoindre un espace et réagir, il te faut un compte."
+    "guestBody": "Tu peux lire les espaces sans te connecter. Pour écrire, rejoindre un espace et réagir, il te faut un compte.",
+    "greeting": {
+      "night": "Encore debout ?",
+      "morning": "Bonjour.",
+      "day": "Bonjour.",
+      "evening": "Bonsoir."
+    },
+    "prompt": {
+      "label": "Une piste, si tu veux",
+      "start": "Commencer par là",
+      "other": "Une autre piste"
+    },
+    "yourRooms": "Tes espaces",
+    "allRooms": "Tous les espaces",
+    "suggested": "Pas encore d’espace ? Beaucoup commencent ici :",
+    "shortcuts": {
+      "title": "Raccourcis clavier",
+      "write": "Nouveau texte",
+      "search": "Chercher dans le carnet",
+      "move": "Texte suivant et précédent",
+      "close": "Fermer la fenêtre"
+    }
   },
   "rooms": {
     "title": "Espaces",
@@ -324,7 +345,14 @@
     },
     "chapter": "Chapitre {chapter}",
     "series": "Série",
-    "notFound": "Cet espace n'existe pas."
+    "notFound": "Cet espace n'existe pas.",
+    "writeHere": "Écrire ici",
+    "emptyTitle": "C’est encore calme ici.",
+    "emptyBody": "Le premier texte de cet espace peut être le tien. Tu décides seulement après avoir écrit si tu le partages.",
+    "emptyGuest": "Connecte-toi pour écrire ici.",
+    "kinds": {
+      "title": "Deux sortes d’espaces"
+    }
   },
   "journal": {
     "title": "Mon carnet",
@@ -371,7 +399,28 @@
       "pending": "sera envoyé dès que tu seras en ligne",
       "locked": "verrouillé"
     },
-    "queued": "Sera envoyé dès que tu seras en ligne."
+    "queued": "Sera envoyé dès que tu seras en ligne.",
+    "views": {
+      "label": "Affichage",
+      "written": "Écrits",
+      "kept": "Gardés"
+    },
+    "keptEmpty": "Rien de gardé pour l’instant. Sous chaque texte d’un espace, tu peux le garder pour plus tard.",
+    "day": {
+      "showing": "Entrées du {date}",
+      "clear": "Tout afficher",
+      "none": "Tu n’as rien écrit ce jour-là."
+    },
+    "review": {
+      "title": "Rétrospective",
+      "previousMonth": "Mois précédent",
+      "nextMonth": "Mois suivant",
+      "written": "Écrit ce jour-là",
+      "onThisDay": "Ce jour-là",
+      "monthsAgo": "{count, plural, one {Il y a un mois} other {Il y a # mois}}",
+      "yearsAgo": "{count, plural, one {Il y a un an} other {Il y a # ans}}",
+      "nothingYet": "Ce que tu écris aujourd’hui réapparaîtra ici dans un mois."
+    }
   },
   "me": {
     "title": "Moi",
@@ -520,7 +569,8 @@
       "divider": "Séparateur",
       "title": "Afficher/masquer le titre",
       "undo": "Annuler",
-      "redo": "Rétablir"
+      "redo": "Rétablir",
+      "focus": "Mode concentration"
     },
     "keepDraft": {
       "title": "Garder le brouillon ?",
@@ -537,7 +587,13 @@
     "autosaved": "Brouillon enregistré",
     "offlineQueued": "Sera envoyé dès que tu seras en ligne.",
     "signInToWrite": "Pour écrire, il te faut un compte.",
-    "unlockToWrite": "Pour écrire en privé, tu as besoin de ton code de récupération sur cet appareil."
+    "unlockToWrite": "Pour écrire en privé, tu as besoin de ton code de récupération sur cet appareil.",
+    "prompt": {
+      "label": "Piste",
+      "show": "Afficher une piste",
+      "next": "Une autre piste",
+      "hide": "Masquer la piste"
+    }
   },
   "completion": {
     "title": "Terminer",
@@ -620,7 +676,12 @@
     "editWindow": "La modification est possible pendant 15 minutes après la publication.",
     "notFound": "Ce texte n'existe plus.",
     "helplinesIntro": "Si tu veux parler",
-    "byAnonymous": "anonyme"
+    "byAnonymous": "anonyme",
+    "bookmark": "Garder",
+    "bookmarked": "Gardé",
+    "bookmarkHint": "Toi seul·e vois ce que tu gardes.",
+    "bookmarkSaved": "Gardé. Tu le retrouves dans ton carnet.",
+    "bookmarkRemoved": "Plus gardé."
   },
   "reactions": {
     "felt": "je ressens",

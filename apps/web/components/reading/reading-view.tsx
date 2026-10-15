@@ -14,6 +14,7 @@ import { Icon } from '@/components/ui/icon';
 import { Link } from '@/i18n/navigation';
 import { formatDate, relativeBucket } from '@/lib/format';
 
+import { BookmarkButton } from './bookmark-button';
 import { Comments } from './comments';
 import { Helplines } from './helplines';
 import { PostMenu } from './post-menu';
@@ -88,7 +89,12 @@ export async function ReadingView({
             </div>
           </div>
         </div>
-        <PostMenu post={post} />
+        <div className="flex shrink-0 items-center gap-1.5">
+          {post.viewer.isAuthor ? null : (
+            <BookmarkButton postId={post.id} initial={post.viewer.bookmarked} />
+          )}
+          <PostMenu post={post} />
+        </div>
       </header>
 
       <div className="mt-10 flex gap-5">

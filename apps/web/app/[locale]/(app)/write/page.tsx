@@ -14,7 +14,13 @@ export default async function Write({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ first?: string; edit?: string; editPrivate?: string }>;
+  searchParams: Promise<{
+    first?: string;
+    edit?: string;
+    editPrivate?: string;
+    prompt?: string;
+    room?: string;
+  }>;
 }) {
   const { locale } = await params;
   return <WritePage locale={locale} searchParams={await searchParams} intercepted={false} />;

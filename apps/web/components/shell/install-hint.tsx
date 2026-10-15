@@ -78,7 +78,7 @@ export function InstallHint() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-[calc(var(--height-tabbar)+12px)] z-40 mx-auto max-w-md rounded-md border border-line bg-paper-raised px-4 py-3 md:bottom-6"
+      className="fixed inset-x-4 bottom-[calc(var(--height-tabbar)+12px)] z-40 mx-auto max-w-md rounded-xl float px-4 py-3 md:bottom-6"
     >
       <p className="text-sm">{showHow ? t(platform) : t('hint')}</p>
       <div className="mt-2 flex justify-end gap-2">

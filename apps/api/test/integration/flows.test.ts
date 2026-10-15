@@ -243,6 +243,63 @@ describeIf('core flows', () => {
     expect(foreign.statusCode).toBe(404);
   });
 
+  it('keeps texts for a reader without telling the author', async () => {
+    const keep = await app.inject({
+      method: 'PUT',
+      url: `/v1/posts/${anonymousPostId}/bookmark`,
+      headers: headers(readerToken),
+    });
+    expect(keep.statusCode).toBe(204);
+    const again = await app.inject({
+      method: 'PUT',
+      url: `/v1/posts/${anonymousPostId}/bookmark`,
+      headers: headers(readerToken),
+    });
+    expect(again.statusCode).toBe(204);
+
+    const kept = await app.inject({
+      method: 'GET',
+      url: '/v1/me/bookmarks',
+      headers: headers(readerToken),
+    });
+    const items = kept.json<{
+      items: { id: string; author: unknown; viewer: { bookmarked: boolean } }[];
+    }>().items;
+    expect(items.map((item) => item.id)).toContain(anonymousPostId);
+    const item = items.find((entry) => entry.id === anonymousPostId);
+    expect(item?.author).toBeNull();
+    expect(item?.viewer.bookmarked).toBe(true);
+
+    const authorView = await app.inject({
+      method: 'GET',
+      url: `/v1/me/posts/${anonymousPostId}/reactions`,
+      headers: headers(authorToken),
+    });
+    expect(JSON.stringify(authorView.json())).not.toContain('bookmark');
+
+    const own = await app.inject({
+      method: 'GET',
+      url: '/v1/me/bookmarks',
+      headers: headers(authorToken),
+    });
+    expect(own.json<{ items: unknown[] }>().items).toHaveLength(0);
+
+    const drop = await app.inject({
+      method: 'DELETE',
+      url: `/v1/posts/${anonymousPostId}/bookmark`,
+      headers: headers(readerToken),
+    });
+    expect(drop.statusCode).toBe(204);
+    const after = await app.inject({
+      method: 'GET',
+      url: '/v1/me/bookmarks',
+      headers: headers(readerToken),
+    });
+    expect(after.json<{ items: { id: string }[] }>().items.map((entry) => entry.id)).not.toContain(
+      anonymousPostId,
+    );
+  });
+
   it('never widens visibility, and burns for good', async () => {
     const widen = await app.inject({
       method: 'PATCH',

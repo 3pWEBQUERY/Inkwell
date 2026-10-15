@@ -48,3 +48,21 @@ export function monthKey(value: string | Date): string {
   const date = typeof value === 'string' ? new Date(value) : value;
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
 }
+
+/** `YYYY-MM-DD` in the reader's local calendar; the journal's day filter and review use it. */
+export function dayKey(value: string | Date): string {
+  const date = typeof value === 'string' ? new Date(value) : value;
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+export function isDayKey(value: string | null | undefined): value is string {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+/** Midday of a `YYYY-MM-DD` key, so time zones never shift it to the neighbouring day. */
+export function dayFromKey(key: string): Date {
+  const [year, month, day] = key.split('-').map((part) => Number.parseInt(part, 10));
+  return new Date(year ?? 1970, (month ?? 1) - 1, day ?? 1, 12);
+}

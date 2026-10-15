@@ -299,7 +299,28 @@
     "end": "That is all for today.",
     "newTexts": "{count, plural, =1 {1 new text} other {# new texts}}",
     "guestTitle": "Reading without an account",
-    "guestBody": "You can read rooms without signing in. To write, join and react you need an account."
+    "guestBody": "You can read rooms without signing in. To write, join and react you need an account.",
+    "greeting": {
+      "night": "Still up?",
+      "morning": "Good morning.",
+      "day": "Good afternoon.",
+      "evening": "Good evening."
+    },
+    "prompt": {
+      "label": "A prompt, if you like",
+      "start": "Start with this",
+      "other": "Another prompt"
+    },
+    "yourRooms": "Your rooms",
+    "allRooms": "All rooms",
+    "suggested": "No room yet? Many people start here:",
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "write": "New text",
+      "search": "Search the journal",
+      "move": "Next and previous text",
+      "close": "Close the overlay"
+    }
   },
   "rooms": {
     "title": "Rooms",
@@ -324,7 +345,14 @@
     },
     "chapter": "Chapter {chapter}",
     "series": "Series",
-    "notFound": "This room does not exist."
+    "notFound": "This room does not exist.",
+    "writeHere": "Write here",
+    "emptyTitle": "It is still quiet here.",
+    "emptyBody": "The first text in this room can be yours. You decide whether to share it only after writing.",
+    "emptyGuest": "Sign in to write here.",
+    "kinds": {
+      "title": "Two kinds of rooms"
+    }
   },
   "journal": {
     "title": "My journal",
@@ -371,7 +399,28 @@
       "pending": "will be sent once you are online",
       "locked": "locked"
     },
-    "queued": "Will be sent once you are online."
+    "queued": "Will be sent once you are online.",
+    "views": {
+      "label": "View",
+      "written": "Written",
+      "kept": "Kept"
+    },
+    "keptEmpty": "Nothing kept yet. Below every text in a room you can keep it for later.",
+    "day": {
+      "showing": "Entries from {date}",
+      "clear": "Show all",
+      "none": "You did not write anything that day."
+    },
+    "review": {
+      "title": "Looking back",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "written": "Written on this day",
+      "onThisDay": "On this day",
+      "monthsAgo": "{count, plural, one {A month ago} other {# months ago}}",
+      "yearsAgo": "{count, plural, one {A year ago} other {# years ago}}",
+      "nothingYet": "What you write today will show up here again in a month."
+    }
   },
   "me": {
     "title": "Me",
@@ -520,7 +569,8 @@
       "divider": "Divider",
       "title": "Title on/off",
       "undo": "Undo",
-      "redo": "Redo"
+      "redo": "Redo",
+      "focus": "Focus mode"
     },
     "keepDraft": {
       "title": "Keep the draft?",
@@ -537,7 +587,13 @@
     "autosaved": "Draft saved",
     "offlineQueued": "Will be sent once you are online.",
     "signInToWrite": "You need an account to write.",
-    "unlockToWrite": "To write privately you need your recovery code on this device."
+    "unlockToWrite": "To write privately you need your recovery code on this device.",
+    "prompt": {
+      "label": "Prompt",
+      "show": "Show a prompt",
+      "next": "Another prompt",
+      "hide": "Hide the prompt"
+    }
   },
   "completion": {
     "title": "Finish",
@@ -620,7 +676,12 @@
     "editWindow": "Editing is possible for 15 minutes after publishing.",
     "notFound": "This text no longer exists.",
     "helplinesIntro": "If you want to talk",
-    "byAnonymous": "anonymous"
+    "byAnonymous": "anonymous",
+    "bookmark": "Keep",
+    "bookmarked": "Kept",
+    "bookmarkHint": "Only you see what you keep.",
+    "bookmarkSaved": "Kept. You will find it in your journal.",
+    "bookmarkRemoved": "No longer kept."
   },
   "reactions": {
     "felt": "I feel this",

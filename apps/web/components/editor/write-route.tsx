@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 
-import { canGoBackInApp } from '@/features/navigation/close-overlay';
+import { canGoBackInApp, leaveFullPageEditor } from '@/features/navigation/close-overlay';
+import { getPathname } from '@/i18n/navigation';
 
 import { WriteOverlay } from './write-overlay';
 
@@ -16,19 +18,30 @@ interface WriteRouteProps {
   first: boolean;
   editPost: FeedPost | null;
   editPrivateId: string | null;
+  promptIndex: number | null;
+  roomSlug: string | null;
   intercepted: boolean;
 }
 
-/** Cancelling goes back to the page underneath when there is one; the first entry after onboarding and direct visits go to /today. */
+/**
+ * Cancelling goes back to the page underneath when there is one. The editor
+ * shown as a full page (the first entry after onboarding, or /write opened
+ * directly) leaves with a real page load; see leaveFullPageEditor.
+ */
 export function WriteRoute({ intercepted, ...rest }: WriteRouteProps) {
   const router = useRouter();
+  const locale = useLocale();
+  const asOverlay = intercepted && !rest.first;
   return (
     <WriteOverlay
       {...rest}
-      intercepted={intercepted && !rest.first}
-      onClose={() =>
-        intercepted && !rest.first && canGoBackInApp() ? router.back() : router.replace('/today')
-      }
+      intercepted={asOverlay}
+      fullPage={!asOverlay}
+      onClose={() => {
+        if (!asOverlay) return leaveFullPageEditor(getPathname({ href: '/today', locale }));
+        if (canGoBackInApp()) return router.back();
+        router.replace('/today');
+      }}
     />
   );
 }

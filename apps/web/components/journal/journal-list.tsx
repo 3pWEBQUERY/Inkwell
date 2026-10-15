@@ -16,12 +16,13 @@ import { useErrorMessage } from '@/components/ui/error-text';
 import { Input } from '@/components/ui/field';
 import { Icon, type IconName } from '@/components/ui/icon';
 import { Overlay } from '@/components/ui/overlay';
+import { SkeletonCard } from '@/components/ui/skeleton';
 import { burnPost, updatePost } from '@/features/posts/actions';
 import { pruneJournal, syncJournal } from '@/features/posts/journal-sync';
 import { Link, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { db, type EntryRecord } from '@/lib/db';
-import { formatDate, formatMonthYear, monthKey } from '@/lib/format';
+import { dayFromKey, dayKey, formatDate, formatMonthYear, monthKey } from '@/lib/format';
 
 import { ExportButton } from './export-button';
 import { PrivateEntryView } from './private-entry-view';
@@ -39,6 +40,8 @@ interface JournalListProps {
   initial: JournalPost[];
   focusSearch: boolean;
   openId: string | null;
+  /** `YYYY-MM-DD`: show only that day (set from the review calendar). */
+  day?: string | null;
 }
 
 /**
@@ -46,7 +49,7 @@ interface JournalListProps {
  * decrypted private entries). Filters animate the list; burn and narrow live
  * behind each row.
  */
-export function JournalList({ initial, focusSearch, openId }: JournalListProps) {
+export function JournalList({ initial, focusSearch, openId, day = null }: JournalListProps) {
   const t = useTranslations('journal');
   const common = useTranslations('common');
   const auth = useTranslations('auth');
@@ -79,6 +82,7 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
     const needle = query.trim().toLowerCase();
     const soon = now + 48 * 3_600_000;
     return entries.filter((entry) => {
+      if (day && dayKey(entry.createdAt) !== day) return false;
       if (filter === 'story' && entry.type !== 'story') return false;
       if (
         filter === 'expiring' &&
@@ -94,7 +98,7 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
         return false;
       return needle === '' || entry.searchText.includes(needle);
     });
-  }, [entries, filter, query, now]);
+  }, [entries, filter, query, now, day]);
 
   const groups = useMemo(() => {
     const map = new Map<string, EntryRecord[]>();
@@ -169,10 +173,32 @@ export function JournalList({ initial, focusSearch, openId }: JournalListProps) 
         ))}
       </div>
 
-      {entries.length === 0 ? (
-        <EmptyState>{t('empty')}</EmptyState>
+      {day ? (
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-lg bg-accent-tint px-4 py-2.5 text-[0.875rem]">
+          <span className="font-medium text-accent-text">
+            {t('day.showing', {
+              date: formatDate(dayFromKey(day), locale, { day: 'numeric', month: 'long' }),
+            })}
+          </span>
+          <Link href="/journal" className="font-medium text-ink-secondary hover:text-ink">
+            {t('day.clear')}
+          </Link>
+        </div>
+      ) : null}
+
+      {liveEntries === undefined ? (
+        <div className="mt-6 flex flex-col gap-3" aria-hidden>
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      ) : entries.length === 0 ? (
+        <div className="mt-6">
+          <EmptyState>{t('empty')}</EmptyState>
+        </div>
       ) : visible.length === 0 ? (
-        <EmptyState>{t('noResults')}</EmptyState>
+        <div className="mt-6">
+          <EmptyState>{day ? t('day.none') : t('noResults')}</EmptyState>
+        </div>
       ) : (
         <div key={`${filter}-${query}`} className="page-enter mt-6">
           {groups.map(([month, items]) => (

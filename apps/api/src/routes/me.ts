@@ -19,6 +19,7 @@ import { consumeEmailCode, requestEmailCode, revokeSession } from '../services/a
 import { revokeDeletion, scheduleDeletion } from '../services/deletion.js';
 import { noticesFor } from '../services/moderation.js';
 import {
+  bookmarkedPosts,
   journal,
   profilePosts,
   reactionSummary,
@@ -67,6 +68,13 @@ export const meRoutes: FastifyPluginAsyncZod = async (app) => {
     const { user } = request.requireUser();
     const viewer = await viewerFor(db, user.id);
     return { items: await todayFeed(db, viewer, user.id) };
+  });
+
+  /** Texts the member kept for later. */
+  app.get('/bookmarks', async (request) => {
+    const { user } = request.requireUser();
+    const viewer = await viewerFor(db, user.id);
+    return { items: await bookmarkedPosts(db, viewer, user.id) };
   });
 
   app.get('/posts', { schema: { querystring: journalQuerySchema } }, async (request) => {

@@ -16,6 +16,8 @@ import { Segmented } from '@/components/ui/segmented';
 import { joinRoom } from '@/features/posts/actions';
 import { Link, useRouter } from '@/i18n/navigation';
 
+import { RoomInitial } from './room-initial';
+
 import type { RoomView } from '@/features/posts/queries';
 
 interface RoomListProps {
@@ -114,7 +116,7 @@ export function RoomList({ rooms, initialKind }: RoomListProps) {
   );
 }
 
-function RoomRow({
+export function RoomRow({
   room,
   signedIn,
   onNeedsAccount,
@@ -145,12 +147,7 @@ function RoomRow({
         data-list-item
         className="flex min-w-0 flex-1 items-center gap-4 rounded-md outline-none focus-visible:shadow-[var(--focus-ring)]"
       >
-        <span
-          aria-hidden
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-accent-tint font-serif text-[1.25rem] leading-none font-medium text-accent-text"
-        >
-          {room.name.slice(0, 1)}
-        </span>
+        <RoomInitial name={room.name} />
         <span className="min-w-0">
           <span className="block font-medium">{room.name}</span>
           <span className="mt-0.5 block truncate text-[0.875rem] text-ink-secondary">

@@ -14,6 +14,12 @@ interface PostCardProps {
   post: FeedPost;
   showRoom?: boolean;
   highlight?: boolean;
+  /**
+   * Carries the shared-element name into the reading view. A view-transition
+   * name must be unique on the page, so a card whose text is already shown
+   * elsewhere (Today's last entry) leaves it off.
+   */
+  sharedTransition?: boolean;
 }
 
 /**
@@ -21,7 +27,12 @@ interface PostCardProps {
  * "anonymous", relative time. No counters anywhere. The first line carries the
  * shared-element name so it travels into the reading view.
  */
-export function PostCard({ post, showRoom = false, highlight = false }: PostCardProps) {
+export function PostCard({
+  post,
+  showRoom = false,
+  highlight = false,
+  sharedTransition = true,
+}: PostCardProps) {
   const t = useTranslations('common');
   const rooms = useTranslations('rooms');
   const locale = useLocale() as Locale;
@@ -74,7 +85,7 @@ export function PostCard({ post, showRoom = false, highlight = false }: PostCard
         {post.title ? (
           <h3
             className="mt-3 font-serif text-[1.375rem] leading-snug font-semibold tracking-[-0.01em]"
-            style={{ viewTransitionName: `post-title-${post.id}` }}
+            style={sharedTransition ? { viewTransitionName: `post-title-${post.id}` } : undefined}
           >
             {post.title}
           </h3>
@@ -84,7 +95,11 @@ export function PostCard({ post, showRoom = false, highlight = false }: PostCard
             'prose-reading mt-3 line-clamp-3 text-[1.125rem]',
             post.title && 'mt-1.5 text-ink-secondary',
           )}
-          style={post.title ? undefined : { viewTransitionName: `post-line-${post.id}` }}
+          style={
+            post.title || !sharedTransition
+              ? undefined
+              : { viewTransitionName: `post-line-${post.id}` }
+          }
         >
           {post.preview}
         </p>

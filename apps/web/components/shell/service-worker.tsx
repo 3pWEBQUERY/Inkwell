@@ -47,7 +47,7 @@ export function ServiceWorkerRegistration() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-[calc(var(--height-tabbar)+12px)] z-40 mx-auto flex max-w-md items-center justify-between gap-3 rounded-md border border-line bg-paper-raised px-4 py-3 md:bottom-6"
+      className="fixed inset-x-4 bottom-[calc(var(--height-tabbar)+12px)] z-40 mx-auto flex max-w-md items-center justify-between gap-3 rounded-xl float px-4 py-3 md:bottom-6"
     >
       <span className="text-sm">{t('update')}</span>
       <Button

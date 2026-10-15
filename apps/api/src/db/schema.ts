@@ -300,6 +300,24 @@ export const votes = pgTable(
   (table) => [primaryKey({ columns: [table.postId, table.userId] })],
 );
 
+/** Texts a reader keeps for later. Private to the reader; authors never learn about them. */
+export const bookmarks = pgTable(
+  'bookmarks',
+  {
+    userId: text()
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    postId: text()
+      .notNull()
+      .references(() => posts.id, { onDelete: 'cascade' }),
+    createdAt: timestampTz('created_at').notNull().defaultNow(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.userId, table.postId] }),
+    index('bookmarks_user_created_idx').on(table.userId, table.createdAt),
+  ],
+);
+
 export const comments = pgTable(
   'comments',
   {

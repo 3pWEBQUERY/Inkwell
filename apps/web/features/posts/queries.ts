@@ -57,6 +57,11 @@ export async function getTodayFeed(): Promise<FeedPost[]> {
   return items;
 }
 
+export async function getBookmarks(): Promise<FeedPost[]> {
+  const { items } = await api<{ items: FeedPost[] }>('/me/bookmarks');
+  return items;
+}
+
 export async function getJournal(
   options: { cursor?: string; since?: string } = {},
 ): Promise<CursorPage<JournalPost>> {

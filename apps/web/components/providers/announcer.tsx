@@ -43,10 +43,7 @@ export function AnnouncerProvider({ children }: { children: ReactNode }) {
         className="pointer-events-none fixed inset-x-0 bottom-[calc(var(--height-tabbar)+96px)] z-50 flex flex-col items-center gap-2 px-4 md:bottom-28"
       >
         {items.map((item) => (
-          <div
-            key={item.id}
-            className="rounded-md border border-line bg-paper-raised px-4 py-2.5 text-sm text-ink shadow-none"
-          >
+          <div key={item.id} className="float rounded-lg px-4 py-2.5 text-sm text-ink">
             {item.text}
           </div>
         ))}

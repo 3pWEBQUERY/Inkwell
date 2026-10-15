@@ -361,6 +361,14 @@ html:has(dialog[open][data-kind='full']) body {
   background: var(--color-paper);
 }
 
+/* Focus mode: the paragraph being written stays, everything else steps back. */
+.focus-mode .tiptap > * {
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+.focus-mode .tiptap.ProseMirror-focused > *:not(.has-focus) {
+  opacity: 0.28;
+}
+
 /* The editor is nothing but text: no focus ring around the writing surface. */
 .tiptap:focus-visible {
   box-shadow: none;

@@ -6,7 +6,7 @@ import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import { Italic } from '@tiptap/extension-italic';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
-import { Placeholder, UndoRedo } from '@tiptap/extensions';
+import { Focus, Placeholder, UndoRedo } from '@tiptap/extensions';
 
 /** The whole schema: nothing but paragraphs, bold, italic, quotes and dividers. No images, links or heading levels. */
 export function editorExtensions(placeholder: string) {
@@ -21,5 +21,7 @@ export function editorExtensions(placeholder: string) {
     HorizontalRule,
     UndoRedo,
     Placeholder.configure({ placeholder, emptyEditorClass: 'is-editor-empty' }),
+    // Marks the block being written in; focus mode dims everything else (globals.css).
+    Focus.configure({ className: 'has-focus', mode: 'shallowest' }),
   ];
 }

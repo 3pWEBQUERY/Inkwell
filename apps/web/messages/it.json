@@ -299,7 +299,28 @@
     "end": "Per oggi è tutto.",
     "newTexts": "{count, plural, =1 {1 nuovo testo} other {# nuovi testi}}",
     "guestTitle": "Leggere senza account",
-    "guestBody": "Puoi leggere le stanze senza accedere. Per scrivere, entrare nelle stanze e reagire ti serve un account."
+    "guestBody": "Puoi leggere le stanze senza accedere. Per scrivere, entrare nelle stanze e reagire ti serve un account.",
+    "greeting": {
+      "night": "Ore piccole.",
+      "morning": "Buongiorno.",
+      "day": "Buon pomeriggio.",
+      "evening": "Buonasera."
+    },
+    "prompt": {
+      "label": "Uno spunto, se ti va",
+      "start": "Inizia da qui",
+      "other": "Un altro spunto"
+    },
+    "yourRooms": "Le tue stanze",
+    "allRooms": "Tutte le stanze",
+    "suggested": "Ancora nessuna stanza? Molti iniziano qui:",
+    "shortcuts": {
+      "title": "Scorciatoie da tastiera",
+      "write": "Nuovo testo",
+      "search": "Cerca nel quaderno",
+      "move": "Testo successivo e precedente",
+      "close": "Chiudi la finestra"
+    }
   },
   "rooms": {
     "title": "Stanze",
@@ -324,7 +345,14 @@
     },
     "chapter": "Capitolo {chapter}",
     "series": "Serie",
-    "notFound": "Questa stanza non esiste."
+    "notFound": "Questa stanza non esiste.",
+    "writeHere": "Scrivi qui",
+    "emptyTitle": "Qui è ancora silenzioso.",
+    "emptyBody": "Il primo testo di questa stanza può essere il tuo. Decidi solo dopo aver scritto se condividerlo.",
+    "emptyGuest": "Accedi per scrivere qui.",
+    "kinds": {
+      "title": "Due tipi di stanze"
+    }
   },
   "journal": {
     "title": "Il mio quaderno",
@@ -371,7 +399,28 @@
       "pending": "verrà inviato appena sei online",
       "locked": "bloccato"
     },
-    "queued": "Verrà inviato appena sei online."
+    "queued": "Verrà inviato appena sei online.",
+    "views": {
+      "label": "Vista",
+      "written": "Scritti",
+      "kept": "Salvati"
+    },
+    "keptEmpty": "Ancora niente di salvato. Sotto ogni testo in una stanza puoi salvarlo per dopo.",
+    "day": {
+      "showing": "Testi del {date}",
+      "clear": "Mostra tutto",
+      "none": "Quel giorno non hai scritto niente."
+    },
+    "review": {
+      "title": "Uno sguardo indietro",
+      "previousMonth": "Mese precedente",
+      "nextMonth": "Mese successivo",
+      "written": "Scritto in questo giorno",
+      "onThisDay": "In questo giorno",
+      "monthsAgo": "{count, plural, one {Un mese fa} other {# mesi fa}}",
+      "yearsAgo": "{count, plural, one {Un anno fa} other {# anni fa}}",
+      "nothingYet": "Quello che scrivi oggi riapparirà qui tra un mese."
+    }
   },
   "me": {
     "title": "Io",
@@ -520,7 +569,8 @@
       "divider": "Linea di separazione",
       "title": "Mostra o nascondi il titolo",
       "undo": "Annulla",
-      "redo": "Ripeti"
+      "redo": "Ripeti",
+      "focus": "Modalità concentrazione"
     },
     "keepDraft": {
       "title": "Tenere la bozza?",
@@ -537,7 +587,13 @@
     "autosaved": "Bozza salvata",
     "offlineQueued": "Verrà inviato appena sei online.",
     "signInToWrite": "Per scrivere ti serve un account.",
-    "unlockToWrite": "Per scrivere in privato ti serve il tuo codice di recupero su questo dispositivo."
+    "unlockToWrite": "Per scrivere in privato ti serve il tuo codice di recupero su questo dispositivo.",
+    "prompt": {
+      "label": "Spunto",
+      "show": "Mostra uno spunto",
+      "next": "Un altro spunto",
+      "hide": "Nascondi lo spunto"
+    }
   },
   "completion": {
     "title": "Concludi",
@@ -620,7 +676,12 @@
     "editWindow": "La modifica è possibile per 15 minuti dopo la pubblicazione.",
     "notFound": "Questo testo non esiste più.",
     "helplinesIntro": "Se vuoi parlare con qualcuno",
-    "byAnonymous": "anonimo"
+    "byAnonymous": "anonimo",
+    "bookmark": "Salva",
+    "bookmarked": "Salvato",
+    "bookmarkHint": "Solo tu vedi cosa salvi.",
+    "bookmarkSaved": "Salvato. Lo trovi nel tuo quaderno.",
+    "bookmarkRemoved": "Non più salvato."
   },
   "reactions": {
     "felt": "lo sento",

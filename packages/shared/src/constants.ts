@@ -37,6 +37,8 @@ export const LIMITS = {
   feedPageSize: 20,
   /** Max items on /today. */
   todayMaxItems: 20,
+  /** Kept texts shown in the journal; older ones stay stored but out of view. */
+  bookmarksMax: 200,
   /** Session lifetime in days. */
   sessionDays: 30,
   /** Magic-code lifetime in minutes. */

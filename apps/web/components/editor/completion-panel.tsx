@@ -32,6 +32,8 @@ interface CompletionPanelProps {
   hasTitle: boolean;
   charCount: number;
   defaults: { visibility: Visibility; expiry: Expiry };
+  /** Opened from a room's "write here": that room is chosen once the text is shared. */
+  initialRoomId?: string | null;
   canEncrypt: boolean;
   busy: boolean;
   error: string | null;
@@ -55,6 +57,7 @@ export function CompletionPanel({
   hasTitle,
   charCount,
   defaults,
+  initialRoomId,
   canEncrypt,
   busy,
   error,
@@ -68,7 +71,7 @@ export function CompletionPanel({
   const [visibility, setVisibility] = useState<Visibility>(
     defaults.visibility === 'anonymous' && type === 'story' ? 'public' : defaults.visibility,
   );
-  const [roomId, setRoomId] = useState<string | null>(null);
+  const [roomId, setRoomId] = useState<string | null>(initialRoomId ?? null);
   const [roomQuery, setRoomQuery] = useState('');
   const [expiry, setExpiry] = useState<Expiry>(defaults.expiry);
   const [commentsEnabled, setCommentsEnabled] = useState<boolean | null>(null);

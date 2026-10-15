@@ -75,6 +75,17 @@ export async function toggleReaction(
   }
 }
 
+export async function setBookmark(postId: string, keep: boolean): Promise<ActionResult> {
+  try {
+    await api(`/posts/${encodeURIComponent(postId)}/bookmark`, {
+      method: keep ? 'PUT' : 'DELETE',
+    });
+    return { ok: true, data: undefined };
+  } catch (error) {
+    return failure(error);
+  }
+}
+
 export async function markRead(postId: string): Promise<ActionResult> {
   try {
     await api(`/posts/${encodeURIComponent(postId)}/reactions/read`, { method: 'PUT' });

@@ -56,4 +56,52 @@ test.describe('core flows', () => {
     await page.getByRole('link', { name: 'Herunterladen' }).click({ timeout: 120_000 });
     expect((await download).suggestedFilename()).toBe('inkwell-export.zip');
   });
+
+  test('writes from the prompt of the day', async ({ page }) => {
+    await register(page, uniqueEmail(), `${pseudonym}i`);
+    await page.getByRole('button', { name: 'Später' }).click();
+    await expect(page).toHaveURL(/\/today/);
+    const promptLine = page.locator('section[aria-labelledby="prompt"] p').first();
+    // The prompt follows the reader's local day, so it appears once the page has hydrated.
+    await expect(promptLine).not.toBeEmpty();
+    const prompt = (await promptLine.textContent())?.trim() ?? '';
+    expect(prompt.length).toBeGreaterThan(10);
+    await page.getByRole('link', { name: 'Damit anfangen' }).click();
+    await expect(page).toHaveURL(/\/write\?prompt=\d+/);
+    await expect(page.getByText(prompt)).toBeVisible();
+    await page.locator('.tiptap').fill(`Eine Antwort auf den Impuls ${stamp}.`);
+    await page.getByRole('button', { name: 'Fertig' }).click();
+    await page.getByRole('button', { name: 'Im Heft ablegen' }).click();
+    await expect(page).toHaveURL(/\/journal/);
+    await expect(page.getByText(`Eine Antwort auf den Impuls ${stamp}.`).first()).toBeVisible();
+  });
+
+  test('writes straight into a room, and a reader keeps the text', async ({ page, browser }) => {
+    const keptText = `Der erste warme Kaffee ${stamp} nach einer langen Nacht.`;
+    await register(page, uniqueEmail(), `${pseudonym}w`);
+    await page.getByRole('button', { name: 'Später' }).click();
+    await page.goto('/rooms/dankbar', { waitUntil: 'networkidle' });
+    await page.getByRole('button', { name: 'Beitreten' }).click();
+    await page.getByRole('link', { name: 'Hier schreiben' }).first().click();
+    await expect(page).toHaveURL(/\/write\?room=dankbar/);
+    await page.locator('.tiptap').fill(keptText);
+    await page.getByRole('button', { name: 'Fertig' }).click();
+    await page.getByRole('button', { name: 'Anonym teilen' }).first().click();
+    await expect(page.getByRole('button', { name: 'Dankbar', pressed: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Anonym teilen' }).last().click();
+    await expect(page).toHaveURL(/\/rooms\/dankbar/);
+
+    const readerContext = await browser.newContext();
+    const reader = await readerContext.newPage();
+    await register(reader, uniqueEmail().replace('e2e-', 'e2e-r-'), `${pseudonym}r`);
+    await reader.getByRole('button', { name: 'Später' }).click();
+    await reader.goto('/rooms/dankbar', { waitUntil: 'networkidle' });
+    await reader.getByText(keptText).first().click();
+    await expect(reader).toHaveURL(/\/posts\//);
+    await reader.getByRole('button', { name: 'Merken' }).click();
+    await expect(reader.getByRole('button', { name: 'Gemerkt' })).toBeVisible();
+    await reader.goto('/journal?view=kept', { waitUntil: 'networkidle' });
+    await expect(reader.getByText(keptText).first()).toBeVisible();
+    await readerContext.close();
+  });
 });

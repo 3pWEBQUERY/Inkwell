@@ -2,10 +2,12 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { LastEntry } from '@/components/journal/last-entry';
 import { TodayFeed } from '@/components/rooms/today-feed';
+import { Greeting } from '@/components/today/greeting';
+import { PromptCard } from '@/components/today/prompt-card';
 import { Icon } from '@/components/ui/icon';
 import { PageHeader, Section } from '@/components/ui/page-header';
 import { getMe } from '@/features/auth/session';
-import { getJournal, getTodayFeed } from '@/features/posts/queries';
+import { getJournal, getRooms, getTodayFeed } from '@/features/posts/queries';
 import { Link, redirect } from '@/i18n/navigation';
 import { formatWeekday } from '@/lib/format';
 
@@ -21,16 +23,36 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function TodayPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const me = await getMe();
-  if (!me) redirect({ href: '/sign-in', locale });
+  if (!me) {
+    redirect({ href: '/sign-in', locale });
+    return null;
+  }
   const t = await getTranslations('today');
   const current = (await getLocale()) as Locale;
 
-  const [journal, feed] = await Promise.all([getJournal(), getTodayFeed()]);
+  const [journal, feed, rooms] = await Promise.all([
+    getJournal(),
+    getTodayFeed(),
+    getRooms(me.roomLocales).catch(() => []),
+  ]);
   const last = journal.items[0] ?? null;
+  const hasRooms = rooms.some((room) => room.joined);
+  // Not a recommendation: the first rooms of each kind in their fixed order.
+  const suggestions = hasRooms
+    ? []
+    : [
+        ...rooms.filter((room) => room.kind === 'reflection').slice(0, 3),
+        ...rooms.filter((room) => room.kind === 'fiction').slice(0, 1),
+      ];
 
   return (
     <div>
-      <PageHeader title={formatWeekday(new Date(), current)} />
+      <Greeting />
+      <PageHeader title={formatWeekday(new Date(), current)} className="mb-8 md:mb-10" />
+
+      <div className="mb-10">
+        <PromptCard />
+      </div>
 
       <Section id="last-entry" label={t('lastEntry')}>
         {last ? (
@@ -50,7 +72,12 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
       </Section>
 
       <Section id="new-in-rooms" label={t('newInRooms')}>
-        <TodayFeed initial={feed} />
+        <TodayFeed
+          initial={feed}
+          hasRooms={hasRooms}
+          suggestions={suggestions}
+          lastEntryId={last?.id ?? null}
+        />
       </Section>
     </div>
   );

@@ -21,7 +21,12 @@ export type IconName =
   | 'close'
   | 'chevron-down'
   | 'chevron-right'
+  | 'chevron-left'
   | 'sun'
+  | 'bookmark'
+  | 'bookmark-filled'
+  | 'compass'
+  | 'focus'
   | 'copy'
   | 'download'
   | 'search'
@@ -71,6 +76,12 @@ const PATHS: Record<IconName, string> = {
   close: 'M6 6l12 12M18 6L6 18',
   'chevron-down': 'M6 9l6 6 6-6',
   'chevron-right': 'M9 6l6 6-6 6',
+  'chevron-left': 'M15 6l-6 6 6 6',
+  bookmark: 'M6 4h12v17l-6-4.5L6 21z',
+  'bookmark-filled': 'M6 4h12v17l-6-4.5L6 21zM9 7.5h6M9 10.5h6',
+  compass: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z',
+  focus:
+    'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3',
   sun: 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21M5.6 5.6l1.1 1.1M17.3 17.3l1.1 1.1M5.6 18.4l1.1-1.1M17.3 6.7l1.1-1.1',
   copy: 'M9 9h10v11H9zM5 15V4h10',
   download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
