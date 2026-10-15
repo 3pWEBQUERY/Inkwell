@@ -11,6 +11,7 @@ export default async function InterceptedWrite({
     editPrivate?: string;
     prompt?: string;
     room?: string;
+    draft?: string;
   }>;
 }) {
   const { locale } = await params;

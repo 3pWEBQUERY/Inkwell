@@ -242,6 +242,8 @@ export const posts = pgTable(
     wordCount: integer().notNull().default(0),
     expiry: expiryEnum().notNull().default('none'),
     expiresAt: timestampTz('expires_at'),
+    /** Private entries only: a letter to one's later self stays sealed until then. */
+    opensAt: timestampTz('opens_at'),
     commentsEnabled: boolean().notNull().default(false),
     seriesId: text().references(() => series.id, { onDelete: 'set null' }),
     chapter: integer(),

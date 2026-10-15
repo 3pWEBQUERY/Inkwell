@@ -320,6 +320,14 @@
       "search": "Search the journal",
       "move": "Next and previous text",
       "close": "Close the overlay"
+    },
+    "letter": {
+      "title": "A letter from you has arrived.",
+      "body": "Written on {date}",
+      "open": "Open"
+    },
+    "continue": {
+      "title": "Continue reading"
     }
   },
   "rooms": {
@@ -365,7 +373,8 @@
       "anonymous": "Anonymous",
       "public": "Public",
       "story": "Stories",
-      "expiring": "Expiring soon"
+      "expiring": "Expiring soon",
+      "letters": "Letters"
     },
     "actions": {
       "visibility": "Visibility",
@@ -403,7 +412,8 @@
     "views": {
       "label": "View",
       "written": "Written",
-      "kept": "Kept"
+      "kept": "Kept",
+      "drafts": "Drafts"
     },
     "keptEmpty": "Nothing kept yet. Below every text in a room you can keep it for later.",
     "day": {
@@ -420,6 +430,25 @@
       "monthsAgo": "{count, plural, one {A month ago} other {# months ago}}",
       "yearsAgo": "{count, plural, one {A year ago} other {# years ago}}",
       "nothingYet": "What you write today will show up here again in a month."
+    },
+    "letter": {
+      "kind": "Letter to yourself",
+      "sealedUntil": "Sealed until {date}",
+      "sealedBody": "You wrote it on {date}. It stays closed until it opens, even to you.",
+      "writtenOn": "Written on {date}",
+      "onTheWay": "Letters on their way"
+    },
+    "drafts": {
+      "empty": "No drafts. Whatever you begin and do not finish waits here.",
+      "write": "Write",
+      "localOnly": "Drafts stay encrypted in this browser.",
+      "edited": "Last edited {when}",
+      "words": "{count, plural, =1 {1 word} other {# words}}",
+      "continue": "Continue",
+      "remove": "Delete draft",
+      "removeTitle": "Delete this draft?",
+      "removeBody": "The draft will be deleted from this browser. This cannot be undone.",
+      "removed": "Draft deleted."
     }
   },
   "me": {
@@ -579,8 +608,8 @@
     },
     "draftRestored": "Draft restored.",
     "draftFound": {
-      "title": "You have a draft.",
-      "body": "Continue writing or start fresh?",
+      "title": "You have a text in progress.",
+      "body": "Continue or start fresh? The draft stays under My journal → Drafts either way.",
       "continue": "Continue",
       "fresh": "Start fresh"
     },
@@ -593,6 +622,16 @@
       "show": "Show a prompt",
       "next": "Another prompt",
       "hide": "Hide the prompt"
+    },
+    "timer": {
+      "label": "Writing time",
+      "intro": "A quiet clock, just for you. No sound, nothing is stored.",
+      "minutes": "{minutes} min",
+      "started": "Writing time: {minutes} minutes.",
+      "stop": "Stop writing time",
+      "stopped": "Writing time stopped.",
+      "done": "Time is up. Keep writing if you like.",
+      "doneShort": "Time up"
     }
   },
   "completion": {
@@ -649,10 +688,22 @@
     "submit": {
       "private": "Keep in journal",
       "anonymous": "Share anonymously",
-      "public": "Publish"
+      "public": "Publish",
+      "sealed": "Seal"
     },
     "published": "Published.",
-    "stored": "Kept in your journal."
+    "stored": "Kept in your journal.",
+    "letter": {
+      "label": "As a letter to yourself",
+      "none": "No",
+      "1m": "1 month",
+      "3m": "3 months",
+      "6m": "6 months",
+      "1y": "1 year",
+      "intro": "You can seal this text. It opens again only on a later day.",
+      "hint": "Until then nobody can read it, not even you. On that day it appears under Today."
+    },
+    "sealed": "Sealed. The letter is on its way to you."
   },
   "crisis": {
     "title": "This sounds like a hard moment.",
@@ -681,7 +732,11 @@
     "bookmarked": "Kept",
     "bookmarkHint": "Only you see what you keep.",
     "bookmarkSaved": "Kept. You will find it in your journal.",
-    "bookmarkRemoved": "No longer kept."
+    "bookmarkRemoved": "No longer kept.",
+    "resume": {
+      "jump": "Continue where you were",
+      "dismiss": "Read from the start"
+    }
   },
   "reactions": {
     "felt": "I feel this",
@@ -819,7 +874,8 @@
       "NOT_FOUND": "Not found.",
       "CONFLICT": "That already existed.",
       "PAYLOAD_TOO_LARGE": "That is too large.",
-      "INTERNAL": "Something went wrong on our side. Try again later."
+      "INTERNAL": "Something went wrong on our side. Try again later.",
+      "LETTER_SEALED": "This letter is still sealed."
     }
   },
   "admin": {

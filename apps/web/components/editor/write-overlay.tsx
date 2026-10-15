@@ -37,11 +37,15 @@ import { CrisisPanel } from './crisis-panel';
 import { editorExtensions } from './extensions';
 import { docToMarkdown, markdownToDoc } from './markdown-serializer';
 import { Toolbar } from './toolbar';
+import { WritingTimer } from './writing-timer';
 
 import type { OwnSeries, RoomView } from '@/features/posts/queries';
 
-const DRAFT_ID = 'current';
 const AUTOSAVE_MS = 2000;
+
+function newDraftId(): string {
+  return globalThis.crypto.randomUUID();
+}
 
 interface WriteOverlayProps {
   rooms: RoomView[];
@@ -57,6 +61,8 @@ interface WriteOverlayProps {
   promptIndex: number | null;
   /** Opened from a room's "write here" (`?room=`): preselects that room when sharing. */
   roomSlug: string | null;
+  /** Opened from the journal's drafts (`?draft=`): continues that draft. */
+  draftId: string | null;
   /** Rendered through the @modal slot over another page. */
   intercepted: boolean;
   /** Rendered as its own page (/write loaded directly or right after onboarding). */
@@ -80,6 +86,7 @@ export function WriteOverlay({
   editPrivateId,
   promptIndex,
   roomSlug,
+  draftId,
   intercepted,
   fullPage,
   onClose,
@@ -101,7 +108,9 @@ export function WriteOverlay({
   );
   const [markdown, setMarkdown] = useState(editPost?.body ?? '');
   const [askKeep, setAskKeep] = useState(false);
-  const [draftOffer, setDraftOffer] = useState<string | null>(null);
+  const [draftOffer, setDraftOffer] = useState<{ id: string; plain: string } | null>(null);
+  // Every writing session autosaves into its own draft; older drafts stay in the journal.
+  const [draftKey, setDraftKey] = useState(() => draftId ?? newDraftId());
   const [crisisShown, setCrisisShown] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -163,6 +172,22 @@ export function WriteOverlay({
 
   const [crisisPending, setCrisisPending] = useState(false);
 
+  const applyDraft = ({ id, plain }: { id: string; plain: string }) => {
+    setDraftKey(id);
+    const lines = plain.split('\n');
+    if (lines[0]?.startsWith('# ')) {
+      setTitle(lines[0].slice(2));
+      setTitleVisible(true);
+      editor?.commands.setContent(markdownToDoc(lines.slice(2).join('\n')));
+      setMarkdown(lines.slice(2).join('\n'));
+    } else {
+      editor?.commands.setContent(markdownToDoc(plain));
+      setMarkdown(plain);
+    }
+    setDraftOffer(null);
+    announce(t('draftRestored'));
+  };
+
   // Restore a draft or decrypt the private entry being edited.
   useEffect(() => {
     let cancelled = false;
@@ -183,7 +208,9 @@ export function WriteOverlay({
         setReady(true);
         return;
       }
-      const draft = await db().drafts.get(DRAFT_ID);
+      const draft = draftId
+        ? await db().drafts.get(draftId)
+        : await db().drafts.orderBy('updatedAt').last();
       if (draft && !cancelled) {
         try {
           const plain = await cryptoClient.decrypt({
@@ -191,9 +218,11 @@ export function WriteOverlay({
             nonce: draft.nonce,
             wrappedKey: draft.wrappedKey,
           });
-          if (plain.trim().length > 0) setDraftOffer(plain);
+          if (plain.trim().length === 0) await db().drafts.delete(draft.id);
+          else if (draftId) applyDraft({ id: draft.id, plain });
+          else setDraftOffer({ id: draft.id, plain });
         } catch {
-          await db().drafts.delete(DRAFT_ID);
+          await db().drafts.delete(draft.id);
         }
       }
       if (!cancelled) setReady(true);
@@ -213,33 +242,16 @@ export function WriteOverlay({
       const payload = title ? `# ${title}\n\n${markdown}` : markdown;
       void cryptoClient
         .encrypt(payload)
-        .then((encrypted) => db().drafts.put({ id: DRAFT_ID, ...encrypted, updatedAt: Date.now() }))
+        .then((encrypted) => db().drafts.put({ id: draftKey, ...encrypted, updatedAt: Date.now() }))
         .catch(() => undefined);
     }, AUTOSAVE_MS);
     return () => window.clearInterval(interval);
-  }, [crypto.hasKey, markdown, title, editPost, editPrivateId]);
+  }, [crypto.hasKey, markdown, title, editPost, editPrivateId, draftKey]);
 
   useEffect(() => () => scanner.dispose(), [scanner]);
 
-  const applyDraft = (plain: string) => {
-    const lines = plain.split('\n');
-    if (lines[0]?.startsWith('# ')) {
-      setTitle(lines[0].slice(2));
-      setTitleVisible(true);
-      editor?.commands.setContent(markdownToDoc(lines.slice(2).join('\n')));
-      setMarkdown(lines.slice(2).join('\n'));
-    } else {
-      editor?.commands.setContent(markdownToDoc(plain));
-      setMarkdown(plain);
-    }
-    setDraftOffer(null);
-    announce(t('draftRestored'));
-  };
-
-  const discardDraft = async () => {
-    await db().drafts.delete(DRAFT_ID);
-    setDraftOffer(null);
-  };
+  /** Starting fresh leaves the offered draft where it is, under the journal's drafts. */
+  const startFresh = () => setDraftOffer(null);
 
   const hasContent = markdown.trim().length > 0 || title.trim().length > 0;
   const wordCount = countWords(markdown);
@@ -336,13 +348,14 @@ export function WriteOverlay({
             visibility: 'private' as const,
             type: choice.type,
             ...encrypted,
+            ...(choice.sealFor ? { sealFor: choice.sealFor } : {}),
             clientId,
           };
           const result = online ? await createPost(input) : null;
           if (result && !result.ok) return setError(result.error);
           if (!result) await enqueuePublish(input);
-          await db().drafts.delete(DRAFT_ID);
-          announce(online ? completion('stored') : t('offlineQueued'));
+          await db().drafts.delete(draftKey);
+          announce(online ? completion(choice.sealFor ? 'sealed' : 'stored') : t('offlineQueued'));
           leave('/journal');
           return;
         } catch {
@@ -373,14 +386,14 @@ export function WriteOverlay({
       };
       if (!online) {
         await enqueuePublish(input);
-        await db().drafts.delete(DRAFT_ID);
+        await db().drafts.delete(draftKey);
         announce(t('offlineQueued'));
         leave('/journal');
         return;
       }
       const result = await createPost(input);
       if (!result.ok) return setError(result.error);
-      await db().drafts.delete(DRAFT_ID);
+      await db().drafts.delete(draftKey);
       try {
         localStorage.setItem('inkwell.shared-once', '1');
       } catch {
@@ -402,9 +415,12 @@ export function WriteOverlay({
     >
       <div className="full-editor flex h-dvh flex-col bg-paper">
         <div className="flex h-16 shrink-0 items-center justify-between gap-3 px-3 md:px-5">
-          <Button variant="ghost" size="sm" onClick={() => (beforeClose() ? close() : undefined)}>
-            {first ? common('later') : t('cancel')}
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="sm" onClick={() => (beforeClose() ? close() : undefined)}>
+              {first ? common('later') : t('cancel')}
+            </Button>
+            {editPost || editPrivateId ? null : <WritingTimer />}
+          </div>
           <div className="hidden md:block">
             <Toolbar
               editor={editor}
@@ -487,7 +503,7 @@ export function WriteOverlay({
                   <Button size="sm" onClick={() => applyDraft(draftOffer)}>
                     {t('draftFound.continue')}
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={() => void discardDraft()}>
+                  <Button size="sm" variant="ghost" onClick={startFresh}>
                     {t('draftFound.fresh')}
                   </Button>
                 </div>
@@ -557,7 +573,7 @@ export function WriteOverlay({
           }}
           onCancel={() => {
             setAskKeep(false);
-            void db().drafts.delete(DRAFT_ID).then(close);
+            void db().drafts.delete(draftKey).then(close);
           }}
         />
       </div>

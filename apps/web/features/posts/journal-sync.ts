@@ -2,6 +2,7 @@
 
 import { cryptoClient } from '@/features/crypto/client';
 import { db, type EntryRecord } from '@/lib/db';
+import { isSealed } from '@/lib/letters';
 
 import type { JournalPost } from '@inkwell/shared';
 
@@ -18,7 +19,11 @@ export async function syncJournal(items: JournalPost[], hasKey: boolean): Promis
     let title = item.title;
     let locked = false;
 
-    if (item.visibility === 'private') {
+    if (item.visibility === 'private' && isSealed(item.opensAt)) {
+      // A sealed letter is not decrypted, so its text is not even in the local search index.
+      body = null;
+      title = null;
+    } else if (item.visibility === 'private') {
       if (existing?.body && existing.updatedAt === item.updatedAt) {
         body = existing.body;
         title = existing.title;
@@ -54,6 +59,7 @@ export async function syncJournal(items: JournalPost[], hasKey: boolean): Promis
       roomName: item.roomName,
       expiry: item.expiry,
       expiresAt: item.expiresAt,
+      opensAt: item.opensAt,
       seriesId: item.seriesId,
       chapter: item.chapter,
       hasFeedback: item.hasFeedback,

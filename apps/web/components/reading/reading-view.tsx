@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import {
+  firstLine,
   hoursUntil,
   readingMinutes,
   renderMarkdown,
@@ -49,7 +50,13 @@ export async function ReadingView({
 
   return (
     <article>
-      <ReadTracker postId={post.id} isAuthor={post.viewer.isAuthor} />
+      <ReadTracker
+        postId={post.id}
+        isAuthor={post.viewer.isAuthor}
+        title={post.title}
+        line={firstLine(post.body, 120)}
+        roomName={post.room.name}
+      />
       <header className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           {post.author ? (

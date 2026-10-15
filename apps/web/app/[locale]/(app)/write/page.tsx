@@ -20,6 +20,7 @@ export default async function Write({
     editPrivate?: string;
     prompt?: string;
     room?: string;
+    draft?: string;
   }>;
 }) {
   const { locale } = await params;

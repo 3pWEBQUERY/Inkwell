@@ -13,8 +13,14 @@ interface WritePageProps {
     editPrivate?: string;
     prompt?: string;
     room?: string;
+    draft?: string;
   };
   intercepted: boolean;
+}
+
+/** Draft ids are local UUIDs; anything else opens a fresh page. */
+function parseDraftId(raw: string | undefined): string | null {
+  return raw && /^[\w-]{8,64}$/.test(raw) ? raw : null;
 }
 
 /** Shared by the full page and the intercepted overlay: loads joined rooms, own series and an optional text to edit. */
@@ -39,6 +45,7 @@ export async function WritePage({ locale, searchParams, intercepted }: WritePage
       editPrivateId={searchParams.editPrivate ?? null}
       promptIndex={parsePromptIndex(searchParams.prompt)}
       roomSlug={searchParams.room ?? null}
+      draftId={parseDraftId(searchParams.draft)}
       intercepted={intercepted}
     />
   );

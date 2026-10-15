@@ -20,6 +20,7 @@ interface WriteRouteProps {
   editPrivateId: string | null;
   promptIndex: number | null;
   roomSlug: string | null;
+  draftId: string | null;
   intercepted: boolean;
 }
 

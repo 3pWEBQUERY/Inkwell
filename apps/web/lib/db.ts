@@ -27,6 +27,8 @@ export interface EntryRecord {
   roomName: string | null;
   expiry: Expiry;
   expiresAt: string | null;
+  /** Sealed letters: no plaintext is kept locally until this moment. Missing on older records. */
+  opensAt?: string | null;
   seriesId: string | null;
   chapter: number | null;
   hasFeedback: boolean;
@@ -41,6 +43,10 @@ export interface ReadProgressRecord {
   postId: string;
   ratio: number;
   updatedAt: number;
+  /** For "continue reading" on Today; kept only in this browser. Missing on older records. */
+  title?: string | null;
+  line?: string;
+  roomName?: string;
 }
 
 /** A publish operation waiting for connectivity. */

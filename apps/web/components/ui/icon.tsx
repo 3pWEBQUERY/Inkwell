@@ -27,6 +27,10 @@ export type IconName =
   | 'bookmark-filled'
   | 'compass'
   | 'focus'
+  | 'envelope'
+  | 'timer'
+  | 'book-open'
+  | 'draft'
   | 'copy'
   | 'download'
   | 'search'
@@ -80,6 +84,11 @@ const PATHS: Record<IconName, string> = {
   bookmark: 'M6 4h12v17l-6-4.5L6 21z',
   'bookmark-filled': 'M6 4h12v17l-6-4.5L6 21zM9 7.5h6M9 10.5h6',
   compass: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z',
+  envelope: 'M3.5 6.5h17v11h-17zM3.5 7l8.5 6.5L20.5 7',
+  timer: 'M12 21a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 9v4l2.5 1.5M9.5 2.5h5',
+  'book-open':
+    'M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13',
+  draft: 'M14 3.5H6.5v17h11V7zM14 3.5V7h3.5M9.5 12h5M9.5 15.5h3',
   focus:
     'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3',
   sun: 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21M5.6 5.6l1.1 1.1M17.3 17.3l1.1 1.1M5.6 18.4l1.1-1.1M17.3 6.7l1.1-1.1',

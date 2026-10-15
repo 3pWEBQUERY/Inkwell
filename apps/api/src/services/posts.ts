@@ -8,6 +8,7 @@ import {
   expiresAtFor,
   firstLine,
   isWithinEditWindow,
+  letterOpensAt,
   type CreatePostInput,
   type CursorPage,
   type FeedPost,
@@ -65,6 +66,7 @@ export async function createPost(
         ciphertext: input.ciphertext,
         nonce: input.nonce,
         wrappedKey: input.wrappedKey,
+        opensAt: input.sealFor ? letterOpensAt(input.sealFor, now) : null,
         clientId: input.clientId ?? null,
         createdAt: now,
         updatedAt: now,
@@ -274,6 +276,10 @@ export async function updatePost(
       patch.editedAt = now;
     }
   }
+
+  // A sealed letter cannot be rewritten before it opens; burning it stays possible.
+  if (post.opensAt && post.opensAt > now && (input.ciphertext || editingContent))
+    throw new ApiError('LETTER_SEALED');
 
   if (
     post.visibility === 'private' &&
@@ -664,6 +670,7 @@ export async function journal(
     roomName,
     expiry: post.expiry,
     expiresAt: post.expiresAt?.toISOString() ?? null,
+    opensAt: post.opensAt?.toISOString() ?? null,
     commentsEnabled: post.commentsEnabled,
     seriesId: post.seriesId,
     chapter: post.chapter,

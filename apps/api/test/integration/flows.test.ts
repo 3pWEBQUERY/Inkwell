@@ -243,6 +243,72 @@ describeIf('core flows', () => {
     expect(foreign.statusCode).toBe(404);
   });
 
+  it('seals a letter to the later self until it opens', async () => {
+    const before = Date.now();
+    const created = await app.inject({
+      method: 'POST',
+      url: '/v1/posts',
+      headers: headers(authorToken),
+      payload: {
+        visibility: 'private',
+        type: 'thought',
+        ciphertext: 'bGV0dGVy',
+        nonce: 'bm9uY2Vub25jZW5vbmNl',
+        wrappedKey: 'd3JhcHBlZGtleXdyYXBwZWRrZXk',
+        sealFor: '3m',
+      },
+    });
+    expect(created.statusCode).toBe(201);
+    const id = created.json<{ id: string }>().id;
+
+    const journal = await app.inject({
+      method: 'GET',
+      url: '/v1/me/posts',
+      headers: headers(authorToken),
+    });
+    const letter = journal
+      .json<{ items: { id: string; opensAt: string | null }[] }>()
+      .items.find((item) => item.id === id);
+    const opensAt = new Date(letter?.opensAt ?? 0).getTime();
+    expect(opensAt).toBeGreaterThan(before + 85 * 86_400_000);
+    expect(opensAt).toBeLessThan(before + 93 * 86_400_000);
+
+    const rewrite = await app.inject({
+      method: 'PATCH',
+      url: `/v1/posts/${id}`,
+      headers: headers(authorToken),
+      payload: {
+        ciphertext: 'b3RoZXI',
+        nonce: 'bm9uY2Vub25jZW5vbmNl',
+        wrappedKey: 'd3JhcHBlZGtleXdyYXBwZWRrZXk',
+      },
+    });
+    expect(rewrite.statusCode).toBe(409);
+    expect(rewrite.json<{ error: string }>().error).toBe('LETTER_SEALED');
+
+    const invalid = await app.inject({
+      method: 'POST',
+      url: '/v1/posts',
+      headers: headers(authorToken),
+      payload: {
+        visibility: 'private',
+        type: 'thought',
+        ciphertext: 'bGV0dGVy',
+        nonce: 'bm9uY2Vub25jZW5vbmNl',
+        wrappedKey: 'd3JhcHBlZGtleXdyYXBwZWRrZXk',
+        sealFor: '10y',
+      },
+    });
+    expect(invalid.statusCode).toBe(400);
+
+    const burn = await app.inject({
+      method: 'DELETE',
+      url: `/v1/posts/${id}`,
+      headers: headers(authorToken),
+    });
+    expect(burn.statusCode).toBe(204);
+  });
+
   it('keeps texts for a reader without telling the author', async () => {
     const keep = await app.inject({
       method: 'PUT',

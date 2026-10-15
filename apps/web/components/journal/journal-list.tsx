@@ -23,13 +23,14 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { db, type EntryRecord } from '@/lib/db';
 import { dayFromKey, dayKey, formatDate, formatMonthYear, monthKey } from '@/lib/format';
+import { isSealed } from '@/lib/letters';
 
 import { ExportButton } from './export-button';
 import { PrivateEntryView } from './private-entry-view';
 
-type Filter = 'all' | 'private' | 'anonymous' | 'public' | 'story' | 'expiring';
+type Filter = 'all' | 'private' | 'anonymous' | 'public' | 'story' | 'letters' | 'expiring';
 
-const FILTERS: Filter[] = ['all', 'private', 'anonymous', 'public', 'story', 'expiring'];
+const FILTERS: Filter[] = ['all', 'private', 'anonymous', 'public', 'story', 'letters', 'expiring'];
 const VISIBILITY_ICON: Record<EntryRecord['visibility'], IconName> = {
   private: 'lock',
   anonymous: 'mask',
@@ -84,6 +85,7 @@ export function JournalList({ initial, focusSearch, openId, day = null }: Journa
     return entries.filter((entry) => {
       if (day && dayKey(entry.createdAt) !== day) return false;
       if (filter === 'story' && entry.type !== 'story') return false;
+      if (filter === 'letters' && !entry.opensAt) return false;
       if (
         filter === 'expiring' &&
         (!entry.expiresAt ||
@@ -295,9 +297,18 @@ function JournalRow({
   const common = useTranslations('common');
   const auth = useTranslations('auth');
   const expiresIn = hoursUntil(entry.expiresAt);
-  const preview = entry.locked
-    ? auth('unlock.locked')
-    : (entry.title ?? firstLine(entry.body ?? '', 160));
+  const sealed = isSealed(entry.opensAt);
+  const preview = sealed
+    ? t('letter.sealedUntil', {
+        date: formatDate(entry.opensAt ?? entry.createdAt, locale, {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+      })
+    : entry.locked
+      ? auth('unlock.locked')
+      : (entry.title ?? firstLine(entry.body ?? '', 160));
   return (
     <li className="group flex items-start gap-4 px-4 py-4 state-toggle hover:bg-paper-raised/50 md:px-5">
       <span aria-hidden className="flex w-9 shrink-0 flex-col items-center pt-0.5 text-center">
@@ -317,7 +328,7 @@ function JournalRow({
         <span
           className={cn(
             'prose-reading block line-clamp-2 text-[1.0625rem]',
-            entry.locked && 'font-sans text-[0.9375rem] text-ink-tertiary',
+            (entry.locked || sealed) && 'font-sans text-[0.9375rem] text-ink-secondary italic',
           )}
           style={{ viewTransitionName: `post-line-${entry.id}` }}
         >
@@ -325,8 +336,8 @@ function JournalRow({
         </span>
         <span className="mt-1.5 flex flex-wrap items-center gap-2 text-[13px] text-ink-secondary">
           <span className="inline-flex items-center gap-1.5">
-            <Icon name={VISIBILITY_ICON[entry.visibility]} size={13} />
-            {common(`visibility.${entry.visibility}`)}
+            <Icon name={entry.opensAt ? 'envelope' : VISIBILITY_ICON[entry.visibility]} size={13} />
+            {entry.opensAt ? t('letter.kind') : common(`visibility.${entry.visibility}`)}
           </span>
           <time dateTime={entry.createdAt} className="sr-only">
             {formatDate(entry.createdAt, locale, { day: 'numeric', month: 'short' })}

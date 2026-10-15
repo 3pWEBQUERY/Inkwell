@@ -2,7 +2,7 @@
 
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { firstLine, type Locale } from '@inkwell/shared';
 
@@ -11,6 +11,7 @@ import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { db, type EntryRecord } from '@/lib/db';
 import { formatDate } from '@/lib/format';
+import { isSealed } from '@/lib/letters';
 
 const VISIBILITY_ICON = { private: 'lock', anonymous: 'mask', public: 'globe' } as const;
 
@@ -23,6 +24,7 @@ interface Memory {
 function memoriesFor(entries: EntryRecord[], today: Date): Memory[] {
   const result: Memory[] = [];
   for (const entry of entries) {
+    if (isSealed(entry.opensAt)) continue;
     const created = new Date(entry.createdAt);
     if (created.getDate() !== today.getDate()) continue;
     const months =
@@ -44,6 +46,7 @@ export function OnThisDay({ compact = false }: { compact?: boolean }) {
   const common = useTranslations('common');
   const auth = useTranslations('auth');
   const locale = useLocale() as Locale;
+  const headingId = useId();
   const [today, setToday] = useState<Date | null>(null);
   useEffect(() => setToday(new Date()), []);
   const entries = useLiveQuery(() => db().entries.toArray(), []);
@@ -52,8 +55,8 @@ export function OnThisDay({ compact = false }: { compact?: boolean }) {
   if (memories.length === 0 && compact) return null;
 
   return (
-    <section aria-labelledby="on-this-day" className={cn(!compact && 'mt-8')}>
-      <h2 id="on-this-day" className="label mb-3">
+    <section aria-labelledby={headingId} className={cn(!compact && 'mt-8')}>
+      <h2 id={headingId} className="label mb-3">
         {t('onThisDay')}
       </h2>
       {memories.length === 0 ? (

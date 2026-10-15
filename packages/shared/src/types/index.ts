@@ -71,6 +71,8 @@ export interface JournalPost {
   roomName: string | null;
   expiry: Expiry;
   expiresAt: string | null;
+  /** Sealed letters only: until then the entry is shown closed. */
+  opensAt: string | null;
   commentsEnabled: boolean;
   seriesId: string | null;
   chapter: number | null;

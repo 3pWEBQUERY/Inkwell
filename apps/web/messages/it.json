@@ -320,6 +320,14 @@
       "search": "Cerca nel quaderno",
       "move": "Testo successivo e precedente",
       "close": "Chiudi la finestra"
+    },
+    "letter": {
+      "title": "È arrivata una lettera da te.",
+      "body": "Scritta il {date}",
+      "open": "Apri"
+    },
+    "continue": {
+      "title": "Continua a leggere"
     }
   },
   "rooms": {
@@ -365,7 +373,8 @@
       "anonymous": "Anonimi",
       "public": "Pubblici",
       "story": "Storie",
-      "expiring": "Scade presto"
+      "expiring": "Scade presto",
+      "letters": "Lettere"
     },
     "actions": {
       "visibility": "Visibilità",
@@ -403,7 +412,8 @@
     "views": {
       "label": "Vista",
       "written": "Scritti",
-      "kept": "Salvati"
+      "kept": "Salvati",
+      "drafts": "Bozze"
     },
     "keptEmpty": "Ancora niente di salvato. Sotto ogni testo in una stanza puoi salvarlo per dopo.",
     "day": {
@@ -420,6 +430,25 @@
       "monthsAgo": "{count, plural, one {Un mese fa} other {# mesi fa}}",
       "yearsAgo": "{count, plural, one {Un anno fa} other {# anni fa}}",
       "nothingYet": "Quello che scrivi oggi riapparirà qui tra un mese."
+    },
+    "letter": {
+      "kind": "Lettera a te",
+      "sealedUntil": "Sigillata fino al {date}",
+      "sealedBody": "L’hai scritta il {date}. Resta chiusa finché non si apre, anche per te.",
+      "writtenOn": "Scritta il {date}",
+      "onTheWay": "Lettere in viaggio"
+    },
+    "drafts": {
+      "empty": "Nessuna bozza. Ciò che inizi e non concludi ti aspetta qui.",
+      "write": "Scrivi",
+      "localOnly": "Le bozze restano cifrate in questo browser.",
+      "edited": "Modificata {when}",
+      "words": "{count, plural, =1 {1 parola} other {# parole}}",
+      "continue": "Continua",
+      "remove": "Elimina bozza",
+      "removeTitle": "Eliminare la bozza?",
+      "removeBody": "La bozza verrà eliminata da questo browser. Non si può annullare.",
+      "removed": "Bozza eliminata."
     }
   },
   "me": {
@@ -579,8 +608,8 @@
     },
     "draftRestored": "Bozza ripristinata.",
     "draftFound": {
-      "title": "Hai una bozza.",
-      "body": "Continuare a scrivere o ricominciare?",
+      "title": "Hai un testo iniziato.",
+      "body": "Continuare o ricominciare? La bozza resta comunque sotto Il mio quaderno → Bozze.",
       "continue": "Continua a scrivere",
       "fresh": "Ricomincia"
     },
@@ -593,6 +622,16 @@
       "show": "Mostra uno spunto",
       "next": "Un altro spunto",
       "hide": "Nascondi lo spunto"
+    },
+    "timer": {
+      "label": "Tempo di scrittura",
+      "intro": "Un orologio silenzioso, solo per te. Nessun suono, nulla viene salvato.",
+      "minutes": "{minutes} min",
+      "started": "Tempo di scrittura: {minutes} minuti.",
+      "stop": "Ferma il tempo di scrittura",
+      "stopped": "Tempo di scrittura fermato.",
+      "done": "Il tempo è finito. Continua pure a scrivere.",
+      "doneShort": "Finito"
     }
   },
   "completion": {
@@ -649,10 +688,22 @@
     "submit": {
       "private": "Metti nel quaderno",
       "anonymous": "Condividi in forma anonima",
-      "public": "Pubblica"
+      "public": "Pubblica",
+      "sealed": "Sigilla"
     },
     "published": "Pubblicato.",
-    "stored": "Messo nel quaderno."
+    "stored": "Messo nel quaderno.",
+    "letter": {
+      "label": "Come lettera a te",
+      "none": "No",
+      "1m": "1 mese",
+      "3m": "3 mesi",
+      "6m": "6 mesi",
+      "1y": "1 anno",
+      "intro": "Puoi sigillare il testo. Si riaprirà solo in un giorno futuro.",
+      "hint": "Fino ad allora nessuno può leggerlo, nemmeno tu. Quel giorno comparirà sotto Oggi."
+    },
+    "sealed": "Sigillata. La lettera è in viaggio verso di te."
   },
   "crisis": {
     "title": "Sembra un momento difficile.",
@@ -681,7 +732,11 @@
     "bookmarked": "Salvato",
     "bookmarkHint": "Solo tu vedi cosa salvi.",
     "bookmarkSaved": "Salvato. Lo trovi nel tuo quaderno.",
-    "bookmarkRemoved": "Non più salvato."
+    "bookmarkRemoved": "Non più salvato.",
+    "resume": {
+      "jump": "Riprendi da dove eri",
+      "dismiss": "Leggi dall’inizio"
+    }
   },
   "reactions": {
     "felt": "lo sento",
@@ -819,7 +874,8 @@
       "NOT_FOUND": "Non trovato.",
       "CONFLICT": "Esiste già.",
       "PAYLOAD_TOO_LARGE": "È troppo grande.",
-      "INTERNAL": "Qualcosa è andato storto da parte nostra. Riprova più tardi."
+      "INTERNAL": "Qualcosa è andato storto da parte nostra. Riprova più tardi.",
+      "LETTER_SEALED": "Questa lettera è ancora sigillata."
     }
   },
   "admin": {

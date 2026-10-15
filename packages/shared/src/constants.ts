@@ -65,6 +65,30 @@ export const EXPIRY_HOURS: Record<Expiry, number | null> = {
   '7d': 24 * 7,
 };
 
+/** How long a letter to one's later self stays sealed. */
+export const LETTER_DELAYS = ['1m', '3m', '6m', '1y'] as const;
+export type LetterDelay = (typeof LETTER_DELAYS)[number];
+
+export const LETTER_DELAY_MONTHS: Record<LetterDelay, number> = {
+  '1m': 1,
+  '3m': 3,
+  '6m': 6,
+  '1y': 12,
+};
+
+/** The day a letter sealed now opens: same time of day, n calendar months later. */
+export function letterOpensAt(delay: LetterDelay, from: Date): Date {
+  const opens = new Date(from);
+  const day = opens.getUTCDate();
+  opens.setUTCDate(1);
+  opens.setUTCMonth(opens.getUTCMonth() + LETTER_DELAY_MONTHS[delay]);
+  const lastDay = new Date(
+    Date.UTC(opens.getUTCFullYear(), opens.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  opens.setUTCDate(Math.min(day, lastDay));
+  return opens;
+}
+
 export const REACTION_KINDS = ['read', 'felt', 'known', 'thanks'] as const;
 export type ReactionKind = (typeof REACTION_KINDS)[number];
 

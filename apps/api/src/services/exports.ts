@@ -55,6 +55,7 @@ export async function buildExportArchive(db: Database, user: UserRow): Promise<U
           {
             id: post.id,
             createdAt: post.createdAt.toISOString(),
+            opensAt: post.opensAt?.toISOString() ?? null,
             ciphertext: post.ciphertext,
             nonce: post.nonce,
             wrappedKey: post.wrappedKey,

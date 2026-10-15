@@ -104,4 +104,39 @@ test.describe('core flows', () => {
     await expect(reader.getByText(keptText).first()).toBeVisible();
     await readerContext.close();
   });
+
+  test('keeps an unfinished text as a draft and picks it up again', async ({ page }) => {
+    const draftText = `Ein angefangener Gedanke ${stamp}, noch ohne Ende`;
+    await register(page, uniqueEmail(), `${pseudonym}d`);
+    await page.locator('.tiptap').fill(draftText);
+    // Autosave runs every two seconds.
+    await page.waitForTimeout(2600);
+    await page.getByRole('button', { name: 'Später' }).click();
+    await page.getByRole('button', { name: 'Behalten' }).click();
+    await expect(page).toHaveURL(/\/today/);
+    await page.goto('/journal?view=drafts', { waitUntil: 'networkidle' });
+    await page
+      .getByRole('link', { name: new RegExp(draftText) })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/write\?draft=/);
+    await expect(page.locator('.tiptap')).toContainText(draftText);
+  });
+
+  test('seals a letter to the later self', async ({ page }) => {
+    const letterText = `Liebes späteres Ich ${stamp}, wie geht es dir inzwischen?`;
+    await register(page, uniqueEmail(), `${pseudonym}l`);
+    await page.getByRole('button', { name: 'Schreibzeit' }).click();
+    await page.getByRole('button', { name: '5 Min.', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Schreibzeit beenden' })).toContainText(
+      /\d:\d\d/,
+    );
+    await page.locator('.tiptap').fill(letterText);
+    await page.getByRole('button', { name: 'Fertig' }).click();
+    await page.getByRole('button', { name: '3 Monate' }).click();
+    await page.getByRole('button', { name: 'Versiegeln' }).click();
+    await expect(page).toHaveURL(/\/journal/);
+    await expect(page.getByText(/Versiegelt bis/).first()).toBeVisible();
+    await expect(page.getByText(letterText)).toHaveCount(0);
+  });
 });

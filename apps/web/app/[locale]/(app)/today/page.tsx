@@ -2,6 +2,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 
 import { LastEntry } from '@/components/journal/last-entry';
 import { TodayFeed } from '@/components/rooms/today-feed';
+import { ArrivedLetters } from '@/components/today/arrived-letters';
+import { ContinueReading } from '@/components/today/continue-reading';
 import { Greeting } from '@/components/today/greeting';
 import { PromptCard } from '@/components/today/prompt-card';
 import { Icon } from '@/components/ui/icon';
@@ -50,6 +52,8 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
       <Greeting />
       <PageHeader title={formatWeekday(new Date(), current)} className="mb-8 md:mb-10" />
 
+      <ArrivedLetters entries={journal.items.filter((item) => item.opensAt)} />
+
       <div className="mb-10">
         <PromptCard />
       </div>
@@ -70,6 +74,8 @@ export default async function TodayPage({ params }: { params: Promise<{ locale: 
           </Link>
         )}
       </Section>
+
+      <ContinueReading className="mb-10 xl:hidden" />
 
       <Section id="new-in-rooms" label={t('newInRooms')}>
         <TodayFeed

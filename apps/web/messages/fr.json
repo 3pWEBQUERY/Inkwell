@@ -320,6 +320,14 @@
       "search": "Chercher dans le carnet",
       "move": "Texte suivant et précédent",
       "close": "Fermer la fenêtre"
+    },
+    "letter": {
+      "title": "Une lettre de toi est arrivée.",
+      "body": "Écrite le {date}",
+      "open": "Ouvrir"
+    },
+    "continue": {
+      "title": "Reprendre la lecture"
     }
   },
   "rooms": {
@@ -365,7 +373,8 @@
       "anonymous": "Anonyme",
       "public": "Public",
       "story": "Histoires",
-      "expiring": "Expire bientôt"
+      "expiring": "Expire bientôt",
+      "letters": "Lettres"
     },
     "actions": {
       "visibility": "Visibilité",
@@ -403,7 +412,8 @@
     "views": {
       "label": "Affichage",
       "written": "Écrits",
-      "kept": "Gardés"
+      "kept": "Gardés",
+      "drafts": "Brouillons"
     },
     "keptEmpty": "Rien de gardé pour l’instant. Sous chaque texte d’un espace, tu peux le garder pour plus tard.",
     "day": {
@@ -420,6 +430,25 @@
       "monthsAgo": "{count, plural, one {Il y a un mois} other {Il y a # mois}}",
       "yearsAgo": "{count, plural, one {Il y a un an} other {Il y a # ans}}",
       "nothingYet": "Ce que tu écris aujourd’hui réapparaîtra ici dans un mois."
+    },
+    "letter": {
+      "kind": "Lettre à toi",
+      "sealedUntil": "Scellée jusqu’au {date}",
+      "sealedBody": "Tu l’as écrite le {date}. Elle reste fermée jusqu’à ce qu’elle s’ouvre, même pour toi.",
+      "writtenOn": "Écrite le {date}",
+      "onTheWay": "Lettres en route"
+    },
+    "drafts": {
+      "empty": "Aucun brouillon. Ce que tu commences sans le terminer t’attend ici.",
+      "write": "Écrire",
+      "localOnly": "Les brouillons restent chiffrés dans ce navigateur.",
+      "edited": "Modifié {when}",
+      "words": "{count, plural, =1 {1 mot} other {# mots}}",
+      "continue": "Continuer",
+      "remove": "Supprimer le brouillon",
+      "removeTitle": "Supprimer le brouillon ?",
+      "removeBody": "Le brouillon sera supprimé de ce navigateur. C’est irréversible.",
+      "removed": "Brouillon supprimé."
     }
   },
   "me": {
@@ -579,8 +608,8 @@
     },
     "draftRestored": "Brouillon restauré.",
     "draftFound": {
-      "title": "Tu as un brouillon.",
-      "body": "Continuer à écrire ou recommencer ?",
+      "title": "Tu as un texte commencé.",
+      "body": "Continuer ou recommencer ? Le brouillon reste de toute façon sous Mon carnet → Brouillons.",
       "continue": "Continuer à écrire",
       "fresh": "Recommencer"
     },
@@ -593,6 +622,16 @@
       "show": "Afficher une piste",
       "next": "Une autre piste",
       "hide": "Masquer la piste"
+    },
+    "timer": {
+      "label": "Temps d’écriture",
+      "intro": "Une horloge silencieuse, rien que pour toi. Aucun son, rien n’est enregistré.",
+      "minutes": "{minutes} min",
+      "started": "Temps d’écriture : {minutes} minutes.",
+      "stop": "Arrêter le temps d’écriture",
+      "stopped": "Temps d’écriture arrêté.",
+      "done": "Le temps est écoulé. Continue tranquillement.",
+      "doneShort": "Terminé"
     }
   },
   "completion": {
@@ -649,10 +688,22 @@
     "submit": {
       "private": "Ranger dans le carnet",
       "anonymous": "Partager anonymement",
-      "public": "Publier"
+      "public": "Publier",
+      "sealed": "Sceller"
     },
     "published": "Publié.",
-    "stored": "Rangé dans le carnet."
+    "stored": "Rangé dans le carnet.",
+    "letter": {
+      "label": "Comme une lettre à toi",
+      "none": "Non",
+      "1m": "1 mois",
+      "3m": "3 mois",
+      "6m": "6 mois",
+      "1y": "1 an",
+      "intro": "Tu peux sceller ce texte. Il ne s’ouvrira qu’un jour plus tard.",
+      "hint": "D’ici là, personne ne peut le lire, toi non plus. Ce jour-là, il apparaîtra sous Aujourd’hui."
+    },
+    "sealed": "Scellée. La lettre est en route vers toi."
   },
   "crisis": {
     "title": "Ça ressemble à un moment difficile.",
@@ -681,7 +732,11 @@
     "bookmarked": "Gardé",
     "bookmarkHint": "Toi seul·e vois ce que tu gardes.",
     "bookmarkSaved": "Gardé. Tu le retrouves dans ton carnet.",
-    "bookmarkRemoved": "Plus gardé."
+    "bookmarkRemoved": "Plus gardé.",
+    "resume": {
+      "jump": "Reprendre là où tu étais",
+      "dismiss": "Lire depuis le début"
+    }
   },
   "reactions": {
     "felt": "je ressens",
@@ -819,7 +874,8 @@
       "NOT_FOUND": "Introuvable.",
       "CONFLICT": "Cela existait déjà.",
       "PAYLOAD_TOO_LARGE": "C'est trop volumineux.",
-      "INTERNAL": "Quelque chose s'est mal passé de notre côté. Réessaie plus tard."
+      "INTERNAL": "Quelque chose s'est mal passé de notre côté. Réessaie plus tard.",
+      "LETTER_SEALED": "Cette lettre est encore scellée."
     }
   },
   "admin": {

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { DraftList } from '@/components/journal/draft-list';
 import { JournalList } from '@/components/journal/journal-list';
 import { OnThisDay } from '@/components/journal/on-this-day';
 import { PostCard } from '@/components/rooms/post-card';
@@ -34,15 +35,26 @@ export default async function JournalPage({
   const t = await getTranslations('journal');
   const { focus, open, view, day } = await searchParams;
   const kept = view === 'kept';
+  const drafts = view === 'drafts';
   const tabs = (
     <TabLinks
       label={t('views.label')}
       tabs={[
-        { href: '/journal', label: t('views.written'), active: !kept },
+        { href: '/journal', label: t('views.written'), active: !kept && !drafts },
+        { href: '/journal?view=drafts', label: t('views.drafts'), active: drafts },
         { href: '/journal?view=kept', label: t('views.kept'), active: kept },
       ]}
     />
   );
+
+  if (drafts) {
+    return (
+      <div>
+        <PageHeader title={t('title')} actions={tabs} />
+        <DraftList />
+      </div>
+    );
+  }
 
   if (kept) {
     const bookmarks = await getBookmarks().catch(() => []);

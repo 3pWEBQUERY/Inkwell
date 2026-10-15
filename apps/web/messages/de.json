@@ -320,6 +320,14 @@
       "search": "Im Heft suchen",
       "move": "Nächster und voriger Text",
       "close": "Overlay schliessen"
+    },
+    "letter": {
+      "title": "Ein Brief von dir ist angekommen.",
+      "body": "Geschrieben am {date}",
+      "open": "Öffnen"
+    },
+    "continue": {
+      "title": "Weiterlesen"
     }
   },
   "rooms": {
@@ -365,7 +373,8 @@
       "anonymous": "Anonym",
       "public": "Öffentlich",
       "story": "Geschichten",
-      "expiring": "Verfällt bald"
+      "expiring": "Verfällt bald",
+      "letters": "Briefe"
     },
     "actions": {
       "visibility": "Sichtbarkeit",
@@ -403,7 +412,8 @@
     "views": {
       "label": "Ansicht",
       "written": "Geschrieben",
-      "kept": "Gemerkt"
+      "kept": "Gemerkt",
+      "drafts": "Entwürfe"
     },
     "keptEmpty": "Noch nichts gemerkt. Unter jedem Text in einem Raum kannst du ihn dir für später merken.",
     "day": {
@@ -420,6 +430,25 @@
       "monthsAgo": "{count, plural, one {Vor einem Monat} other {Vor # Monaten}}",
       "yearsAgo": "{count, plural, one {Vor einem Jahr} other {Vor # Jahren}}",
       "nothingYet": "Was du heute schreibst, taucht hier in einem Monat wieder auf."
+    },
+    "letter": {
+      "kind": "Brief an dich",
+      "sealedUntil": "Versiegelt bis {date}",
+      "sealedBody": "Du hast ihn am {date} geschrieben. Bis er sich öffnet, bleibt er verschlossen, auch für dich.",
+      "writtenOn": "Geschrieben am {date}",
+      "onTheWay": "Briefe unterwegs"
+    },
+    "drafts": {
+      "empty": "Keine Entwürfe. Was du anfängst und nicht abschliesst, wartet hier.",
+      "write": "Schreiben",
+      "localOnly": "Entwürfe bleiben verschlüsselt in diesem Browser.",
+      "edited": "Zuletzt bearbeitet {when}",
+      "words": "{count, plural, =1 {1 Wort} other {# Wörter}}",
+      "continue": "Weiterschreiben",
+      "remove": "Entwurf löschen",
+      "removeTitle": "Entwurf löschen?",
+      "removeBody": "Der Entwurf wird aus diesem Browser gelöscht. Das lässt sich nicht rückgängig machen.",
+      "removed": "Entwurf gelöscht."
     }
   },
   "me": {
@@ -579,8 +608,8 @@
     },
     "draftRestored": "Entwurf wiederhergestellt.",
     "draftFound": {
-      "title": "Du hast einen Entwurf.",
-      "body": "Weiterschreiben oder neu anfangen?",
+      "title": "Du hast einen angefangenen Text.",
+      "body": "Weiterschreiben oder neu anfangen? Der Entwurf bleibt so oder so unter Mein Heft → Entwürfe.",
       "continue": "Weiterschreiben",
       "fresh": "Neu anfangen"
     },
@@ -593,6 +622,16 @@
       "show": "Impuls zeigen",
       "next": "Anderer Impuls",
       "hide": "Impuls ausblenden"
+    },
+    "timer": {
+      "label": "Schreibzeit",
+      "intro": "Eine stille Uhr, nur für dich. Kein Ton, nichts wird gespeichert.",
+      "minutes": "{minutes} Min.",
+      "started": "Schreibzeit läuft: {minutes} Minuten.",
+      "stop": "Schreibzeit beenden",
+      "stopped": "Schreibzeit beendet.",
+      "done": "Die Zeit ist um. Schreib ruhig weiter.",
+      "doneShort": "Zeit um"
     }
   },
   "completion": {
@@ -649,10 +688,22 @@
     "submit": {
       "private": "Im Heft ablegen",
       "anonymous": "Anonym teilen",
-      "public": "Veröffentlichen"
+      "public": "Veröffentlichen",
+      "sealed": "Versiegeln"
     },
     "published": "Veröffentlicht.",
-    "stored": "Im Heft abgelegt."
+    "stored": "Im Heft abgelegt.",
+    "letter": {
+      "label": "Als Brief an dich",
+      "none": "Nein",
+      "1m": "1 Monat",
+      "3m": "3 Monate",
+      "6m": "6 Monate",
+      "1y": "1 Jahr",
+      "intro": "Du kannst den Text versiegeln. Er öffnet sich erst an einem späteren Tag wieder.",
+      "hint": "Bis dahin kannst du ihn nicht lesen, auch nicht du. An dem Tag erscheint er unter Heute."
+    },
+    "sealed": "Versiegelt. Der Brief ist unterwegs zu dir."
   },
   "crisis": {
     "title": "Das klingt nach einem schweren Moment.",
@@ -681,7 +732,11 @@
     "bookmarked": "Gemerkt",
     "bookmarkHint": "Nur du siehst, was du dir merkst.",
     "bookmarkSaved": "Gemerkt. Du findest den Text in deinem Heft.",
-    "bookmarkRemoved": "Nicht mehr gemerkt."
+    "bookmarkRemoved": "Nicht mehr gemerkt.",
+    "resume": {
+      "jump": "Weiterlesen, wo du warst",
+      "dismiss": "Von vorne lesen"
+    }
   },
   "reactions": {
     "felt": "fühl ich",
@@ -819,7 +874,8 @@
       "NOT_FOUND": "Nicht gefunden.",
       "CONFLICT": "Das gab es schon.",
       "PAYLOAD_TOO_LARGE": "Das ist zu gross.",
-      "INTERNAL": "Etwas ist bei uns schiefgelaufen. Versuch es später noch einmal."
+      "INTERNAL": "Etwas ist bei uns schiefgelaufen. Versuch es später noch einmal.",
+      "LETTER_SEALED": "Dieser Brief ist noch versiegelt."
     }
   },
   "admin": {

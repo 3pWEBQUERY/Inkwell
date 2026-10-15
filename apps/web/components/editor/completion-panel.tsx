@@ -3,7 +3,14 @@
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
-import { LIMITS, type Expiry, type PostType, type Visibility } from '@inkwell/shared';
+import {
+  LETTER_DELAYS,
+  LIMITS,
+  type Expiry,
+  type LetterDelay,
+  type PostType,
+  type Visibility,
+} from '@inkwell/shared';
 
 import { Button } from '@/components/ui/button';
 import { ErrorText } from '@/components/ui/error-text';
@@ -23,6 +30,8 @@ export interface CompletionChoice {
   commentsEnabled: boolean;
   seriesId: string | null;
   newSeriesTitle: string | null;
+  /** Private only: seal the entry as a letter to one's later self. */
+  sealFor: LetterDelay | null;
 }
 
 interface CompletionPanelProps {
@@ -77,6 +86,7 @@ export function CompletionPanel({
   const [commentsEnabled, setCommentsEnabled] = useState<boolean | null>(null);
   const [seriesId, setSeriesId] = useState<string | null>(null);
   const [newSeriesTitle, setNewSeriesTitle] = useState('');
+  const [sealFor, setSealFor] = useState<LetterDelay | null>(null);
 
   const sharing = visibility !== 'private';
   const kind = type === 'story' ? 'fiction' : 'reflection';
@@ -121,6 +131,7 @@ export function CompletionPanel({
           commentsEnabled: sharing ? comments : false,
           seriesId: sharing && type === 'story' && visibility === 'public' ? seriesId : null,
           newSeriesTitle: seriesId === 'new' ? newSeriesTitle.trim() || null : null,
+          sealFor: sharing ? null : sealFor,
         });
       }}
     >
@@ -191,6 +202,45 @@ export function CompletionPanel({
           <p className="mt-2 text-[13px] text-warn">{editor('unlockToWrite')}</p>
         ) : null}
       </fieldset>
+
+      <div
+        className="grid transition-[grid-template-rows]"
+        style={{
+          gridTemplateRows: sharing ? '0fr' : '1fr',
+          transitionDuration: 'var(--motion-base)',
+          transitionTimingFunction: 'var(--ease-out)',
+        }}
+      >
+        <div className="overflow-hidden">
+          <fieldset disabled={sharing}>
+            <legend className="label flex items-center gap-1.5">
+              <Icon name="envelope" size={14} />
+              {t('letter.label')}
+            </legend>
+            <div className="mt-2 grid grid-cols-5 gap-1.5">
+              {([null, ...LETTER_DELAYS] as const).map((option) => (
+                <button
+                  key={option ?? 'none'}
+                  type="button"
+                  aria-pressed={sealFor === option}
+                  onClick={() => setSealFor(option)}
+                  className={cn(
+                    'h-10 rounded-md border text-[0.8125rem] font-medium state-toggle',
+                    sealFor === option
+                      ? 'border-accent bg-accent-tint text-ink shadow-[inset_0_0_0_1px_var(--color-accent)]'
+                      : 'border-line-strong bg-surface text-ink-secondary hover:border-ink-tertiary/60 hover:text-ink',
+                  )}
+                >
+                  {t(`letter.${option ?? 'none'}`)}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-[13px] text-ink-secondary">
+              {sealFor ? t('letter.hint') : t('letter.intro')}
+            </p>
+          </fieldset>
+        </div>
+      </div>
 
       <div
         className="grid transition-[grid-template-rows]"
@@ -308,7 +358,7 @@ export function CompletionPanel({
 
       <ErrorText code={error} />
       <Button type="submit" size="lg" disabled={disabled} busy={busy}>
-        {t(`submit.${visibility}`)}
+        {sealFor && !sharing ? t('submit.sealed') : t(`submit.${visibility}`)}
       </Button>
     </form>
   );

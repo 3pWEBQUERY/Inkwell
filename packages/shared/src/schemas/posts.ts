@@ -1,6 +1,13 @@
 import { z } from 'zod';
 
-import { EXPIRIES, FEED_SORTS, LIMITS, POST_TYPES, VISIBILITIES } from '../constants.js';
+import {
+  EXPIRIES,
+  FEED_SORTS,
+  LETTER_DELAYS,
+  LIMITS,
+  POST_TYPES,
+  VISIBILITIES,
+} from '../constants.js';
 
 import { base64urlSchema, cursorSchema, idSchema } from './common.js';
 
@@ -13,6 +20,8 @@ export const createPrivatePostSchema = z.object({
   ciphertext: base64urlSchema.min(1),
   nonce: base64urlSchema.min(12),
   wrappedKey: base64urlSchema.min(16),
+  /** Seals the entry as a letter to one's later self; the server sets the opening date. */
+  sealFor: z.enum(LETTER_DELAYS).optional(),
   /** Client-side id, so an offline-created entry keeps its identity when it syncs. */
   clientId: z.uuid().optional(),
 });
